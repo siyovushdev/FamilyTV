@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:banner="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.FamilyTV">
+        <activity
+            android:name=".voicelab.VoiceLabActivity"
+            android:exported="true"
+            android:label="FamilyTV Voice Lab" />
+        <activity android:name=".games.MathVoiceGameActivity" android:exported="true" android:label="Математика" />
+        <activity android:name=".games.ColorVoiceGameActivity" android:exported="true" android:label="Цвета" />
+        <activity android:name=".MainActivity" android:exported="true" />
+        <activity
+            android:name=".games.GameHubActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

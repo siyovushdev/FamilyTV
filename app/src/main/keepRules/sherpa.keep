@@ -1,0 +1,2 @@
+# Native JNI resolves configuration classes, fields and result constructors by name.
+-keep class com.k2fsa.sherpa.onnx.** { *; }
