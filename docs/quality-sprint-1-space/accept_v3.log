@@ -1,0 +1,25 @@
+btn Начать
+shot before_problem.png
+btn Дальше
+shot wrong_action.png
+btn Помоги
+btn Дальше
+shot help_visual.png
+btn Повтори
+cells 0 [(848, 937), (960, 937), (1264, 937)]
+prog ['Энергия 1 из 3']
+shot object_installed.png
+cells 1 [(960, 937), (1264, 937)]
+prog ['Энергия 1 из 3']
+cells 2 [(960, 938), (1264, 938)]
+prog ['Энергия 1 из 3']
+shot ship_repaired.png
+state ['Энергия 1 из 3', 'Энергия', 'Энергия', 'Энергия']
+miss Дальше
+shot engine_started.png
+flight? False
+miss Дальше
+shot next_scene.png
+nav? False
+bytes 63572740
+DONE

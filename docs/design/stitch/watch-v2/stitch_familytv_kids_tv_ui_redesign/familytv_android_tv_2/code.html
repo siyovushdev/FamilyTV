@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>FamilyTV — Страница мультфильма: Детали</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+      background-color: #080d1e;
+      color: #f1f5f9;
+      user-select: none;
+    }
+    .tv-focus-cyan {
+      box-shadow: 0 0 0 5px #38d9d2, 0 16px 44px rgba(56, 217, 210, 0.5);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="relative w-[1920px] h-[1080px] bg-[#080d1e] overflow-hidden flex flex-col justify-between">
+  <!-- Soft background ambiance -->
+  <div class="absolute inset-0 pointer-events-none opacity-25">
+    <div class="absolute top-1/4 left-1/3 w-[800px] h-[600px] bg-cyan-600/30 rounded-full blur-[170px]"></div>
+  </div>
+
+  <!-- TV Safe Area Header (Y: 72px, X: 88px) -->
+  <header class="relative z-10 pt-[72px] px-[88px] flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-slate-900/90 border border-slate-700 text-slate-300 text-sm font-semibold">
+        <span class="px-2 py-0.5 rounded bg-slate-700 font-mono text-xs text-white">BACK</span>
+        <span>К списку видео</span>
+      </div>
+      <span class="text-slate-400 font-medium text-sm">• Космос и наука</span>
+    </div>
+
+    <!-- Parent Gate: PIN Only -->
+    <div class="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-slate-900/80 border border-slate-800 text-slate-300 text-sm font-semibold">
+      <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 00-7.5 0v3h7.5z" clip-rule="evenodd" />
+      </svg>
+      <span>Родителям (PIN)</span>
+    </div>
+  </header>
+
+  <!-- Content Details Main: 55-65% Visual Artwork, Maximum Simplicity -->
+  <main class="relative z-10 px-[88px] my-auto grid grid-cols-12 gap-10 items-center">
+    
+    <!-- Large Artwork: 60% of Visual Attention (Col 7 of 12) -->
+    <div class="col-span-7 h-[530px] rounded-3xl overflow-hidden relative border-2 border-slate-700/70 shadow-2xl bg-slate-950">
+      <img src="https://lh3.googleusercontent.com/aida/AEtjO1W-t7krbjmf78fw-ARcqA8HBRVMtBbgwKMrAZxxdGLIr2CvPVz_f-5xFGiC5w-RZz5TkcWuU6cOGP-mL2dc7sYysWs5AEEH9EzWqWpHOFkr76pJQREL_pe5g7uSP39HXshmIB4KXSNyG0RJiQGQfVH6k_FK19E0jNGytc9fUATYyVB3GWQTnY5qRagpyu1VmEUsS9biSFGqxVUTDUtKpSExciIBRbePOg6AFZWQOAqrpDxdjW8VDqaG2yw" class="w-full h-full object-cover" alt="Тайна Сатурна">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+      
+      <!-- Duration Badge on artwork -->
+      <div class="absolute bottom-6 left-6 px-4 py-2 rounded-2xl bg-black/65 backdrop-blur-md border border-white/20 text-white font-bold text-base flex items-center gap-2">
+        <svg class="w-5 h-5 text-cyan-300" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 13H11V7h1.5v8z"/></svg>
+        <span>8 минут</span>
+      </div>
+
+      <!-- Episode mini badge -->
+      <div class="absolute top-6 left-6 px-3.5 py-1.5 rounded-full bg-cyan-500/80 backdrop-blur-md text-slate-950 font-extrabold text-xs uppercase tracking-wider">
+        Сезон 1 • Серия 1
+      </div>
+    </div>
+
+    <!-- Action & Info Column: Minimalist (Col 5 of 12) -->
+    <div class="col-span-5 flex flex-col justify-center pr-4">
+      <h1 class="text-5xl font-black text-white tracking-tight leading-tight">Тайна Сатурна</h1>
+      
+      <!-- One Short Single Sentence Description -->
+      <p class="text-2xl font-medium text-slate-200 mt-4 leading-relaxed">
+        Лисёнок и мышонок отправляются к гигантским ледяным кольцам.
+      </p>
+
+      <!-- Lumi Narration Audio Indicator -->
+      <div class="mt-6 flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-cyan-950/40 border border-cyan-400/30">
+        <div class="w-10 h-10 rounded-full bg-cyan-400/20 border border-cyan-400 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5 text-cyan-300" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zm-2.5-1.23L6.5 6H3c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h3.5l5 4c.66.53 1.5.06 1.5-.77V2.77c0-.83-.84-1.3-1.5-.77z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Озвучено Луми</span>
+          <p class="text-sm font-semibold text-slate-100">Нажми микрофон для подсказки</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons: Primary "Смотреть" with D-pad Focus (1.05x + Cyan Glow) -->
+      <div class="mt-8 flex items-center gap-5">
+        <!-- Main Action (Focused) -->
+        <button class="flex-1 py-5 px-8 rounded-2xl bg-[#38d9d2] text-[#041d1c] font-black text-2xl flex items-center justify-center gap-3 tv-focus-cyan transition-all duration-300 shadow-2xl">
+          <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <span>Смотреть</span>
+        </button>
+
+        <!-- Series Button (Secondary / Small) -->
+        <button class="px-6 py-5 rounded-2xl bg-slate-800/90 border-2 border-slate-700 text-slate-200 font-bold text-lg hover:border-slate-500 transition-colors flex items-center gap-2">
+          <svg class="w-6 h-6 text-slate-400" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+          <span>Серии (12)</span>
+        </button>
+      </div>
+
+      <!-- Simple Back Hint -->
+      <div class="mt-4 text-xs font-semibold text-slate-400 flex items-center gap-2">
+        <span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[11px] text-white">BACK</span>
+        <span>Вернуться назад в каталог</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- TV Safe Area Footer (Y: 72px, X: 88px) -->
+  <footer class="relative z-10 pb-[72px] px-[88px] flex items-center justify-between text-sm font-semibold text-slate-400">
+    <div class="flex items-center gap-3">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+      <span class="text-slate-300">Детский безопасный режим • Без рекламы</span>
+    </div>
+
+    <!-- D-pad Remote Hints -->
+    <div class="flex items-center gap-6 text-slate-300">
+      <div class="flex items-center gap-2">
+        <span class="px-3 py-1 rounded-lg bg-[#38d9d2] text-slate-950 font-bold text-xs">OK</span>
+        <span class="text-white">Запустить серию</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs">BACK</span>
+        <span>Назад</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

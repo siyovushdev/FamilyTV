@@ -1,0 +1,88 @@
+{
+  "id": "weather-lab",
+  "world": "explore",
+  "adventureId": "weather-lab",
+  "entries": [
+    {
+      "id": "ice-melting",
+      "topic": "ice_melting",
+      "entityId": "ice",
+      "aliases": ["лёд", "лед", "тает", "тепло", "кубик"],
+      "clarificationLabel": "лёд",
+      "ageMin": 3,
+      "ageMax": 9,
+      "questionPatterns": ["почему лёд тает", "почему лед тает", "что будет если теплее"],
+      "facts": [
+        "Лёд — это замёрзшая вода.",
+        "При нагревании лёд тает и становится водой.",
+        "Чем теплее, тем быстрее тает лёд."
+      ],
+      "additionalFacts": [
+        "В холоде лёд тает очень медленно или почти не тает.",
+        "Тепло даёт частицам воды энергию двигаться свободнее."
+      ],
+      "shortAnswer": "Лёд тает от тепла: замёрзшая вода снова становится жидкой.",
+      "spokenAnswer": "Лёд — это замёрзшая вода. От тепла он тает.",
+      "experimentActionRef": "where-melts-faster",
+      "followUps": ["А в тени тает медленнее?"],
+      "provenance": {
+        "sourceTitle": "FamilyTV Weather Lab",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "sun-warmth",
+      "topic": "sun_heat",
+      "entityId": "sun",
+      "aliases": ["солнце", "тень", "тепло", "нагревает"],
+      "clarificationLabel": "солнце",
+      "ageMin": 3,
+      "ageMax": 7,
+      "questionPatterns": ["почему на солнце теплее", "что даёт солнце", "почему солнце нагревает"],
+      "facts": [
+        "Солнце даёт свет и тепло.",
+        "В тени тепла меньше, поэтому лёд тает медленнее."
+      ],
+      "additionalFacts": [
+        "Если убрать солнце (поставить в тень), таяние замедлится."
+      ],
+      "shortAnswer": "На солнце теплее — там больше тепла, и лёд тает быстрее.",
+      "spokenAnswer": "Солнце греет. В тени холоднее, лёд тает медленнее.",
+      "experimentActionRef": "where-melts-faster",
+      "provenance": {
+        "sourceTitle": "FamilyTV Weather Lab",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "shade-cold",
+      "topic": "shade",
+      "entityId": "shade",
+      "aliases": ["тень", "холоднее", "холод"],
+      "clarificationLabel": "тень",
+      "ageMin": 3,
+      "ageMax": 8,
+      "questionPatterns": ["что будет в тени", "а если холоднее", "а если убрать солнце"],
+      "facts": [
+        "В тени меньше тепла от солнца.",
+        "Лёд в тени тает медленнее."
+      ],
+      "additionalFacts": [
+        "Можно сравнить: солнце, тень и холод — разные скорости таяния."
+      ],
+      "shortAnswer": "В тени холоднее — лёд тает медленнее. Давай проверим!",
+      "spokenAnswer": "В тени меньше тепла. Лёд тает медленнее.",
+      "experimentActionRef": "where-melts-faster",
+      "provenance": {
+        "sourceTitle": "FamilyTV Weather Lab",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+[
+  {
+    "name": "saturn",
+    "reference_title": "Тайна Сатурна",
+    "source": "https://lh3.googleusercontent.com/aida/AEtjO1W-t7krbjmf78fw-ARcqA8HBRVMtBbgwKMrAZxxdGLIr2CvPVz_f-5xFGiC5w-RZz5TkcWuU6cOGP-mL2dc7sYysWs5AEEH9EzWqWpHOFkr76pJQREL_pe5g7uSP39HXshmIB4KXSNyG0RJiQGQfVH6k_FK19E0jNGytc9fUATYyVB3GWQTnY5qRagpyu1VmEUsS9biSFGqxVUTDUtKpSExciIBRbePOg6AFZWQOAqrpDxdjW8VDqaG2yw"
+  },
+  {
+    "name": "comet",
+    "reference_title": "Комета Луми",
+    "source": "https://lh3.googleusercontent.com/aida/AEtjO1XNZaDgAo-UAuNPScPFk-u2e8q5Fb4KyPw5Pk-XTdaOGGGoW8VDm8Bv6x_qh3GY0RNGLB7VgElLObj4UD1LjrpTXY5GQh4gU1vn_7xNGu5eGJkw94FUKFI-gZqjZTPVru719YIRnaIEFCkrH2mX9HQdrfHr608B68DuPvKUjhOOZjvW8-KIv29HbQkZ9vjDVvFE-watUGc6TVHO1oRMYrk4VLb44eXMCEIzvXvmQvPf17ye_SuzFC_1tjU"
+  },
+  {
+    "name": "moon",
+    "reference_title": "Музыка Луны",
+    "source": "https://lh3.googleusercontent.com/aida/AEtjO1WuUZWEcoB3Q_IWxZRdRlD38VQ45wj8WCFtdrkNrHSjIICmeBli8K1_bPlVmeMZZE1SdkhA747bsmcWxf14CvKVtunPkxTHJSLejIoVgwUcAlb1pNjYMwaFrv9yQSa_y1nYv0b_hEKtutxyolr2fDcUgeeKMs8PBaD_DuSQf-F8ZfUpG1HD6Hq-BkrAaKe6WhKIip4kdUNh5tVKZSzSR_coaqY3yAe4JL_01bl1nC2jIvWPV_gKVny6awc"
+  },
+  {
+    "name": "whale",
+    "reference_title": "Звёздный кит",
+    "source": "https://lh3.googleusercontent.com/aida/AEtjO1X0vkda6NWS9h2H-lYJTtqheTg1ClTogUSJiXsNT4hBoWcUJ48iVOOW0XtsJ63C1ktQ_hYYH3K5Aut1t2FjxgXI1HdpNlzCyQfvhIyFMejQQfGGO1lWmOouuqVtHjqFttRUBKtyH7GPKZhoxQwF3UttVp414GxtkNnuYILe5oBmoo7fQjgLnpuTIfZ7_nVdS-odOWtOMzpc3Tb4tpu2VEUbvN5gVDL4Os71GmoXZwGLUJQ1Xynlq4BCSH8"
+  },
+  {
+    "name": "nature",
+    "reference_title": "Солнечный луч",
+    "source": "https://lh3.googleusercontent.com/aida/AEtjO1UXWnIRQCxgbiYK4eF868_1zraNnl9WR6V-hlPbizBRzkFduXA1oG2QQQ2S_h2ZCuY8ncEPYYJrEG1Vcwp1g45rdgug_Sm5X0FtOLUuefaqWmQbkv-p5S6x9L_aCm3Mnu8KtiySvR8ESnQ1sIz79anZLCLEPo9eJH0E1HoXz6MB2cxILSBBDDjnnqI8wDzcfDxSNh0hddVLDPrH0J2GyjDmfubxCT_TUCGvOjutCLfcvtXtlmreZ6GHm9Q"
+  },
+  {
+    "key": "category_nature",
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1UXWnIRQCxgbiYK4eF868_1zraNnl9WR6V-hlPbizBRzkFduXA1oG2QQQ2S_h2ZCuY8ncEPYYJrEG1Vcwp1g45rdgug_Sm5X0FtOLUuefaqWmQbkv-p5S6x9L_aCm3Mnu8KtiySvR8ESnQ1sIz79anZLCLEPo9eJH0E1HoXz6MB2cxILSBBDDjnnqI8wDzcfDxSNh0hddVLDPrH0J2GyjDmfubxCT_TUCGvOjutCLfcvtXtlmreZ6GHm9Q",
+    "source": "familytv_android_tv_4/code.html",
+    "alt": "Животные и природа"
+  },
+  {
+    "key": "category_space",
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1W-t7krbjmf78fw-ARcqA8HBRVMtBbgwKMrAZxxdGLIr2CvPVz_f-5xFGiC5w-RZz5TkcWuU6cOGP-mL2dc7sYysWs5AEEH9EzWqWpHOFkr76pJQREL_pe5g7uSP39HXshmIB4KXSNyG0RJiQGQfVH6k_FK19E0jNGytc9fUATYyVB3GWQTnY5qRagpyu1VmEUsS9biSFGqxVUTDUtKpSExciIBRbePOg6AFZWQOAqrpDxdjW8VDqaG2yw",
+    "source": "familytv_android_tv_4/code.html",
+    "alt": "Космос и наука"
+  },
+  {
+    "key": "category_how",
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1XNZaDgAo-UAuNPScPFk-u2e8q5Fb4KyPw5Pk-XTdaOGGGoW8VDm8Bv6x_qh3GY0RNGLB7VgElLObj4UD1LjrpTXY5GQh4gU1vn_7xNGu5eGJkw94FUKFI-gZqjZTPVru719YIRnaIEFCkrH2mX9HQdrfHr608B68DuPvKUjhOOZjvW8-KIv29HbQkZ9vjDVvFE-watUGc6TVHO1oRMYrk4VLb44eXMCEIzvXvmQvPf17ye_SuzFC_1tjU",
+    "source": "familytv_android_tv_4/code.html",
+    "alt": "Как всё устроено"
+  },
+  {
+    "key": "category_stories",
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1WuUZWEcoB3Q_IWxZRdRlD38VQ45wj8WCFtdrkNrHSjIICmeBli8K1_bPlVmeMZZE1SdkhA747bsmcWxf14CvKVtunPkxTHJSLejIoVgwUcAlb1pNjYMwaFrv9yQSa_y1nYv0b_hEKtutxyolr2fDcUgeeKMs8PBaD_DuSQf-F8ZfUpG1HD6Hq-BkrAaKe6WhKIip4kdUNh5tVKZSzSR_coaqY3yAe4JL_01bl1nC2jIvWPV_gKVny6awc",
+    "source": "familytv_android_tv_4/code.html",
+    "alt": "Истории и сказки"
+  },
+  {
+    "key": "category_creativity",
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1X0vkda6NWS9h2H-lYJTtqheTg1ClTogUSJiXsNT4hBoWcUJ48iVOOW0XtsJ63C1ktQ_hYYH3K5Aut1t2FjxgXI1HdpNlzCyQfvhIyFMejQQfGGO1lWmOouuqVtHjqFttRUBKtyH7GPKZhoxQwF3UttVp414GxtkNnuYILe5oBmoo7fQjgLnpuTIfZ7_nVdS-odOWtOMzpc3Tb4tpu2VEUbvN5gVDL4Os71GmoXZwGLUJQ1Xynlq4BCSH8",
+    "source": "familytv_android_tv_4/code.html",
+    "alt": "Творчество"
+  }
+]

@@ -1,0 +1,31 @@
+shot 00_home.png 769243
+shot 01_details.png 61116
+pick-btn Начать 96 833 356 961
+tap 226 897
+mCurrentFocus=Window{8c2f8b8 u0 ru.familytv/ru.familytv.adventure.AdventureActivity}
+shot before_problem.png 194366
+mCurrentFocus=Window{8c2f8b8 u0 ru.familytv/ru.familytv.adventure.AdventureActivity}
+pick-btn Дальше 666 928 926 1040
+tap 796 984
+shot 02_challenge.png 209223
+pick-tile Камень 640 937 ['', 'Камень', '', 'Камень']
+tap 640 937
+shot wrong_action.png 199853
+pick-btn Помоги 1116 1054 1260 1080
+tap 1188 1067
+pick-btn Дальше 666 1053 926 1080
+pick-btn Дальше 666 1053 926 1080
+tap 796 1066
+shot help_visual.png 201750
+pick-btn Повтори 956 1053 1100 1080
+tap 1028 1066
+cells [(848, 937), (960, 937), (1264, 937)]
+tap 848 937
+shot object_installed.png 204122
+tap 960 937
+tap 1264 937
+shot ship_repaired.png 208858
+shot engine_started.png 210803
+shot next_scene.png 144483
+TOTAL PSS:   136304            TOTAL RSS:   223012       TOTAL SWAP PSS:      262
+DONE

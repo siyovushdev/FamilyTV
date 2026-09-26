@@ -1,0 +1,31 @@
+shot 00_home.png
+shot 01_details.png
+btn Начать
+shot before_problem.png
+btn Дальше
+shot 02_challenge.png
+rock
+shot wrong_action.png
+btn Помоги
+btn Дальше
+shot help_visual.png
+btn Повтори
+energies 0 [(460, 925, 'fat'), (852, 925, 'ok'), (1244, 925, 'ok')]
+prog ['Энергия 1 из 3']
+shot object_installed.png
+energies 1 [(852, 925, 'ok'), (1244, 925, 'ok')]
+prog ['Энергия 2 из 3']
+energies 2 [(1244, 925, 'ok')]
+prog []
+SUCCESS
+shot ship_repaired.png
+['Луми: Энергия на месте! Двигатель запускается!', 'Двигатель запустился!', 'Дальше']
+btn Дальше
+shot engine_started.png
+flight ['Космическая экспедиция', 'Луми: Мы взлетели! Теперь проложим курс между звёздами.', 'Выберите всей командой.', 'Энергия на месте — двигатель ревёт, корабль уходит в космос!', 'Двигатель запустился!']
+btn Дальше
+shot next_scene.png
+next ['Космическая экспедиция', 'Выберите всей командой.', 'Корабль летит. Проложи курс к финишу — ходи только по чётным числам!', '&#128640;']
+video 43317267
+TOTAL PSS:   165738            TOTAL RSS:   251852       TOTAL SWAP PSS:      262
+DONE

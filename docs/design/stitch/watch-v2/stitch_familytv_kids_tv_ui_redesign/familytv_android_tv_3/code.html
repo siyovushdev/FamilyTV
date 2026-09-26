@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>FamilyTV — Видеоплеер (Android TV)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+      background-color: #000000;
+      color: #f1f5f9;
+      user-select: none;
+    }
+    .tv-focus-cyan {
+      box-shadow: 0 0 0 5px #38d9d2, 0 12px 36px rgba(56, 217, 210, 0.55);
+      transform: scale(1.08);
+    }
+    .tv-focus-cyan-sm {
+      box-shadow: 0 0 0 4px #38d9d2, 0 8px 20px rgba(56, 217, 210, 0.45);
+      transform: scale(1.06);
+    }
+  </style>
+</head>
+<body class="relative w-[1920px] h-[1080px] bg-black overflow-hidden flex flex-col justify-between">
+  <!-- Full Screen Cinematic Video Layer (1920x1080) -->
+  <div class="absolute inset-0 w-[1920px] h-[1080px]">
+    <img src="https://lh3.googleusercontent.com/aida/AEtjO1W-t7krbjmf78fw-ARcqA8HBRVMtBbgwKMrAZxxdGLIr2CvPVz_f-5xFGiC5w-RZz5TkcWuU6cOGP-mL2dc7sYysWs5AEEH9EzWqWpHOFkr76pJQREL_pe5g7uSP39HXshmIB4KXSNyG0RJiQGQfVH6k_FK19E0jNGytc9fUATYyVB3GWQTnY5qRagpyu1VmEUsS9biSFGqxVUTDUtKpSExciIBRbePOg6AFZWQOAqrpDxdjW8VDqaG2yw" class="w-full h-full object-cover" alt="Видео кадр: Тайна Сатурна">
+    <!-- Gentle vignette gradient for HUD readability, disappears on auto-hide -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/60 pointer-events-none"></div>
+  </div>
+
+  <!-- On-Screen HUD Overlay: VISIBLE STATE on OK/D-pad click (Auto-hides in 5 sec) -->
+  <!-- Top Bar: Title & Back only (NO permanent catalog, NO website nav) (Y: 72px, X: 88px) -->
+  <header class="relative z-20 pt-[72px] px-[88px] flex items-center justify-between">
+    <div class="flex items-center gap-5">
+      <div class="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 text-white text-sm font-semibold">
+        <span class="px-2 py-0.5 rounded bg-white/20 font-mono text-xs">BACK</span>
+        <span>К описанию</span>
+      </div>
+      <div>
+        <h1 class="text-3xl font-extrabold text-white tracking-tight drop-shadow-md">Тайна Сатурна</h1>
+        <p class="text-sm font-medium text-cyan-300 drop-shadow">Серия 1 • В поисках ледяных колец</p>
+      </div>
+    </div>
+
+    <!-- Sleep Timer indicator -->
+    <div class="px-4 py-2 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 text-slate-300 text-sm font-semibold flex items-center gap-2">
+      <svg class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" />
+      </svg>
+      <span>Сон через 35 мин</span>
+    </div>
+  </header>
+
+  <!-- Center Quick State: Pause indicator in middle (clean & cinematic) -->
+  <div class="relative z-10 my-auto flex items-center justify-center">
+    <!-- Center Play/Pause Floating Halo -->
+    <div class="w-24 h-24 rounded-full bg-cyan-400/90 text-slate-950 flex items-center justify-center tv-focus-cyan transition-all duration-300 shadow-2xl">
+      <svg class="w-12 h-12 fill-current" viewBox="0 0 24 24">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Bottom Player Controls Overlay (Y: 72px, X: 88px) -->
+  <footer class="relative z-20 pb-[72px] px-[88px] flex flex-col gap-5">
+    
+    <!-- Timeline & Time -->
+    <div class="w-full flex items-center gap-6">
+      <span class="text-xl font-bold font-mono text-cyan-300">03:45</span>
+      
+      <!-- Unified Single Progress Bar -->
+      <div class="relative flex-1 h-3.5 bg-white/20 rounded-full overflow-visible backdrop-blur-md">
+        <!-- Buffered -->
+        <div class="absolute top-0 left-0 h-full w-[65%] bg-white/30 rounded-full"></div>
+        <!-- Played Progress (Cyan) -->
+        <div class="absolute top-0 left-0 h-full w-[45%] bg-[#38d9d2] rounded-full"></div>
+        <!-- Progress Thumb Indicator -->
+        <div class="absolute top-1/2 left-[45%] -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white border-2 border-[#38d9d2] shadow-lg shadow-cyan-500/80"></div>
+      </div>
+
+      <span class="text-xl font-bold font-mono text-slate-300">08:30</span>
+    </div>
+
+    <!-- Clean Player Control Bar: One Single Set of Controls (No Duplication) -->
+    <div class="flex items-center justify-between pt-2">
+      
+      <!-- Left: Playback Controls (10s back, Play/Pause, 10s forward) -->
+      <div class="flex items-center gap-4">
+        <!-- Rewind -10 sec -->
+        <button class="px-5 py-3 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 text-white font-bold text-base flex items-center gap-2 hover:border-cyan-400">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+          <span>-10 сек</span>
+        </button>
+
+        <!-- Central Play/Pause Button (In Focus) -->
+        <button class="px-8 py-3.5 rounded-2xl bg-[#38d9d2] text-[#041d1c] font-black text-lg flex items-center gap-2.5 tv-focus-cyan-sm">
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          <span>Пауза (OK)</span>
+        </button>
+
+        <!-- Forward +10 sec -->
+        <button class="px-5 py-3 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 text-white font-bold text-base flex items-center gap-2 hover:border-cyan-400">
+          <span>+10 сек</span>
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M11.5 8c2.65 0 5.05.99 6.9 2.6L22 7v9h-9l3.62-3.62c-1.39-1.16-3.16-1.88-5.12-1.88-3.54 0-6.55 2.31-7.6 5.5l-2.37-.78C2.92 11.03 6.85 8 11.5 8z"/></svg>
+        </button>
+      </div>
+
+      <!-- Right: Subtitles, Audio Track & Lumi Voice Help -->
+      <div class="flex items-center gap-4">
+        <!-- Subtitles -->
+        <button class="px-4 py-3 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 text-slate-200 font-bold text-sm flex items-center gap-2 hover:border-cyan-400">
+          <svg class="w-5 h-5 text-cyan-300" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-9 7H9.5v-.5h-2v3h2V13H11v1c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1zm7 0h-1.5v-.5h-2v3h2V13H18v1c0 .55-.45 1-1 1h-3c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1z"/></svg>
+          <span>Субтитры</span>
+        </button>
+
+        <!-- Audio -->
+        <button class="px-4 py-3 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 text-slate-200 font-bold text-sm flex items-center gap-2 hover:border-cyan-400">
+          <svg class="w-5 h-5 text-slate-300" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+          <span>Русский</span>
+        </button>
+
+        <!-- Spoken Help from Lumi (Secondary Voice button) -->
+        <button class="px-4 py-3 rounded-2xl bg-cyan-950/60 backdrop-blur-md border border-cyan-400/40 text-cyan-300 font-bold text-sm flex items-center gap-2 hover:border-cyan-400">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
+          <span>«Луми, объясни»</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Auto-hide Notice for D-pad Users -->
+    <div class="flex items-center justify-between text-xs font-semibold text-slate-400 pt-1">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        <span>Элементы управления исчезнут через 5 секунд воспроизведения</span>
+      </div>
+      <div class="flex items-center gap-4 text-slate-300">
+        <span>▲ ▼ Громкость</span>
+        <span>◄ ► Перемотка</span>
+        <span>OK Пауза</span>
+        <span>BACK Выход в каталог</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

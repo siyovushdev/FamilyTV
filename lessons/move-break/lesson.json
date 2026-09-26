@@ -1,0 +1,34 @@
+{
+  "packageId": "move-break",
+  "packageVersion": 1,
+  "schemaVersion": 1,
+  "title": "Подвигаемся",
+  "description": "Короткий ритм: смотри — подумай — подвигайся",
+  "content": [
+    {
+      "id": "pkg-move-break",
+      "title": "Подвигаемся",
+      "description": "Разминка между занятиями",
+      "type": "INTERACTIVE",
+      "experienceRef": "experiences/move-break.json",
+      "thumbnail": "images/cover.webp",
+      "enabled": true,
+      "sortOrder": 8,
+      "version": 1,
+      "homeSections": ["today", "move"],
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 10,
+        "skills": ["MOVEMENT", "ATTENTION"],
+        "difficulty": "easy",
+        "estimatedMinutes": 3,
+        "topics": ["movement", "break"],
+        "interactionModes": ["video", "true_false", "move"],
+        "locale": "ru",
+        "seriesId": "move-break",
+        "episodeOrder": 1,
+        "contentPurpose": "move"
+      }
+    }
+  ]
+}

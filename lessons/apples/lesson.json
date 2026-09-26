@@ -1,0 +1,55 @@
+{
+  "packageId": "apple-adventure",
+  "packageVersion": 2,
+  "schemaVersion": 1,
+  "title": "Приключение с яблоками",
+  "description": "Считаем и выбираем — версия 2 с движением",
+  "content": [
+    {
+      "id": "pkg-apple-adventure",
+      "title": "Приключение с яблоками",
+      "description": "Видео, выбор, голос и разминка (v2)",
+      "type": "INTERACTIVE",
+      "experienceRef": "experiences/apple-adventure.json",
+      "thumbnail": "images/cover.webp",
+      "enabled": true,
+      "sortOrder": 5,
+      "version": 2,
+      "homeSections": ["today", "learn"],
+      "metadata": {
+        "ageMin": 4,
+        "ageMax": 8,
+        "skills": ["COUNTING", "ADDITION", "ATTENTION"],
+        "difficulty": "easy",
+        "estimatedMinutes": 4,
+        "topics": ["math", "apples"],
+        "interactionModes": ["video", "choice", "voice", "move"],
+        "locale": "ru",
+        "seriesId": "apple-adventure",
+        "episodeOrder": 2,
+        "contentPurpose": "learn"
+      }
+    },
+    {
+      "id": "pkg-apple-intro-video",
+      "title": "Яблочный свет",
+      "description": "Короткое демо-видео из пакета",
+      "type": "VIDEO",
+      "mediaRef": "media/intro.mp4",
+      "durationMs": 3000,
+      "enabled": true,
+      "sortOrder": 6,
+      "version": 2,
+      "homeSections": ["stories"],
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 8,
+        "skills": ["ATTENTION"],
+        "estimatedMinutes": 1,
+        "topics": ["calm"],
+        "locale": "ru",
+        "contentPurpose": "watch"
+      }
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "id": "lumi-story",
+  "title": "Придумай историю с Луми",
+  "retellTemplate": "Жил-был {hero}. Он отправился в {world}, чтобы {goal}. С собой взял {object}. Встретил трудность: {obstacle}. Тогда герой {choice}. И вот чем всё закончилось: {ending}.",
+  "choiceToEnding": {
+    "help_friend": "ending_friends",
+    "clever_trick": "ending_clever",
+    "brave_run": "ending_brave"
+  },
+  "steps": [
+    {
+      "id": "hero",
+      "kind": "HERO",
+      "prompt": "Кто будет героем?",
+      "spokenPrompt": "Кто будет героем нашей истории?",
+      "groupHint": "Пусть один выберет героя.",
+      "options": [
+        { "id": "robot", "label": "Маленький робот", "voiceAliases": ["робот", "маленький робот"], "adjectives": ["смешной", "храбрый", "маленький"] },
+        { "id": "fox", "label": "Рыжая лиса", "voiceAliases": ["лиса", "лисичка"], "adjectives": ["хитрая", "рыжая"] },
+        { "id": "astronaut", "label": "Юный астронавт", "voiceAliases": ["астронавт", "космонавт"], "adjectives": ["смелый", "юный"] }
+      ]
+    },
+    {
+      "id": "world",
+      "kind": "WORLD",
+      "prompt": "Куда он отправится?",
+      "spokenPrompt": "Куда отправится герой?",
+      "groupHint": "Теперь кто-нибудь выберите место.",
+      "options": [
+        { "id": "forest", "label": "В лес", "voiceAliases": ["лес", "в лес"] },
+        { "id": "moon", "label": "На Луну", "voiceAliases": ["луна", "на луну", "космос"] },
+        { "id": "sea", "label": "К морю", "voiceAliases": ["море", "к морю"] }
+      ]
+    },
+    {
+      "id": "goal",
+      "kind": "GOAL",
+      "prompt": "Какая у героя цель?",
+      "spokenPrompt": "Что хочет сделать герой?",
+      "groupHint": "Решите вместе, зачем он идёт.",
+      "options": [
+        { "id": "find_star", "label": "найти яркую звезду", "voiceAliases": ["звезду", "найти звезду"] },
+        { "id": "help_owl", "label": "помочь сове", "voiceAliases": ["помочь", "сове", "помочь сове"] },
+        { "id": "build_raft", "label": "построить плот", "voiceAliases": ["плот", "построить"] }
+      ]
+    },
+    {
+      "id": "object",
+      "kind": "OBJECT",
+      "prompt": "Какой предмет возьмём с собой?",
+      "spokenPrompt": "Какой предмет возьмём?",
+      "options": [
+        { "id": "map", "label": "карту", "voiceAliases": ["карта", "карту"] },
+        { "id": "lamp", "label": "фонарик", "voiceAliases": ["фонарик", "свет"] },
+        { "id": "rope", "label": "верёвку", "voiceAliases": ["верёвку", "веревку", "канат"] }
+      ]
+    },
+    {
+      "id": "obstacle",
+      "kind": "OBSTACLE",
+      "prompt": "Какая трудность встретится?",
+      "spokenPrompt": "Какая трудность встретится?",
+      "options": [
+        { "id": "dark", "label": "стало темно", "voiceAliases": ["темно", "тьма"] },
+        { "id": "river", "label": "широкая река", "voiceAliases": ["река", "реку"] },
+        { "id": "lost", "label": "потерял путь", "voiceAliases": ["потерял", "заблудился"] }
+      ]
+    },
+    {
+      "id": "choice",
+      "kind": "CHOICE",
+      "prompt": "Как герой решит проблему?",
+      "spokenPrompt": "Как герой решит проблему?",
+      "groupHint": "Решите вместе, что сделает герой.",
+      "options": [
+        { "id": "help_friend", "label": "попросит помощи у друга", "voiceAliases": ["друга", "помощь", "попросит"] },
+        { "id": "clever_trick", "label": "придумает хитрость", "voiceAliases": ["хитрость", "придумает"] },
+        { "id": "brave_run", "label": "смело побежит вперёд", "voiceAliases": ["побежит", "смело", "вперёд"] }
+      ]
+    },
+    {
+      "id": "ending",
+      "kind": "ENDING",
+      "prompt": "Какой финал тебе нравится? (выбор решения уже ведёт к своему финалу)",
+      "spokenPrompt": "Выбери финал — или оставь тот, что вырос из решения.",
+      "options": [
+        { "id": "ending_friends", "label": "все стали друзьями и праздновали", "voiceAliases": ["друзьями", "праздновали"] },
+        { "id": "ending_clever", "label": "хитрость сработала — цель достигнута", "voiceAliases": ["сработала", "достигнута"] },
+        { "id": "ending_brave", "label": "храбрость помогла найти дорогу домой", "voiceAliases": ["храбрость", "домой"] }
+      ]
+    }
+  ]
+}

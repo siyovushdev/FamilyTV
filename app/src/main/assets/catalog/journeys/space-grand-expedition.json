@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "id": "space-grand-expedition",
+  "title": "Большая космическая экспедиция",
+  "world": "explore",
+  "description": "От старта корабля до спокойного финала — с выбором пути",
+  "ageMin": 4,
+  "ageMax": 9,
+  "estimatedMinutes": 35,
+  "version": 1,
+  "mapStyle": "PLANETS",
+  "completionLine": "Мы закончили космическую экспедицию. Можно посмотреть наши открытия.",
+  "learningGoals": ["SCIENCE_REASONING", "CLASSIFICATION", "COOPERATION"],
+  "startNode": "launch",
+  "nodes": [
+    {
+      "id": "launch",
+      "title": "Старт экспедиции",
+      "mapLabel": "Старт",
+      "spokenLabel": "Старт космической экспедиции",
+      "contentId": "adv-space-expedition",
+      "type": "ADVENTURE",
+      "next": "moon-hub",
+      "journalUnlocks": ["space-visited-moon"],
+      "learningGoals": ["CLASSIFICATION", "SPATIAL_REASONING"],
+      "mapProgress": 0.15
+    },
+    {
+      "id": "moon-hub",
+      "title": "Луна: куда дальше?",
+      "mapLabel": "Луна",
+      "spokenLabel": "Луна. Можно исследовать свет или температуру",
+      "contentId": null,
+      "type": "HUB",
+      "completionPolicy": "MANUAL",
+      "prerequisites": ["launch"],
+      "branches": [
+        {
+          "id": "to-light",
+          "label": "Свет и цвет",
+          "spokenLabel": "Свет и цвет",
+          "next": "light-lab"
+        },
+        {
+          "id": "to-temp",
+          "label": "Температура",
+          "spokenLabel": "Лаборатория температуры",
+          "next": "temp-lab"
+        }
+      ],
+      "mapProgress": 0.35
+    },
+    {
+      "id": "light-lab",
+      "title": "Свет и цвет",
+      "mapLabel": "Свет",
+      "spokenLabel": "Исследуем свет и цвет",
+      "contentId": "game-color",
+      "type": "GAME",
+      "prerequisites": ["moon-hub"],
+      "journalUnlocks": ["space-light-note"],
+      "learningGoals": ["CLASSIFICATION"],
+      "ageVariants": [
+        { "ageMin": 3, "ageMax": 5, "contentId": "game-color", "labelHint": "цвета" },
+        { "ageMin": 5, "ageMax": 9, "contentId": "game-color", "labelHint": "цвета и почему" }
+      ],
+      "mapProgress": 0.5
+    },
+    {
+      "id": "temp-lab",
+      "title": "Температурная лаборатория",
+      "mapLabel": "Тепло",
+      "spokenLabel": "Лаборатория тепла и льда",
+      "contentId": "adv-weather-lab",
+      "type": "DISCOVERY",
+      "prerequisites": ["moon-hub"],
+      "journalUnlocks": ["ice-melts-with-heat"],
+      "learningGoals": ["SCIENCE_REASONING"],
+      "mapProgress": 0.55
+    },
+    {
+      "id": "stretch",
+      "title": "Передышка",
+      "mapLabel": "Движение",
+      "spokenLabel": "Короткая разминка",
+      "contentId": "move-stretch",
+      "type": "REST",
+      "prerequisitesAnyOf": ["light-lab", "temp-lab"],
+      "completionPolicy": "CONTENT_OPENED",
+      "mapProgress": 0.7
+    },
+    {
+      "id": "final-mission",
+      "title": "Финальная миссия",
+      "mapLabel": "Финал",
+      "spokenLabel": "Спокойный финал экспедиции",
+      "contentId": "video-warm",
+      "type": "VIDEO",
+      "prerequisites": ["light-lab", "temp-lab"],
+      "next": "calm-end",
+      "journalUnlocks": ["space-journey-done"],
+      "mapProgress": 0.85
+    },
+    {
+      "id": "calm-end",
+      "title": "Спокойный финал",
+      "mapLabel": "Домой",
+      "spokenLabel": "Мы закончили экспедицию",
+      "contentId": null,
+      "type": "CONCLUSION",
+      "completionPolicy": "MANUAL",
+      "prerequisites": ["final-mission"],
+      "mapProgress": 1.0
+    },
+    {
+      "id": "story-side",
+      "title": "Космическая история",
+      "mapLabel": "История",
+      "spokenLabel": "Придумать историю",
+      "contentId": "lumi-story",
+      "type": "CREATE",
+      "optional": true,
+      "prerequisites": ["launch"],
+      "journalUnlocks": [],
+      "mapProgress": 0.6
+    }
+  ]
+}

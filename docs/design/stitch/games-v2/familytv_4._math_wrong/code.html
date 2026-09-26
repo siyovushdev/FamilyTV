@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=1920, height=1080, initial-scale=1.0" name="viewport"/>
+<title>FamilyTV — 4. Math Wrong (Попробуем ещё раз)</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cosmic: {
+              900: '#070B19',
+              800: '#0E172F',
+              700: '#18254B',
+              accent: '#38BDF8',
+              gold: '#FBBF24',
+              softAmber: '#F59E0B',
+              peach: '#FB923C',
+              glow: 'rgba(56, 189, 248, 0.25)'
+            }
+          },
+          fontFamily: {
+            sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+<!-- BEGIN: Custom TV Presentation Styles -->
+<style data-purpose="tv-screen-layout">
+    /* Fixed 1920x1080 10-foot TV UI viewport constraints */
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      user-select: none;
+      background-color: #070B19;
+      margin: 0;
+      padding: 0;
+    }
+
+    .tv-safe-area {
+      width: 1920px;
+      height: 1080px;
+      padding: 32px 56px 28px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+  </style>
+<style data-purpose="animations-and-effects">
+    /* Gentle ambient glow and friendly pulses */
+    @keyframes gentlePulse {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.2);
+        transform: scale(1.02);
+      }
+      50% {
+        box-shadow: 0 0 35px rgba(56, 189, 248, 0.7), inset 0 0 22px rgba(56, 189, 248, 0.35);
+        transform: scale(1.04);
+      }
+    }
+
+    @keyframes hintBulbGlow {
+      0%, 100% {
+        box-shadow: 0 0 16px rgba(251, 191, 36, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 32px rgba(251, 191, 36, 0.85);
+      }
+    }
+
+    .animate-gentle-pulse {
+      animation: gentlePulse 2.4s ease-in-out infinite;
+    }
+
+    .animate-hint-glow {
+      animation: hintBulbGlow 2s ease-in-out infinite;
+    }
+
+    /* Soft backdrop glass effect */
+    .cosmic-glass {
+      background: rgba(14, 23, 47, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .warm-glass-card {
+      background: rgba(26, 21, 28, 0.75);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(251, 146, 60, 0.7);
+      box-shadow: 0 0 25px rgba(251, 146, 60, 0.35), inset 0 0 15px rgba(251, 146, 60, 0.2);
+    }
+  </style>
+<!-- END: Custom TV Presentation Styles -->
+</head>
+<body class="text-white font-sans antialiased bg-[#070B19]">
+<!-- TV Safe Viewport Container -->
+<main class="tv-safe-area">
+<!-- BEGIN: TopHeader -->
+<!-- Identical clean navigation header matching Math Game layout -->
+<header class="flex items-center justify-between h-[68px] z-20" data-purpose="game-header">
+<!-- Back button option for remote control -->
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2.5 px-5 py-2.5 rounded-2xl cosmic-glass text-slate-200 text-xl font-medium tracking-wide hover:bg-slate-800/80 transition-all border border-slate-700/60 shadow-lg" tabindex="0">
+<span class="text-2xl text-cyan-400 font-bold leading-none">‹</span>
+<span>Назад</span>
+</button>
+</div>
+<!-- Center Speech Bubble: Warm, welcoming Lumi encouragement without red tones -->
+<section class="flex items-center gap-3.5 px-6 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-sky-500/15 to-indigo-500/15 border border-amber-300/30 backdrop-blur-md shadow-lg" data-purpose="lumi-encouragement-bubble">
+<!-- Friendly robot head avatar icon -->
+<div class="w-8 h-8 rounded-full bg-cyan-400/20 flex items-center justify-center border border-cyan-300/40 shadow-inner">
+<svg class="w-5 h-5 text-cyan-300" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<rect height="10" rx="2" width="18" x="3" y="11"></rect>
+<circle cx="12" cy="5" r="2"></circle>
+<path d="M12 7v4"></path>
+<line x1="8" x2="8.01" y1="16" y2="16"></line>
+<line x1="16" x2="16.01" y1="16" y2="16"></line>
+</svg>
+</div>
+<div class="text-[21px] font-medium tracking-wide text-amber-100 flex items-center gap-1.5">
+<span class="text-amber-300 font-semibold">Робот Люми:</span>
+<span>«Посмотрим ещё раз! Мы обязательно справимся.»</span>
+</div>
+</section>
+<!-- Right Header Indicators: Progress & Voice Status -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 px-5 py-2.5 rounded-2xl cosmic-glass text-slate-200 text-lg font-medium border border-slate-700/60 shadow-md">
+<span class="text-slate-400">Задание</span>
+<span class="text-cyan-400 font-bold text-xl">2</span>
+<span class="text-slate-400">из 5</span>
+</div>
+<div class="flex items-center gap-2.5 px-5 py-2.5 rounded-2xl bg-sky-950/60 text-sky-200 text-lg font-medium border border-sky-500/30 shadow-md">
+<span class="inline-flex w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+<span class="text-xl">🎤</span>
+<span>Голос</span>
+</div>
+</div>
+</header>
+<!-- END: TopHeader -->
+<!-- BEGIN: CenterStage -->
+<!-- Center stage: exact same dimensions, equation directly attached underneath -->
+<section class="flex flex-col items-center justify-center flex-1 my-1" data-purpose="visual-math-stage">
+<!-- Orchard visual frame -->
+<div class="relative w-[1120px] h-[550px] rounded-3xl overflow-hidden border border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.65)] bg-slate-900/60">
+<img alt="Робот Люми доброжелательно улыбается за столом с корзинами яблок в вечернем саду" class="w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida/AEtjO1VOxuw5lke53UpGQ0IxT4BRCrbohmNTNlobWc2V3kww-GBPZE9NKa0FwFOo7nUq6nB45AZvAtZ7PeKRWQ4KDyVjCMsfaF07tLGlLCw_OdNVsMqFvCkh-wK8WMH964A4pjXCKSPuxnmnGnqyMU1DZcu5DHBRZ0TkyyIIyTq_NMvkKUmH6rGkGnIrcH9-o7WJO26xVjT13lbL3okjQ7Mcx9MUJ4CgxQ6MKd-VdT_Yno0Dg2O_k5qDdBm0mmo"/>
+<!-- Soft inner ambient vignette -->
+<div class="absolute inset-0 bg-gradient-to-t from-cosmic-900/50 via-transparent to-transparent pointer-events-none"></div>
+</div>
+<!-- Equation Bar: [●● 2] + [●●● 3] = [ ? ] placed centrally under illustration -->
+<div class="mt-4 flex items-center justify-center gap-4 bg-slate-950/70 backdrop-blur-md px-8 py-2.5 rounded-2xl border border-white/15 shadow-xl" data-purpose="visual-equation-bar">
+<!-- Left group item: 2 apples -->
+<div class="flex items-center gap-2.5 px-4 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700">
+<div class="flex items-center gap-1 text-rose-400 text-base">
+<span class="inline-block w-3.5 h-3.5 rounded-full bg-red-500 shadow-sm"></span>
+<span class="inline-block w-3.5 h-3.5 rounded-full bg-red-500 shadow-sm"></span>
+</div>
+<span class="text-2xl font-bold text-white tracking-wide">2</span>
+</div>
+<!-- Plus Operator -->
+<span class="text-3xl font-black text-amber-400 px-1">+</span>
+<!-- Right group item: 3 apples -->
+<div class="flex items-center gap-2.5 px-4 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700">
+<div class="flex items-center gap-1 text-rose-400 text-base">
+<span class="inline-block w-3.5 h-3.5 rounded-full bg-red-500 shadow-sm"></span>
+<span class="inline-block w-3.5 h-3.5 rounded-full bg-red-500 shadow-sm"></span>
+<span class="inline-block w-3.5 h-3.5 rounded-full bg-red-500 shadow-sm"></span>
+</div>
+<span class="text-2xl font-bold text-white tracking-wide">3</span>
+</div>
+<!-- Equals Operator -->
+<span class="text-3xl font-black text-amber-400 px-1">=</span>
+<!-- Result Target Slot with gentle glowing question mark -->
+<div class="flex items-center justify-center w-16 h-12 rounded-xl bg-cyan-950/80 border-2 border-dashed border-cyan-400/80 shadow-[0_0_15px_rgba(56,189,248,0.3)]">
+<span class="text-2xl font-bold text-cyan-300">?</span>
+</div>
+</div>
+</section>
+<!-- END: CenterStage -->
+<!-- BEGIN: BottomControls -->
+<!-- Same horizontal bottom structure: Listen button on left, 3 Choice cards center, Hint on right -->
+<section class="w-full flex items-center justify-between h-[170px] px-8" data-purpose="tv-bottom-controls">
+<!-- Left Audio Button -->
+<aside class="w-[320px] flex items-center justify-start">
+<button class="flex items-center gap-3.5 px-6 py-4 rounded-2xl cosmic-glass hover:bg-slate-800 border border-slate-600/70 text-slate-200 text-xl font-medium tracking-wide shadow-lg transition-transform active:scale-95" tabindex="0">
+<span class="text-2xl text-sky-400">🔊</span>
+<span>Послушать</span>
+</button>
+</aside>
+<!-- Center Answer Cards: 4 (warm amber reacted), 5 (subtle invite pulse), 6 -->
+<div class="flex items-center justify-center gap-7 flex-1" data-purpose="answer-choices">
+<!-- Card 4: Reacted softly - warm amber/orange border & friendly badge "Почти угадал!" -->
+<div class="relative flex flex-col items-center">
+<!-- Warm Encouragement Floating Badge -->
+<span class="absolute -top-4 px-3.5 py-1 rounded-full bg-amber-500 text-slate-950 text-sm font-extrabold uppercase tracking-wider shadow-md whitespace-nowrap z-10 border border-amber-300">
+            Почти угадал!
+          </span>
+<button aria-label="Вариант 4" class="w-[145px] h-[125px] rounded-3xl warm-glass-card flex items-center justify-center text-5xl font-black text-amber-200 transition-all cursor-pointer" tabindex="0">
+            4
+          </button>
+</div>
+<!-- Card 5: Correct next invite with gentle cyan pulse -->
+<div class="relative flex flex-col items-center">
+<button aria-label="Вариант 5" class="w-[145px] h-[125px] rounded-3xl bg-slate-900/80 cosmic-glass border-2 border-sky-400 animate-gentle-pulse flex items-center justify-center text-5xl font-black text-sky-100 transition-all cursor-pointer" tabindex="0">
+            5
+          </button>
+</div>
+<!-- Card 6: Neutral answer option -->
+<div class="relative flex flex-col items-center">
+<button aria-label="Вариант 6" class="w-[145px] h-[125px] rounded-3xl bg-slate-900/60 cosmic-glass border border-slate-700 flex items-center justify-center text-5xl font-black text-slate-300 hover:border-slate-500 transition-all cursor-pointer" tabindex="0">
+            6
+          </button>
+</div>
+</div>
+<!-- Right Hint Block: Glowing Bulb for D-pad UP + Voice prompt -->
+<aside class="w-[320px] flex flex-col items-end gap-2.5">
+<button class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-amber-950/50 border-2 border-amber-400 animate-hint-glow text-amber-200 text-xl font-bold tracking-wide shadow-xl hover:bg-amber-900/60 transition-transform active:scale-95" tabindex="0">
+<span class="text-2xl text-amber-300">💡</span>
+<span>Подсказка (▲)</span>
+</button>
+<!-- Secondary voice command alternative -->
+<div class="flex items-center gap-2 text-slate-300 text-base font-medium pr-1">
+<span class="text-cyan-400 text-lg">🎤</span>
+<span>Или скажи число</span>
+</div>
+</aside>
+</section>
+<!-- END: BottomControls -->
+<!-- BEGIN: RemoteStatusBar -->
+<!-- TV Remote Help Navigation Bar (10-Foot standard footer) -->
+<footer class="h-[44px] flex items-center justify-center border-t border-slate-800/80 text-slate-400 text-base font-medium tracking-wide gap-8" data-purpose="remote-dpad-footer">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 text-xs font-bold">◄ ►</span>
+<span>Выбрать другой ответ</span>
+</div>
+<span class="text-slate-600">•</span>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 text-xs font-bold">OK</span>
+<span>Подтвердить</span>
+</div>
+<span class="text-slate-600">•</span>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40 text-xs font-bold">▲</span>
+<span class="text-amber-200 font-semibold">Нажать подсказку</span>
+</div>
+</footer>
+<!-- END: RemoteStatusBar -->
+</main>
+</body></html>

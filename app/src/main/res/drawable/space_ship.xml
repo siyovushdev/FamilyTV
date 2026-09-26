@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Replaceable prototype: side-view ship, readable at TV distance. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="160dp"
+    android:viewportWidth="320"
+    android:viewportHeight="160">
+    <!-- Nose -->
+    <path
+        android:fillColor="#E8F2FF"
+        android:pathData="M250,80 L310,80 L250,52 L250,108 Z" />
+    <!-- Hull -->
+    <path
+        android:fillColor="#B8CDE8"
+        android:pathData="M70,48 L250,48 L250,112 L70,112 Z" />
+    <!-- Hull shade -->
+    <path
+        android:fillColor="#8FA8C8"
+        android:pathData="M70,88 L250,88 L250,112 L70,112 Z" />
+    <!-- Cockpit dome -->
+    <path
+        android:fillColor="#5EC8FF"
+        android:pathData="M200,48 C200,28 230,28 230,48 L230,56 L200,56 Z" />
+    <path
+        android:fillColor="#A8E4FF"
+        android:pathData="M208,40 C212,34 222,34 226,40 L226,48 L208,48 Z" />
+    <!-- Wing / fin top -->
+    <path
+        android:fillColor="#6B8FB8"
+        android:pathData="M120,48 L150,48 L135,18 L110,48 Z" />
+    <!-- Wing / fin bottom -->
+    <path
+        android:fillColor="#6B8FB8"
+        android:pathData="M120,112 L150,112 L135,142 L110,112 Z" />
+    <!-- Engine block -->
+    <path
+        android:fillColor="#5A6F8A"
+        android:pathData="M40,55 L70,48 L70,112 L40,105 Z" />
+    <!-- Engine nozzles -->
+    <path
+        android:fillColor="#3A4A5E"
+        android:pathData="M28,60 L40,58 L40,72 L28,74 Z" />
+    <path
+        android:fillColor="#3A4A5E"
+        android:pathData="M28,80 L40,78 L40,92 L28,94 Z" />
+    <!-- Window ports -->
+    <path
+        android:fillColor="#2A4058"
+        android:pathData="M95,68 h18 v12 h-18 z" />
+    <path
+        android:fillColor="#2A4058"
+        android:pathData="M125,68 h18 v12 h-18 z" />
+    <path
+        android:fillColor="#2A4058"
+        android:pathData="M155,68 h18 v12 h-18 z" />
+    <!-- Accent stripe -->
+    <path
+        android:fillColor="#FFB454"
+        android:pathData="M70,74 L250,74 L250,80 L70,80 Z" />
+</vector>

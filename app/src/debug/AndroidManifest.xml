@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:usesCleartextTraffic="true"
+        tools:replace="android:usesCleartextTraffic">
+        <activity
+            android:name=".games.stitch.StitchGamesPreviewActivity"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.FamilyTV.StitchGamesPreview"
+            android:label="FamilyTV · Games V2 preview" />
+        <activity
+            android:name=".home.stitch.watch.StitchWatchPreviewActivity"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.FamilyTV.StitchPreview"
+            android:label="FamilyTV · Watch preview" />
+        <activity
+            android:name=".home.stitch.watch.StitchWatchPlayerActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.FamilyTV.StitchPreview"
+            android:label="FamilyTV · Watch player preview" />
+        <activity
+            android:name=".home.stitch.StitchHomePreviewActivity"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.FamilyTV.StitchPreview"
+            android:label="FamilyTV · Stitch C preview" />
+        <activity
+            android:name=".accuracy.AccuracyLabActivity"
+            android:exported="true"
+            android:label="Accuracy Lab" />
+    </application>
+</manifest>

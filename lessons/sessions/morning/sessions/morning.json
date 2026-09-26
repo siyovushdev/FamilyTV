@@ -1,0 +1,13 @@
+{
+  "id": "morning",
+  "title": "Короткое утро",
+  "description": "Конечная сессия: узнать, ответить, подвигаться",
+  "estimatedMinutes": 15,
+  "items": [
+    { "contentId": "video-sky", "optional": true },
+    { "contentId": "pkg-apple-adventure", "optional": true },
+    { "contentId": "game-color", "optional": true },
+    { "contentId": "pkg-move-break", "optional": true },
+    { "contentId": "pkg-short-story", "optional": true }
+  ]
+}

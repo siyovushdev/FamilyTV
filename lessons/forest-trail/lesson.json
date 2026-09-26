@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "packageId": "forest-trail",
+  "packageVersion": 1,
+  "title": "Следопыты: тайна леса",
+  "description": "Короткое приключение на тех же механиках — доказательство переиспользования.",
+  "content": [
+    {
+      "id": "adv-forest-trail",
+      "title": "Следопыты: тайна леса",
+      "description": "Найди, разложи и восстанови следы — около 7 минут.",
+      "type": "ADVENTURE",
+      "ageRange": "4-8",
+      "categories": ["explore"],
+      "tags": ["adventure", "forest"],
+      "adventureRef": "forest-trail.json",
+      "enabled": true,
+      "sortOrder": 2,
+      "version": 1,
+      "homeSections": ["explore", "mission"],
+      "metadata": {
+        "ageMin": 4,
+        "ageMax": 8,
+        "estimatedMinutes": 7,
+        "topics": ["nature", "animals"],
+        "skills": ["CLASSIFICATION", "PATTERN_RECOGNITION"],
+        "interactionModes": ["voice", "dpad", "group"],
+        "contentPurpose": "adventure"
+      }
+    }
+  ],
+  "files": [
+    { "path": "package.json", "mediaType": "application/json" },
+    { "path": "adventures/forest-trail.json", "mediaType": "application/json" }
+  ]
+}

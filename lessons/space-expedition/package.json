@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "packageId": "space-expedition",
+  "packageVersion": 1,
+  "title": "Космическая экспедиция",
+  "description": "Флагманское приключение FamilyTV: поиск, маршрут, узор, классификация, диалог и движение.",
+  "content": [
+    {
+      "id": "adv-space-expedition",
+      "title": "Космическая экспедиция",
+      "description": "Почините корабль и исследуйте планету — 10–15 минут.",
+      "type": "ADVENTURE",
+      "ageRange": "5-9",
+      "categories": ["explore", "solve"],
+      "tags": ["adventure", "space", "flagship"],
+      "adventureRef": "space-expedition.json",
+      "enabled": true,
+      "sortOrder": 1,
+      "version": 1,
+      "homeSections": ["mission", "explore", "solve", "today"],
+      "metadata": {
+        "ageMin": 5,
+        "ageMax": 9,
+        "estimatedMinutes": 12,
+        "topics": ["space", "science", "math"],
+        "skills": ["COUNTING", "CLASSIFICATION", "SPATIAL_REASONING"],
+        "interactionModes": ["voice", "dpad", "group"],
+        "contentPurpose": "adventure"
+      }
+    }
+  ],
+  "files": [
+    { "path": "package.json", "mediaType": "application/json" },
+    { "path": "adventures/space-expedition.json", "mediaType": "application/json" }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "colors-shapes",
+  "title": "Цвета и формы",
+  "schemaVersion": 3,
+  "startStepId": "hello",
+  "steps": [
+    {
+      "type": "message",
+      "id": "hello",
+      "text": "Давай разберём цвета!",
+      "continueLabel": "Смотреть",
+      "transitions": {
+        "next": "intro-video"
+      }
+    },
+    {
+      "type": "video",
+      "id": "intro-video",
+      "mediaRef": "media/intro.mp4",
+      "transitions": {
+        "next": "pick-color"
+      }
+    },
+    {
+      "type": "choice",
+      "id": "pick-color",
+      "prompt": "Какой цвет у травы?",
+      "options": [
+        {
+          "id": "green",
+          "text": "Зелёный"
+        },
+        {
+          "id": "red",
+          "text": "Красный"
+        },
+        {
+          "id": "blue",
+          "text": "Синий"
+        }
+      ],
+      "correctOptionId": "green",
+      "feedback": {
+        "correct": "Да, трава зелёная.",
+        "wrong": "Подумай ещё: какого цвета парк летом?",
+        "hint": "Как листья"
+      },
+      "transitions": {
+        "onCorrect": "circle-tf",
+        "onWrong": "pick-color",
+        "onUnknown": "pick-color"
+      }
+    },
+    {
+      "type": "true_false",
+      "id": "circle-tf",
+      "prompt": "Круг — это форма. Это правда?",
+      "correct": true,
+      "feedback": {
+        "correct": "Верно!",
+        "wrong": "Круг — одна из форм.",
+        "hint": "Попробуй ещё раз спокойно"
+      },
+      "transitions": {
+        "onCorrect": "bye",
+        "onWrong": "circle-tf",
+        "onUnknown": "circle-tf"
+      }
+    },
+    {
+      "type": "message",
+      "id": "bye",
+      "text": "Отлично! Цвета и формы рядом с нами.",
+      "continueLabel": "Готово",
+      "transitions": {
+        "next": "__end__"
+      }
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=1920, height=1080, initial-scale=1.0" name="viewport"/>
+<title>FamilyTV — 5. Math Correct (Ура, получилось!)</title>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter & Outfit for clean 10-foot readability -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cyan: '#38d9d2',
+              cyanGlow: '#00f7e6',
+              deepNight: '#070b16',
+              cardBg: 'rgba(16, 24, 46, 0.72)',
+              gold: '#ffd15c',
+              goldBorder: '#ffb82e',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          boxShadow: {
+            'tv-focus': '0 0 0 5px #38d9d2, 0 12px 35px -6px rgba(56, 217, 210, 0.65)',
+            'golden-glow': '0 0 25px rgba(255, 209, 92, 0.45)',
+          }
+        }
+      }
+    };
+  </script>
+<style data-purpose="tv-layout">
+    /* Fixed 1920x1080 Screen Setup with locked overflow for 10-foot UI */
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      min-width: 1920px;
+      min-height: 1080px;
+      max-width: 1920px;
+      max-height: 1080px;
+      overflow: hidden;
+      user-select: none;
+      background-color: #070b16;
+    }
+  </style>
+<style data-purpose="cosmic-hearth-theme">
+    /* Subtle cosmic gradient and glowing accents */
+    .bg-cosmic-glow {
+      background: radial-gradient(circle at 50% 30%, rgba(30, 58, 110, 0.45) 0%, rgba(8, 13, 27, 0.95) 75%, #050811 100%);
+    }
+
+    /* Keyframe animation for glowing pulse on the active primary CTA */
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 5px #38d9d2, 0 0 35px 6px rgba(56, 217, 210, 0.55);
+        transform: scale(1.02);
+      }
+      50% {
+        box-shadow: 0 0 0 7px #7afbee, 0 0 50px 10px rgba(56, 217, 210, 0.8);
+        transform: scale(1.035);
+      }
+    }
+
+    .dpad-active-cta {
+      animation: pulseGlow 2.2s infinite ease-in-out;
+    }
+
+    /* Floating soft sparkle animation */
+    @keyframes softFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .floating-badge {
+      animation: softFloat 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-cosmic-glow text-white font-sans flex flex-col justify-between p-0 m-0 border-none antialiased select-none">
+<!-- BEGIN: MainHeader -->
+<header class="w-full px-14 pt-8 pb-3 flex items-center justify-between z-30" data-purpose="tv-top-bar">
+<!-- Back Button -->
+<div class="flex items-center">
+<div class="flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 backdrop-blur-md text-white/90 text-xl font-medium tracking-wide transition-all cursor-pointer">
+<span class="text-2xl font-bold leading-none text-brand-cyan">‹</span>
+<span>Назад</span>
+</div>
+</div>
+<!-- Center: Joyful Lumi Speech Bubble -->
+<div class="flex items-center gap-3 px-7 py-3 rounded-full bg-brand-deepNight/80 border-2 border-brand-cyan/60 shadow-[0_0_25px_rgba(56,217,210,0.25)] backdrop-blur-xl" data-purpose="lumi-speech-bubble">
+<span class="text-2xl">✨</span>
+<p class="text-2xl font-semibold tracking-wide text-white">
+<span class="text-brand-cyan font-bold">Робот Люми:</span> «Ура! Пять яблок собрано вместе! Ты молодец!»
+      </p>
+</div>
+<!-- Right status: Progress & Voice Indicator -->
+<div class="flex items-center gap-4">
+<div class="px-5 py-2.5 rounded-2xl bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 font-semibold text-lg flex items-center gap-2">
+<span>Задание 2 из 5 — Готово!</span>
+<span class="text-emerald-400 font-black text-xl">✓</span>
+</div>
+<div class="px-4 py-2.5 rounded-2xl bg-white/10 border border-white/15 text-white/90 text-lg font-medium flex items-center gap-2 backdrop-blur-md">
+<span>🎤</span>
+<span>Голос</span>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: CenterStage -->
+<main class="w-full flex-1 flex flex-col items-center justify-center px-14 py-1" data-purpose="math-triumph-stage">
+<!-- Triumph Art Card (16:9 illustration container) -->
+<div class="relative w-[1140px] h-[610px] rounded-3xl overflow-hidden border-4 border-amber-300/40 shadow-[0_15px_50px_rgba(0,0,0,0.85)] bg-slate-950 flex items-center justify-center group" data-purpose="illustration-wrapper">
+<!-- Success Aura / Soft rim-light behind artwork -->
+<div class="absolute inset-0 bg-radial from-amber-400/15 via-transparent to-transparent pointer-events-none z-10"></div>
+<!-- Requested Triumph Illustration -->
+<img alt="Победный финал: 5 счастливых яблок в золотой корзине и танцующий робот Люми" class="w-full h-full object-cover object-center transform scale-[1.005]" src="https://lh3.googleusercontent.com/aida/AEtjO1VRhAGu5TZJtVsnjzlSew-wv2SNGIbAn4KPNiMEKTkQe_jubdr7AYzsK8IiZlEIlpdpJTZOWEoF867ZKfTvhzYBEYsNvxtWqBzw5j_tWpgqmxzU6YY0BDU1yzbXHmis5WoR8rNzzEj28jQQmGP6ODepQv4vVscPlA2pPFwad0EV-LFViXsTL7AficKgRikaQUGwEGnO70mypKs0xoqLe3fE6_BRjG_YQgW_2DuLeI74q1QGqn_zvHbaxYg"/>
+<!-- Subtle inner glowing border vignette -->
+<div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-3xl pointer-events-none z-10"></div>
+</div>
+<!-- Mathematical Equation Banner (Below the scene) -->
+<div class="mt-4 flex items-center justify-center gap-5 z-20" data-purpose="golden-equation-banner">
+<!-- Term 1: 2 Apples Basket -->
+<div class="flex items-center gap-3 px-6 py-2.5 rounded-2xl bg-slate-900/90 border-2 border-white/25 shadow-lg backdrop-blur-md">
+<div class="flex items-center gap-1.5 text-red-400 text-xl">
+<span>●</span>
+<span>●</span>
+</div>
+<span class="text-3xl font-display font-extrabold text-white tracking-wide">2</span>
+</div>
+<!-- Plus Operator -->
+<div class="text-3xl font-black text-amber-300 px-1">+</div>
+<!-- Term 2: 3 Apples Basket -->
+<div class="flex items-center gap-3 px-6 py-2.5 rounded-2xl bg-slate-900/90 border-2 border-white/25 shadow-lg backdrop-blur-md">
+<div class="flex items-center gap-1.5 text-red-400 text-xl">
+<span>●</span>
+<span>●</span>
+<span>●</span>
+</div>
+<span class="text-3xl font-display font-extrabold text-white tracking-wide">3</span>
+</div>
+<!-- Equals Operator -->
+<div class="text-3xl font-black text-amber-300 px-1">=</div>
+<!-- Completed Result Pill (Golden & Glowing) -->
+<div class="flex items-center gap-3.5 px-8 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500/25 via-yellow-400/30 to-amber-500/25 border-3 border-amber-300 text-amber-200 shadow-golden-glow floating-badge backdrop-blur-md">
+<span class="text-2xl text-yellow-300">⭐</span>
+<span class="text-3xl font-display font-black text-white tracking-wider">5 яблок</span>
+</div>
+</div>
+</main>
+<!-- END: CenterStage -->
+<!-- BEGIN: BottomControls -->
+<footer class="w-full px-16 pb-6 pt-1 flex flex-col gap-3 z-30" data-purpose="tv-controls-section">
+<!-- Primary Action Layer -->
+<div class="w-full flex items-center justify-between">
+<!-- Left Secondary Action -->
+<div class="w-1/4 flex justify-start">
+<button class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-white/90 text-xl font-semibold backdrop-blur-md transition-all active:scale-95 focus:outline-none" data-purpose="replay-audio-btn" type="button">
+<span class="text-2xl">🔊</span>
+<span>Послушать снова</span>
+</button>
+</div>
+<!-- Center: ONE Prominent Primary Next Action (In Active D-pad Focus) -->
+<div class="w-2/4 flex justify-center">
+<button class="dpad-active-cta flex items-center justify-center gap-4 px-12 py-4 rounded-3xl bg-brand-cyan hover:bg-[#20c9c1] text-slate-950 text-2xl font-display font-black tracking-wide cursor-pointer transition-all duration-200 focus:outline-none" data-purpose="primary-next-action-button" type="button">
+<span class="text-3xl leading-none">▶</span>
+<span>Следующее задание</span>
+<span class="ml-2 px-3 py-1 rounded-xl bg-slate-950/20 text-slate-950 text-lg font-bold border border-slate-950/30">[ OK ]</span>
+</button>
+</div>
+<!-- Right Subtle State Indication -->
+<div class="w-1/4 flex justify-end items-center">
+<div class="flex items-center gap-2.5 text-emerald-400 font-semibold text-lg bg-emerald-950/40 px-5 py-2.5 rounded-2xl border border-emerald-500/30">
+<span>Правильный ответ сохранён</span>
+<span class="text-xl font-bold">✓</span>
+</div>
+</div>
+</div>
+<!-- Bottom Remote Navigation Guide Bar -->
+<div class="w-full flex items-center justify-center pt-2 border-t border-white/10" data-purpose="remote-legend">
+<p class="text-base font-medium tracking-widest text-slate-400 flex items-center gap-3">
+<span>◄ ► Выбор</span>
+<span class="text-white/20">•</span>
+<span class="text-brand-cyan font-bold">[ OK ] Следующее задание</span>
+<span class="text-white/20">•</span>
+<span>🎤 Голос</span>
+</p>
+</div>
+</footer>
+<!-- END: BottomControls -->
+</body></html>

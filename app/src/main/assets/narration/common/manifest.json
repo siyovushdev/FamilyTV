@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "kind": "common-voice-pack",
+  "quality": "V1_CANDIDATE_VOICE",
+  "generator": "espeak-ng-ru-slow",
+  "note": "Semantic candidate for trial. Not FINAL_VOICE talent. See docs/V1_VOICE_SCRIPT_RU.md",
+  "phrases": {
+    "hello": "hello.wav",
+    "lets_start": "lets_start.wav",
+    "explore": "explore.wav",
+    "solve": "solve.wav",
+    "create": "create.wav",
+    "stories": "stories.wav",
+    "move": "move.wav",
+    "play": "play.wav",
+    "repeat_task": "repeat_task.wav",
+    "try_again": "try_again.wav",
+    "want_hint": "want_hint.wav",
+    "want_repeat": "want_repeat.wav",
+    "good_thought": "good_thought.wav",
+    "did_not_hear": "did_not_hear.wav",
+    "discuss_together": "discuss_together.wav",
+    "someone_answer": "someone_answer.wav",
+    "other_turn": "other_turn.wav",
+    "choose_together": "choose_together.wav",
+    "go_next": "go_next.wav",
+    "go_home": "go_home.wav",
+    "well_done": "well_done.wav",
+    "take_break": "take_break.wav",
+    "almost": "almost.wav",
+    "calm_celebrate": "calm_celebrate.wav"
+  }
+}

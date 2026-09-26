@@ -1,0 +1,46 @@
+{
+  "packageId": "apple-adventure",
+  "packageVersion": 1,
+  "schemaVersion": 1,
+  "title": "Приключение с яблоками",
+  "description": "Demo installable FamilyTV content package",
+  "content": [
+    {
+      "id": "pkg-apple-adventure",
+      "title": "Приключение с яблоками",
+      "description": "Короткое занятие: видео, выбор и голос",
+      "type": "INTERACTIVE",
+      "ageRange": "4-8",
+      "categories": [
+        "learn"
+      ],
+      "tags": [
+        "demo",
+        "package"
+      ],
+      "thumbnail": "images/cover.webp",
+      "experienceRef": "experiences/apple-adventure.json",
+      "enabled": true,
+      "sortOrder": 5,
+      "version": 1,
+      "homeSections": [
+        "today",
+        "learn"
+      ]
+    },
+    {
+      "id": "pkg-apple-intro-video",
+      "title": "Яблочный свет",
+      "description": "Короткое демо-видео из пакета",
+      "type": "VIDEO",
+      "mediaRef": "media/intro.mp4",
+      "durationMs": 3000,
+      "enabled": true,
+      "sortOrder": 6,
+      "version": 1,
+      "homeSections": [
+        "stories"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "packageId": "short-story",
+  "packageVersion": 1,
+  "schemaVersion": 1,
+  "title": "Короткая история",
+  "description": "Спокойный рассказ с одним вопросом",
+  "content": [
+    {
+      "id": "pkg-short-story",
+      "title": "Тёплый вечер",
+      "description": "Короткая история и один простой вопрос",
+      "type": "INTERACTIVE",
+      "experienceRef": "experiences/short-story.json",
+      "thumbnail": "images/cover.webp",
+      "enabled": true,
+      "sortOrder": 35,
+      "version": 1,
+      "homeSections": ["stories", "today"],
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 8,
+        "skills": ["LISTENING", "ATTENTION"],
+        "difficulty": "easy",
+        "estimatedMinutes": 4,
+        "topics": ["story", "calm"],
+        "interactionModes": ["video", "choice", "message"],
+        "locale": "ru",
+        "contentPurpose": "story"
+      }
+    }
+  ]
+}

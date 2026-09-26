@@ -1,0 +1,32 @@
+{
+  "packageId": "today-together",
+  "packageVersion": 1,
+  "schemaVersion": 1,
+  "title": "Сегодня вместе",
+  "description": "Конечная семейная сессия ~20 минут",
+  "content": [
+    {
+      "id": "pkg-today-together",
+      "title": "Сегодня вместе",
+      "description": "Узнать → вопрос → игра → движение → история",
+      "type": "SESSION",
+      "sessionRef": "sessions/today.json",
+      "thumbnail": "images/cover.webp",
+      "enabled": true,
+      "sortOrder": 1,
+      "version": 1,
+      "homeSections": ["today"],
+      "metadata": {
+        "ageMin": 4,
+        "ageMax": 9,
+        "skills": ["COUNTING", "WORLD_KNOWLEDGE", "MOVE", "ATTENTION"],
+        "difficulty": "easy",
+        "estimatedMinutes": 20,
+        "topics": ["math", "animals", "move", "story"],
+        "interactionModes": ["session", "video", "choice", "game", "move"],
+        "locale": "ru",
+        "contentPurpose": "session"
+      }
+    }
+  ]
+}

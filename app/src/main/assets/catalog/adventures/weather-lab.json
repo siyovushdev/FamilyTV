@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "id": "weather-lab",
+  "title": "Лаборатория погоды",
+  "world": "explore",
+  "readingSupport": "AUDIO_FIRST",
+  "description": "Предскажи, проверь и узнай, почему лёд тает.",
+  "learningGoals": ["SCIENCE_REASONING", "COOPERATION"],
+  "estimatedMinutes": 8,
+  "difficulty": { "min": 1, "max": 2 },
+  "startSceneId": "hello",
+  "variables": {},
+  "objectives": [
+    { "id": "predict", "title": "Гипотеза" },
+    { "id": "build", "title": "Укрытие" }
+  ],
+  "guide": { "id": "lumi", "name": "Луми", "defaultEmotion": "CURIOUS" },
+  "scenes": [
+    {
+      "id": "hello",
+      "kind": "STORY",
+      "text": "В лаборатории Луми лежит ледяной кубик. Давай узнаем, где он растает быстрее!",
+      "spokenPrompt": "Вот ледяной кубик. Где он растает быстрее?",
+      "guideLine": "Сначала подумай — потом проверим.",
+      "guideEmotion": "CURIOUS",
+      "groupMode": "DISCUSS_TOGETHER",
+      "next": "predict_melt"
+    },
+    {
+      "id": "predict_melt",
+      "kind": "CHALLENGE",
+      "groupMode": "DISCUSS_TOGETHER",
+      "challenge": {
+        "id": "where-melts-faster",
+        "mechanic": "PREDICT_AND_TEST",
+        "prompt": "Как думаешь, где лёд растает быстрее?",
+        "spokenPrompt": "Где лёд растает быстрее? Выбери, потом скажи проверить.",
+        "learningGoals": ["SCIENCE_REASONING"],
+        "scaffolding": {
+          "hint1": "Подумай, где теплее.",
+          "explanation": "На солнце теплее — лёд тает быстрее."
+        },
+        "params": {
+          "options": [
+            { "id": "sun", "label": "На солнце", "voiceAliases": ["солнце", "на солнце", "свет"] },
+            { "id": "shade", "label": "В тени", "voiceAliases": ["тень", "в тени"] },
+            { "id": "cold", "label": "В холоде", "voiceAliases": ["холод", "в холоде", "холодильник"] }
+          ],
+          "outcomeByOptionId": {
+            "sun": "Смотри: на солнце кубик быстро стал лужицей. Тепло ускоряет таяние!",
+            "shade": "В тени лёд тает медленнее — тепла меньше. Интересно сравнить с солнцем!",
+            "cold": "В холоде кубик почти не тает. Холод сохраняет лёд."
+          },
+          "correctPredictionId": "sun",
+          "knowledgeTopic": "ice_melting"
+        },
+        "successSets": { "obj:predict": 1 },
+        "successNext": "build_shelter"
+      }
+    },
+    {
+      "id": "build_shelter",
+      "kind": "CHALLENGE",
+      "groupMode": "TAKE_TURNS",
+      "challenge": {
+        "id": "keep-ice",
+        "mechanic": "BUILD_AND_TEST",
+        "prompt": "Собери укрытие, чтобы лёд таял медленнее. Потом проверь.",
+        "spokenPrompt": "Собери укрытие для льда. Потом скажи проверить.",
+        "learningGoals": ["SCIENCE_REASONING"],
+        "scaffolding": {
+          "hint1": "Нужна тень и прохладная подставка.",
+          "explanation": "Тень и холодная подставка замедляют таяние."
+        },
+        "params": {
+          "slots": [
+            { "id": "cover", "label": "Крыша" },
+            { "id": "base", "label": "Подставка" }
+          ],
+          "parts": [
+            { "id": "umbrella", "label": "Зонтик", "voiceAliases": ["зонтик", "зонт"], "slotId": "cover" },
+            { "id": "lamp", "label": "Лампа", "voiceAliases": ["лампа"], "slotId": "cover" },
+            { "id": "icepack", "label": "Холодный пакет", "voiceAliases": ["пакет", "холодный"], "slotId": "base" },
+            { "id": "heater", "label": "Грелка", "voiceAliases": ["грелка"], "slotId": "base" }
+          ],
+          "successPlacements": { "umbrella": "cover", "icepack": "base" },
+          "successObservation": "Зонтик даёт тень, холодный пакет охлаждает. Лёд тает медленнее!",
+          "failObservation": "Так не получается: лампа или грелка добавляют тепло. Нужны тень и холод."
+        },
+        "successSets": { "obj:build": 1 },
+        "successNext": "reflect"
+      }
+    },
+    {
+      "id": "reflect",
+      "kind": "REFLECTION",
+      "text": "Что тебя удивило? Можешь рассказать — оценку ставить не будем.",
+      "spokenPrompt": "Что тебя удивило?",
+      "guideLine": "Ты настоящий исследователь!",
+      "guideEmotion": "EXCITED"
+    }
+  ]
+}
+

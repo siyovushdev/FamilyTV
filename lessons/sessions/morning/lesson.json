@@ -1,0 +1,30 @@
+{
+  "packageId": "morning-session",
+  "packageVersion": 1,
+  "schemaVersion": 1,
+  "title": "Короткое утро",
+  "description": "Конечная утренняя сессия ~15 минут",
+  "content": [
+    {
+      "id": "pkg-morning-session",
+      "title": "Короткое утро",
+      "description": "Видео, занятие, игра, движение, история",
+      "type": "SESSION",
+      "sessionRef": "sessions/morning.json",
+      "enabled": true,
+      "sortOrder": 2,
+      "version": 1,
+      "homeSections": ["today"],
+      "metadata": {
+        "ageMin": 4,
+        "ageMax": 9,
+        "skills": ["COUNTING", "COLORS", "MOVE"],
+        "estimatedMinutes": 15,
+        "topics": ["math", "colors", "move", "story"],
+        "interactionModes": ["session"],
+        "locale": "ru",
+        "contentPurpose": "session"
+      }
+    }
+  ]
+}

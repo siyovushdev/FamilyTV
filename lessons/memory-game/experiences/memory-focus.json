@@ -1,0 +1,90 @@
+{
+  "id": "memory-focus",
+  "title": "Запомни и выбери",
+  "schemaVersion": 3,
+  "startStepId": "hello",
+  "steps": [
+    {
+      "type": "message",
+      "id": "hello",
+      "text": "Сначала посмотрим коротко. Запомни: было три яблока.",
+      "continueLabel": "Смотреть",
+      "transitions": {
+        "next": "focus-video"
+      }
+    },
+    {
+      "type": "video",
+      "id": "focus-video",
+      "mediaRef": "media/focus.mp4",
+      "transitions": {
+        "next": "how-many"
+      }
+    },
+    {
+      "type": "choice",
+      "id": "how-many",
+      "prompt": "Сколько яблок нужно было запомнить?",
+      "options": [
+        {
+          "id": "two",
+          "text": "Два"
+        },
+        {
+          "id": "three",
+          "text": "Три"
+        },
+        {
+          "id": "five",
+          "text": "Пять"
+        }
+      ],
+      "correctOptionId": "three",
+      "feedback": {
+        "correct": "Точно! Три.",
+        "wrong": "Вспомни начало: три яблока.",
+        "hint": "Посчитай: один, два, три"
+      },
+      "transitions": {
+        "onCorrect": "order",
+        "onWrong": "how-many",
+        "onUnknown": "how-many"
+      }
+    },
+    {
+      "type": "choice",
+      "id": "order",
+      "prompt": "Что было раньше: подсказка или видео?",
+      "options": [
+        {
+          "id": "hint",
+          "text": "Подсказка"
+        },
+        {
+          "id": "video",
+          "text": "Видео"
+        }
+      ],
+      "correctOptionId": "hint",
+      "feedback": {
+        "correct": "Да, сначала была подсказка.",
+        "wrong": "Сначала мы сказали про три яблока.",
+        "hint": "Попробуй ещё раз спокойно"
+      },
+      "transitions": {
+        "onCorrect": "bye",
+        "onWrong": "order",
+        "onUnknown": "order"
+      }
+    },
+    {
+      "type": "message",
+      "id": "bye",
+      "text": "Внимание помогает учиться. Молодец!",
+      "continueLabel": "Готово",
+      "transitions": {
+        "next": "__end__"
+      }
+    }
+  ]
+}

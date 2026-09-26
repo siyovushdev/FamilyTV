@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cyan energy cell / battery — distinct from rock/tool/star. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="96dp"
+    android:viewportWidth="72"
+    android:viewportHeight="96">
+    <!-- Body -->
+    <path
+        android:fillColor="#1A8F9E"
+        android:pathData="M16,22 L56,22 L56,86 L16,86 Z" />
+    <path
+        android:fillColor="#3AD4E8"
+        android:pathData="M20,26 L52,26 L52,82 L20,82 Z" />
+    <!-- Charge bars -->
+    <path
+        android:fillColor="#E8FFFF"
+        android:pathData="M26,34 h20 v8 h-20 z" />
+    <path
+        android:fillColor="#E8FFFF"
+        android:pathData="M26,48 h20 v8 h-20 z" />
+    <path
+        android:fillColor="#E8FFFF"
+        android:pathData="M26,62 h20 v8 h-20 z" />
+    <!-- Terminals -->
+    <path
+        android:fillColor="#D8E8F0"
+        android:pathData="M28,12 h16 v10 h-16 z" />
+    <path
+        android:fillColor="#A8C0D0"
+        android:pathData="M32,8 h8 v6 h-8 z" />
+    <!-- Plus mark -->
+    <path
+        android:fillColor="#0A4A55"
+        android:pathData="M34,36 h4 v4 h-4 z M32,38 h8 v2 h-8 z" />
+</vector>

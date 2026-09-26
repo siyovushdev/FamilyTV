@@ -1,0 +1,1470 @@
+{
+  "metrics": {
+    "local/A_greedy": {
+      "n": 20,
+      "successful": 20,
+      "failed": 0,
+      "exact": 8,
+      "exactAccuracy": 0.4,
+      "wer": 0.45121951219512196,
+      "substitutions": 5,
+      "deletions": 32,
+      "insertions": 0,
+      "werCoverage": "successful results only; inspect failure count",
+      "latencyMedianMs": 171.8061465,
+      "latencyP95Ms": 313.680542,
+      "rtfMedian": 0.09435365826316713
+    },
+    "local/B_beam": {
+      "n": 20,
+      "successful": 20,
+      "failed": 0,
+      "exact": 8,
+      "exactAccuracy": 0.4,
+      "wer": 0.45121951219512196,
+      "substitutions": 5,
+      "deletions": 32,
+      "insertions": 0,
+      "werCoverage": "successful results only; inspect failure count",
+      "latencyMedianMs": 209.5580835,
+      "latencyP95Ms": 408.067667,
+      "rtfMedian": 0.11008890852124666
+    },
+    "local/C_hotwords_0.5": {
+      "n": 20,
+      "successful": 20,
+      "failed": 0,
+      "exact": 8,
+      "exactAccuracy": 0.4,
+      "wer": 0.45121951219512196,
+      "substitutions": 5,
+      "deletions": 32,
+      "insertions": 0,
+      "werCoverage": "successful results only; inspect failure count",
+      "latencyMedianMs": 205.26475,
+      "latencyP95Ms": 378.183126,
+      "rtfMedian": 0.11234375981082459
+    },
+    "local/C_hotwords_1.0": {
+      "n": 20,
+      "successful": 20,
+      "failed": 0,
+      "exact": 8,
+      "exactAccuracy": 0.4,
+      "wer": 0.45121951219512196,
+      "substitutions": 5,
+      "deletions": 32,
+      "insertions": 0,
+      "werCoverage": "successful results only; inspect failure count",
+      "latencyMedianMs": 204.0355835,
+      "latencyP95Ms": 375.286084,
+      "rtfMedian": 0.11003120082691105
+    },
+    "local/C_hotwords_1.5": {
+      "n": 20,
+      "successful": 20,
+      "failed": 0,
+      "exact": 8,
+      "exactAccuracy": 0.4,
+      "wer": 0.45121951219512196,
+      "substitutions": 5,
+      "deletions": 32,
+      "insertions": 0,
+      "werCoverage": "successful results only; inspect failure count",
+      "latencyMedianMs": 222.09920849999997,
+      "latencyP95Ms": 377.850751,
+      "rtfMedian": 0.11277563278053845
+    },
+    "local/C_hotwords_2.0": {
+      "n": 20,
+      "successful": 20,
+      "failed": 0,
+      "exact": 8,
+      "exactAccuracy": 0.4,
+      "wer": 0.45121951219512196,
+      "substitutions": 5,
+      "deletions": 32,
+      "insertions": 0,
+      "werCoverage": "successful results only; inspect failure count",
+      "latencyMedianMs": 204.7963745,
+      "latencyP95Ms": 402.627125,
+      "rtfMedian": 0.10729753705370054
+    },
+    "yandex/plain": {
+      "n": 20,
+      "successful": 0,
+      "failed": 20,
+      "exact": 0,
+      "exactAccuracy": null,
+      "wer": null,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "werCoverage": "successful results only; inspect failure count",
+      "latencyMedianMs": null,
+      "latencyP95Ms": null,
+      "rtfMedian": null
+    },
+    "azure/plain": {
+      "n": 20,
+      "successful": 0,
+      "failed": 20,
+      "exact": 0,
+      "exactAccuracy": null,
+      "wer": null,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "werCoverage": "successful results only; inspect failure count",
+      "latencyMedianMs": null,
+      "latencyP95Ms": null,
+      "rtfMedian": null
+    },
+    "google/plain": {
+      "n": 20,
+      "successful": 0,
+      "failed": 20,
+      "exact": 0,
+      "exactAccuracy": null,
+      "wer": null,
+      "substitutions": 0,
+      "deletions": 0,
+      "insertions": 0,
+      "werCoverage": "successful results only; inspect failure count",
+      "latencyMedianMs": null,
+      "latencyP95Ms": null,
+      "rtfMedian": null
+    }
+  },
+  "groupedMetrics": {
+    "local/A_greedy": {
+      "population:public-general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 171.8061465,
+        "latencyP95Ms": 313.680542,
+        "rtfMedian": 0.09435365826316713
+      },
+      "origin:natural": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 171.8061465,
+        "latencyP95Ms": 313.680542,
+        "rtfMedian": 0.09435365826316713
+      },
+      "farField:True": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 171.8061465,
+        "latencyP95Ms": 313.680542,
+        "rtfMedian": 0.09435365826316713
+      },
+      "category:general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 171.8061465,
+        "latencyP95Ms": 313.680542,
+        "rtfMedian": 0.09435365826316713
+      }
+    },
+    "local/B_beam": {
+      "population:public-general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 209.5580835,
+        "latencyP95Ms": 408.067667,
+        "rtfMedian": 0.11008890852124666
+      },
+      "origin:natural": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 209.5580835,
+        "latencyP95Ms": 408.067667,
+        "rtfMedian": 0.11008890852124666
+      },
+      "farField:True": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 209.5580835,
+        "latencyP95Ms": 408.067667,
+        "rtfMedian": 0.11008890852124666
+      },
+      "category:general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 209.5580835,
+        "latencyP95Ms": 408.067667,
+        "rtfMedian": 0.11008890852124666
+      }
+    },
+    "local/C_hotwords_0.5": {
+      "population:public-general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 205.26475,
+        "latencyP95Ms": 378.183126,
+        "rtfMedian": 0.11234375981082459
+      },
+      "origin:natural": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 205.26475,
+        "latencyP95Ms": 378.183126,
+        "rtfMedian": 0.11234375981082459
+      },
+      "farField:True": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 205.26475,
+        "latencyP95Ms": 378.183126,
+        "rtfMedian": 0.11234375981082459
+      },
+      "category:general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 205.26475,
+        "latencyP95Ms": 378.183126,
+        "rtfMedian": 0.11234375981082459
+      }
+    },
+    "local/C_hotwords_1.0": {
+      "population:public-general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 204.0355835,
+        "latencyP95Ms": 375.286084,
+        "rtfMedian": 0.11003120082691105
+      },
+      "origin:natural": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 204.0355835,
+        "latencyP95Ms": 375.286084,
+        "rtfMedian": 0.11003120082691105
+      },
+      "farField:True": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 204.0355835,
+        "latencyP95Ms": 375.286084,
+        "rtfMedian": 0.11003120082691105
+      },
+      "category:general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 204.0355835,
+        "latencyP95Ms": 375.286084,
+        "rtfMedian": 0.11003120082691105
+      }
+    },
+    "local/C_hotwords_1.5": {
+      "population:public-general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 222.09920849999997,
+        "latencyP95Ms": 377.850751,
+        "rtfMedian": 0.11277563278053845
+      },
+      "origin:natural": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 222.09920849999997,
+        "latencyP95Ms": 377.850751,
+        "rtfMedian": 0.11277563278053845
+      },
+      "farField:True": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 222.09920849999997,
+        "latencyP95Ms": 377.850751,
+        "rtfMedian": 0.11277563278053845
+      },
+      "category:general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 222.09920849999997,
+        "latencyP95Ms": 377.850751,
+        "rtfMedian": 0.11277563278053845
+      }
+    },
+    "local/C_hotwords_2.0": {
+      "population:public-general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 204.7963745,
+        "latencyP95Ms": 402.627125,
+        "rtfMedian": 0.10729753705370054
+      },
+      "origin:natural": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 204.7963745,
+        "latencyP95Ms": 402.627125,
+        "rtfMedian": 0.10729753705370054
+      },
+      "farField:True": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 204.7963745,
+        "latencyP95Ms": 402.627125,
+        "rtfMedian": 0.10729753705370054
+      },
+      "category:general": {
+        "n": 20,
+        "successful": 20,
+        "failed": 0,
+        "exact": 8,
+        "exactAccuracy": 0.4,
+        "wer": 0.45121951219512196,
+        "substitutions": 5,
+        "deletions": 32,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": 204.7963745,
+        "latencyP95Ms": 402.627125,
+        "rtfMedian": 0.10729753705370054
+      }
+    },
+    "yandex/plain": {
+      "population:public-general": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      },
+      "origin:natural": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      },
+      "farField:True": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      },
+      "category:general": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      }
+    },
+    "azure/plain": {
+      "population:public-general": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      },
+      "origin:natural": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      },
+      "farField:True": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      },
+      "category:general": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      }
+    },
+    "google/plain": {
+      "population:public-general": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      },
+      "origin:natural": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      },
+      "farField:True": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      },
+      "category:general": {
+        "n": 20,
+        "successful": 0,
+        "failed": 20,
+        "exact": 0,
+        "exactAccuracy": null,
+        "wer": null,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "werCoverage": "successful results only; inspect failure count",
+        "latencyMedianMs": null,
+        "latencyP95Ms": null,
+        "rtfMedian": null
+      }
+    }
+  },
+  "semanticMetrics": {},
+  "samples": [
+    {
+      "id": "dcac64aa7d4fd13acef19478",
+      "truth": "сбер набери татьяну олеговну савченко",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "",
+      "localContextualStt": "",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "b3b37c764f5fe7bc9a4263bb",
+      "truth": "афина выйди из приложения",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "афина выйди из приложения",
+      "localContextualStt": "афина выйди из приложения",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "8fa74f88a1ed516566a48af3",
+      "truth": "сбер набери курбатова",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "сбер набери курбатова",
+      "localContextualStt": "сбер набери курбатова",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "ad1ad59c083c397e0576f2a9",
+      "truth": "салют нравится",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "",
+      "localContextualStt": "",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "820c3039d39891a6d54a12b0",
+      "truth": "салют перестань",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "салют перестань",
+      "localContextualStt": "салют перестань",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "4d86a33a2f25fa04b98dba83",
+      "truth": "сбер реши мне математику",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "сбер",
+      "localContextualStt": "сбер",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "f8b25d2c574d32bd13a7c072",
+      "truth": "афина в каких батареях находят применение сплавы кальция со свинцом",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "афина в каких батареях находят применение сплавы кальция со свинцом",
+      "localContextualStt": "афина в каких батареях находят применение сплавы кальция со свинцом",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "9a0a9cb14a0897a26e7f2e79",
+      "truth": "сбер звонок юрию анатольевичу",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "сбер звонок юрию анатольевичу",
+      "localContextualStt": "сбер звонок юрию анатольевичу",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "92aed2b68ba7c7d383a859d9",
+      "truth": "сбер переведи насте денежки",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "сбер переведи ночке денежки",
+      "localContextualStt": "сбер переведи ночке денежки",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "e7c45409160139f0aa661386",
+      "truth": "салют следующий трек",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "салют следующий трек",
+      "localContextualStt": "салют следующий трек",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "98fc8d95ab40f2e9ee7a2b40",
+      "truth": "сбер скрой приложение",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "цене",
+      "localContextualStt": "цене",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "fd69d2c0ab0ce5abb43be831",
+      "truth": "джой выйти из сценария",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "джой выйти из сценария",
+      "localContextualStt": "джой выйти из сценария",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "2c1629683566ca5e2c57a7b8",
+      "truth": "джой сообщила пароль от карты мошенникам",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "",
+      "localContextualStt": "",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "df798f6dcd9b761d0db8f4d6",
+      "truth": "салют как зовут мужа дудиной натальи владимировны",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "салют как зовут мужа дудиной натальи владимиро",
+      "localContextualStt": "салют как зовут мужа дудиной натальи владимиро",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "199183d7e3554a3d929563e5",
+      "truth": "салют набери виктора владимировича",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "",
+      "localContextualStt": "",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "9752b8117304a171f6196f6e",
+      "truth": "афина перестань",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "",
+      "localContextualStt": "",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "728842dfc0ee593931447626",
+      "truth": "джой как провела день",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "двой как правило день",
+      "localContextualStt": "двой как правило день",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "40b84edad812b9268500a860",
+      "truth": "сбер реши мне математику",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "",
+      "localContextualStt": "",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "23f079ad411108d35cbbfbbc",
+      "truth": "сбер сверни приложение",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "сбер сверни приложение",
+      "localContextualStt": "сбер сверни приложение",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    },
+    {
+      "id": "80e1da8d4b274b44d9077e1d",
+      "truth": "салют выйти из сценария",
+      "population": "public-general",
+      "farField": true,
+      "category": "general",
+      "localRawStt": "",
+      "localContextualStt": "",
+      "qwenNormalized": {
+        "A_greedy": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "B_beam": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_0.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_1.5": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        },
+        "C_hotwords_2.0": {
+          "normalized": "UNKNOWN",
+          "classification": "not_semantically_scored"
+        }
+      },
+      "cloudTexts": {},
+      "consensusCandidate": null,
+      "flags": []
+    }
+  ],
+  "contextConfig": "C_hotwords_1.0",
+  "localRunComplete": true,
+  "truthUnchanged": true,
+  "limitations": [
+    "Confidence is provider-specific",
+    "Transcript agreement cannot identify acoustic causality",
+    "Public general/far-field speech does not establish child-speech accuracy"
+  ]
+}

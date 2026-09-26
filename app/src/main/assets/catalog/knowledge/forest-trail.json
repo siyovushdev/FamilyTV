@@ -1,0 +1,159 @@
+{
+  "id": "forest-trail",
+  "world": "explore",
+  "adventureId": "forest-trail",
+  "entries": [
+    {
+      "id": "owl-night",
+      "topic": "owl_night",
+      "entityId": "owl",
+      "aliases": ["сова", "ночь", "летает", "она"],
+      "clarificationLabel": "сову",
+      "ageMin": 3,
+      "ageMax": 9,
+      "questionPatterns": ["почему сова летает ночью", "сова ночью", "почему сова", "а ночью"],
+      "facts": [
+        "У совы очень хороший слух и зрение в сумерках.",
+        "Ночью легче охотиться на мелких животных."
+      ],
+      "additionalFacts": [
+        "Днём сова обычно отдыхает.",
+        "Мягкие перья помогают ей летать почти бесшумно."
+      ],
+      "shortAnswer": "Сова летает ночью, потому что хорошо слышит и видит в темноте — так ей проще найти еду.",
+      "spokenAnswer": "Сова хорошо слышит и видит в темноте. Поэтому она охотится ночью.",
+      "followUps": ["А днём?"],
+      "provenance": {
+        "sourceTitle": "FamilyTV Forest pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "owl-day",
+      "topic": "owl_day",
+      "entityId": "owl",
+      "aliases": ["днём", "днем", "отдыхает"],
+      "clarificationLabel": "сову днём",
+      "ageMin": 3,
+      "ageMax": 9,
+      "questionPatterns": ["а днём", "сова днём", "что делает сова днём"],
+      "facts": [
+        "Днём сова обычно отдыхает и прячется.",
+        "Ночь — её время охоты."
+      ],
+      "additionalFacts": [
+        "Яркий дневной свет для совы не самый удобный."
+      ],
+      "shortAnswer": "Днём сова чаще отдыхает. Охотиться ей удобнее ночью.",
+      "spokenAnswer": "Днём сова отдыхает. Ночью ей удобнее охотиться.",
+      "provenance": {
+        "sourceTitle": "FamilyTV Forest pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "living-things",
+      "topic": "living",
+      "entityId": "living",
+      "aliases": ["живое", "растёт", "двигается"],
+      "clarificationLabel": "живое и неживое",
+      "ageMin": 3,
+      "ageMax": 7,
+      "questionPatterns": ["почему белка живая", "что такое живое"],
+      "facts": [
+        "Живые существа могут расти, двигаться и питаться.",
+        "Камень не растёт и не ест — он неживое."
+      ],
+      "additionalFacts": [
+        "Растения тоже живые — они растут, хотя почти не бегают."
+      ],
+      "shortAnswer": "Живое может расти и двигаться. Белка и птица — живые.",
+      "spokenAnswer": "Живое растёт и двигается. Белка живая, камень — нет.",
+      "provenance": {
+        "sourceTitle": "FamilyTV Forest pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "tracks",
+      "topic": "tracks",
+      "entityId": "tracks",
+      "aliases": ["следы", "отпечатки", "лапы"],
+      "clarificationLabel": "следы",
+      "ageMin": 3,
+      "ageMax": 8,
+      "questionPatterns": ["что такое следы", "чьи следы", "зачем следы"],
+      "facts": [
+        "Следы — отпечатки лап или ног на земле.",
+        "По следам можно понять, кто проходил."
+      ],
+      "additionalFacts": [
+        "Разные животные оставляют разные следы."
+      ],
+      "shortAnswer": "Следы показывают, кто ходил по земле — это отпечатки лап.",
+      "spokenAnswer": "Следы — отпечатки лап. По ним видно, кто проходил.",
+      "provenance": {
+        "sourceTitle": "FamilyTV Forest pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "plants",
+      "topic": "plants",
+      "entityId": "plant",
+      "aliases": ["растение", "дерево", "трава", "ёлка"],
+      "clarificationLabel": "растения",
+      "ageMin": 3,
+      "ageMax": 8,
+      "questionPatterns": ["почему растения", "что такое растение", "зачем деревья"],
+      "facts": [
+        "Растения растут на месте и обычно зелёные.",
+        "Деревья дают тень и дом для птиц."
+      ],
+      "additionalFacts": [
+        "Растения нужны лесу: они часть простой экологии."
+      ],
+      "shortAnswer": "Растения растут на месте. Деревья — большие растения леса.",
+      "spokenAnswer": "Растения растут на месте. Деревья — большие растения.",
+      "provenance": {
+        "sourceTitle": "FamilyTV Forest pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "night-animals",
+      "topic": "nocturnal",
+      "entityId": "nocturnal",
+      "aliases": ["ночные", "ночные животные"],
+      "clarificationLabel": "ночных животных",
+      "ageMin": 4,
+      "ageMax": 9,
+      "questionPatterns": ["какие животные ночью", "ночные животные"],
+      "facts": [
+        "Некоторые животные активны ночью — их называют ночными.",
+        "Сова — одно из таких животных."
+      ],
+      "additionalFacts": [
+        "Ночью тише, и некоторым так проще искать еду."
+      ],
+      "shortAnswer": "Ночные животные бодрствуют ночью. Сова — одно из них.",
+      "spokenAnswer": "Ночные животные активны ночью. Сова тоже.",
+      "provenance": {
+        "sourceTitle": "FamilyTV Forest pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    }
+  ]
+}

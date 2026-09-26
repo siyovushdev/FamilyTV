@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="72"
+    android:viewportHeight="72">
+    <path
+        android:fillColor="#66FFB040"
+        android:pathData="M36,36 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0" />
+    <path
+        android:fillColor="#AAFF8A20"
+        android:pathData="M36,36 m-18,0 a18,18 0 1,1 36,0 a18,18 0 1,1 -36,0" />
+    <path
+        android:fillColor="#FFFFF0A0"
+        android:pathData="M36,36 m-8,0 a8,8 0 1,1 16,0 a8,8 0 1,1 -16,0" />
+    <!-- Flame cone pointing left (engine thrust) -->
+    <path
+        android:fillColor="#FFFFC060"
+        android:pathData="M28,26 L4,36 L28,46 Z" />
+    <path
+        android:fillColor="#FFFFF2C0"
+        android:pathData="M28,30 L12,36 L28,42 Z" />
+</vector>

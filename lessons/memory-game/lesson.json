@@ -1,0 +1,32 @@
+{
+  "packageId": "memory-focus",
+  "packageVersion": 1,
+  "schemaVersion": 1,
+  "title": "Внимание",
+  "description": "Короткая игра на внимание и память",
+  "content": [
+    {
+      "id": "pkg-memory-focus",
+      "title": "Запомни и выбери",
+      "description": "Смотри внимательно и отвечай",
+      "type": "INTERACTIVE",
+      "experienceRef": "experiences/memory-focus.json",
+      "thumbnail": "images/cover.webp",
+      "enabled": true,
+      "sortOrder": 26,
+      "version": 1,
+      "homeSections": ["play", "learn"],
+      "metadata": {
+        "ageMin": 4,
+        "ageMax": 8,
+        "skills": ["ATTENTION", "MEMORY", "LOGIC"],
+        "difficulty": "easy",
+        "estimatedMinutes": 4,
+        "topics": ["attention", "memory"],
+        "interactionModes": ["video", "choice", "message"],
+        "locale": "ru",
+        "contentPurpose": "play"
+      }
+    }
+  ]
+}

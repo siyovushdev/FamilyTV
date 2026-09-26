@@ -1,4 +1,12 @@
 <resources>
 
     <style name="Theme.FamilyTV" parent="Theme.AppCompat.DayNight.NoActionBar" />
+    <style name="Theme.FamilyTV.Watch" parent="Theme.FamilyTV">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">#080D1E</item>
+        <item name="android:colorAccent">#38D9D2</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:navigationBarColor">#080D1E</item>
+    </style>
 </resources>

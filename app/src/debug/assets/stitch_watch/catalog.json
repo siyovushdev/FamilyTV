@@ -1,0 +1,781 @@
+{
+  "schemaVersion": 1,
+  "catalogVersion": 1,
+  "items": [
+    {
+      "id": "stitch-watch-nature-1",
+      "title": "Лесные друзья",
+      "description": "Лесные друзья собираются у тёплого костра.",
+      "type": "VIDEO",
+      "categories": [
+        "nature"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/nature.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/nature.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 0,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "nature"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-nature",
+        "episodeOrder": 1,
+        "captionRef": "stitch_watch/media/nature.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-nature-2",
+      "title": "Светлячки",
+      "description": "Лесные друзья собираются у тёплого костра.",
+      "type": "VIDEO",
+      "categories": [
+        "nature"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/nature.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/nature.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 1,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "nature"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-nature",
+        "episodeOrder": 2,
+        "captionRef": "stitch_watch/media/nature.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-nature-3",
+      "title": "У тёплого костра",
+      "description": "Лесные друзья собираются у тёплого костра.",
+      "type": "VIDEO",
+      "categories": [
+        "nature"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/nature.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/nature.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 2,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "nature"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-nature",
+        "episodeOrder": 3,
+        "captionRef": "stitch_watch/media/nature.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-nature-4",
+      "title": "Ночная поляна",
+      "description": "Лесные друзья собираются у тёплого костра.",
+      "type": "VIDEO",
+      "categories": [
+        "nature"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/nature.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/nature.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 3,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "nature"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-nature",
+        "episodeOrder": 4,
+        "captionRef": "stitch_watch/media/nature.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-nature-5",
+      "title": "Сказки леса",
+      "description": "Лесные друзья собираются у тёплого костра.",
+      "type": "VIDEO",
+      "categories": [
+        "nature"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/nature.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/nature.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 4,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "nature"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-nature",
+        "episodeOrder": 5,
+        "captionRef": "stitch_watch/media/nature.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-space-1",
+      "title": "Тайна Сатурна",
+      "description": "Лисёнок и мышонок отправляются к далёким звёздам.",
+      "type": "VIDEO",
+      "categories": [
+        "space"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/saturn.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/saturn.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 0,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "space"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-space",
+        "episodeOrder": 1,
+        "captionRef": "stitch_watch/media/saturn.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-space-2",
+      "title": "Комета Луми",
+      "description": "Луми открывает звёздную карту на корабле.",
+      "type": "VIDEO",
+      "categories": [
+        "space"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/comet.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/comet.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 1,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "space"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-space",
+        "episodeOrder": 2,
+        "captionRef": "stitch_watch/media/comet.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-space-3",
+      "title": "Музыка Луны",
+      "description": "Тихая история под звёздным небом.",
+      "type": "VIDEO",
+      "categories": [
+        "space"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/moon.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/moon.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 2,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "space"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-space",
+        "episodeOrder": 3,
+        "captionRef": "stitch_watch/media/moon.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-space-4",
+      "title": "Звёздный кит",
+      "description": "Цвета и огоньки превращаются в волшебную картину.",
+      "type": "VIDEO",
+      "categories": [
+        "space"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/whale.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/whale.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 3,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "space"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-space",
+        "episodeOrder": 4,
+        "captionRef": "stitch_watch/media/whale.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-space-5",
+      "title": "Солнечный луч",
+      "description": "Лесные друзья собираются у тёплого костра.",
+      "type": "VIDEO",
+      "categories": [
+        "space"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/nature.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/nature.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 4,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "space"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-space",
+        "episodeOrder": 5,
+        "captionRef": "stitch_watch/media/nature.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-how-1",
+      "title": "Звёздный пульт",
+      "description": "Луми открывает звёздную карту на корабле.",
+      "type": "VIDEO",
+      "categories": [
+        "how"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/comet.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/comet.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 0,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "how"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-how",
+        "episodeOrder": 1,
+        "captionRef": "stitch_watch/media/comet.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-how-2",
+      "title": "В мастерской",
+      "description": "Луми открывает звёздную карту на корабле.",
+      "type": "VIDEO",
+      "categories": [
+        "how"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/comet.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/comet.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 1,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "how"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-how",
+        "episodeOrder": 2,
+        "captionRef": "stitch_watch/media/comet.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-how-3",
+      "title": "Окно в космос",
+      "description": "Луми открывает звёздную карту на корабле.",
+      "type": "VIDEO",
+      "categories": [
+        "how"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/comet.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/comet.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 2,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "how"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-how",
+        "episodeOrder": 3,
+        "captionRef": "stitch_watch/media/comet.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-how-4",
+      "title": "Удивительный телескоп",
+      "description": "Луми открывает звёздную карту на корабле.",
+      "type": "VIDEO",
+      "categories": [
+        "how"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/comet.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/comet.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 3,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "how"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-how",
+        "episodeOrder": 4,
+        "captionRef": "stitch_watch/media/comet.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-how-5",
+      "title": "Огни корабля",
+      "description": "Луми открывает звёздную карту на корабле.",
+      "type": "VIDEO",
+      "categories": [
+        "how"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/comet.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/comet.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 4,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "how"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-how",
+        "episodeOrder": 5,
+        "captionRef": "stitch_watch/media/comet.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-stories-1",
+      "title": "Звёздная сказка",
+      "description": "Тихая история под звёздным небом.",
+      "type": "VIDEO",
+      "categories": [
+        "stories"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/moon.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/moon.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 0,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "stories"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-stories",
+        "episodeOrder": 1,
+        "captionRef": "stitch_watch/media/moon.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-stories-2",
+      "title": "Тихий вечер",
+      "description": "Тихая история под звёздным небом.",
+      "type": "VIDEO",
+      "categories": [
+        "stories"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/moon.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/moon.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 1,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "stories"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-stories",
+        "episodeOrder": 2,
+        "captionRef": "stitch_watch/media/moon.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-stories-3",
+      "title": "Лесная история",
+      "description": "Тихая история под звёздным небом.",
+      "type": "VIDEO",
+      "categories": [
+        "stories"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/moon.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/moon.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 2,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "stories"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-stories",
+        "episodeOrder": 3,
+        "captionRef": "stitch_watch/media/moon.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-stories-4",
+      "title": "Добрые соседи",
+      "description": "Тихая история под звёздным небом.",
+      "type": "VIDEO",
+      "categories": [
+        "stories"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/moon.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/moon.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 3,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "stories"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-stories",
+        "episodeOrder": 4,
+        "captionRef": "stitch_watch/media/moon.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-stories-5",
+      "title": "Корабль мечты",
+      "description": "Тихая история под звёздным небом.",
+      "type": "VIDEO",
+      "categories": [
+        "stories"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/moon.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/moon.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 4,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "stories"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-stories",
+        "episodeOrder": 5,
+        "captionRef": "stitch_watch/media/moon.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-creativity-1",
+      "title": "Рисуем созвездия",
+      "description": "Цвета и огоньки превращаются в волшебную картину.",
+      "type": "VIDEO",
+      "categories": [
+        "creativity"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/whale.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/whale.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 0,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "creativity"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-creativity",
+        "episodeOrder": 1,
+        "captionRef": "stitch_watch/media/whale.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-creativity-2",
+      "title": "Цвета ночного неба",
+      "description": "Цвета и огоньки превращаются в волшебную картину.",
+      "type": "VIDEO",
+      "categories": [
+        "creativity"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/whale.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/whale.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 1,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "creativity"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-creativity",
+        "episodeOrder": 2,
+        "captionRef": "stitch_watch/media/whale.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-creativity-3",
+      "title": "Свет и музыка",
+      "description": "Цвета и огоньки превращаются в волшебную картину.",
+      "type": "VIDEO",
+      "categories": [
+        "creativity"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/whale.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/whale.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 2,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "creativity"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-creativity",
+        "episodeOrder": 3,
+        "captionRef": "stitch_watch/media/whale.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-creativity-4",
+      "title": "Волшебная палитра",
+      "description": "Цвета и огоньки превращаются в волшебную картину.",
+      "type": "VIDEO",
+      "categories": [
+        "creativity"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/whale.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/whale.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 3,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "creativity"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-creativity",
+        "episodeOrder": 4,
+        "captionRef": "stitch_watch/media/whale.vtt"
+      }
+    },
+    {
+      "id": "stitch-watch-creativity-5",
+      "title": "Сочини историю",
+      "description": "Цвета и огоньки превращаются в волшебную картину.",
+      "type": "VIDEO",
+      "categories": [
+        "creativity"
+      ],
+      "tags": [
+        "preview_fixture"
+      ],
+      "thumbnail": "stitch_watch/art/whale.webp",
+      "durationMs": 90000,
+      "mediaRef": "stitch_watch/media/whale.mp4",
+      "homeSections": [
+        "stories"
+      ],
+      "enabled": true,
+      "sortOrder": 4,
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 9,
+        "topics": [
+          "creativity"
+        ],
+        "locale": "ru",
+        "seriesId": "stitch-watch-creativity",
+        "episodeOrder": 5,
+        "captionRef": "stitch_watch/media/whale.vtt"
+      }
+    }
+  ]
+}

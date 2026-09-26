@@ -1,0 +1,21 @@
+START Mon Sep 21 11:01:53 AM MSK 2026
+  mCurrentFocus=Window{60db507 u0 ru.familytv/ru.familytv.adventure.AdventureActivity}
+REC_PID=2271946
+UI hierchary dumped to: /sdcard/uidump.xml
+Дальше 960 1024
+  mCurrentFocus=Window{60db507 u0 ru.familytv/ru.familytv.adventure.AdventureActivity}
+UI hierchary dumped to: /sdcard/uidump.xml
+TEXTS:
+['Луми: Я Луми. Смотри на двигатель — он не горит. Давай починим!'] bounds="[80,214][1840,283]" 
+['Выберите всей командой.'] bounds="[80,283][1840,326]" 
+['Корабль «Северное сияние» не может взлететь — в двигателе нет энергии.'] bounds="[80,326][1840,489]" 
+['Корабль'] bounds="[80,489][1840,952]" 
+['Двигатель'] bounds="[96,617][240,761]" 
+['Пустое место для энергии'] bounds="[772,653][1148,797]" 
+['Пустое место для энергии'] bounds="[904,653][1016,797]" 
+['Пустое место для энергии'] bounds="[1036,653][1148,797]" 
+['Двигатель молчит. Нужна энергия.'] bounds="[80,889][1840,952]" 
+['Дальше'] bounds="[80,968][1840,1080]" clickable
+['Повтори'] bounds="[950,968][1094,1080]" clickable
+['Помоги'] bounds="[1110,968][1254,1080]" clickable
+DONE

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FamilyTV — Волшебная Страна Приключений</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#0E132B',
+              night: '#161C3D',
+              indigo: '#252F5A',
+              lumi: '#58C3E5',
+              gold: '#FFC83B',
+              coral: '#FF6B6B',
+              mint: '#34D399',
+              violet: '#A78BFA'
+            }
+          },
+          fontFamily: {
+            sans: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+<!-- Typography & Foundational Layout Styles -->
+<style data-purpose="typography">
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      background-color: #0b0f24;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+  </style>
+<!-- TV 10-Foot Focus & Spatial Animations -->
+<style data-purpose="spatial-animations">
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.06); }
+    }
+    @keyframes beamSweep {
+      0% { opacity: 0.15; transform: rotate(-5deg); }
+      50% { opacity: 0.4; transform: rotate(5deg); }
+      100% { opacity: 0.15; transform: rotate(-5deg); }
+    }
+    @keyframes lumiHover {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-12px) scale(1.03); }
+    }
+
+    .animate-float {
+      animation: floatGentle 6s ease-in-out infinite;
+    }
+    .animate-pulse-glow {
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+    .animate-lumi {
+      animation: lumiHover 3.2s ease-in-out infinite;
+    }
+
+    /* Spatial Island Navigation Card States */
+    .world-station {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+    .world-station:focus,
+    .world-station.active-island {
+      transform: scale(1.08) translateY(-14px);
+      z-index: 40;
+      outline: none;
+    }
+    .world-station:focus .selection-ring,
+    .world-station.active-island .selection-ring {
+      opacity: 1;
+      transform: scale(1.04);
+      box-shadow: 0 0 45px rgba(88, 195, 229, 0.65), 0 0 0 4px #58C3E5;
+    }
+    .world-station:focus .preview-badge,
+    .world-station.active-island .preview-badge {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  </style>
+</head>
+<body class="w-[1920px] h-[1080px] text-white overflow-hidden relative bg-[#0C1128]">
+<!-- BEGIN: AmbientEnchantedBackground -->
+<!-- Layered magical diorama backdrop: sky gradient, stars, aurora mist -->
+<div class="absolute inset-0 pointer-events-none z-0" data-purpose="background-layers">
+<!-- Deep night gradient -->
+<div class="absolute inset-0 bg-gradient-to-b from-[#090D21] via-[#12193E] to-[#1E2652]"></div>
+<!-- Cosmic Aurora Glows -->
+<div class="absolute -top-32 left-1/4 w-[900px] h-[450px] bg-gradient-to-r from-emerald-500/20 via-sky-500/25 to-indigo-500/10 blur-[110px] rounded-full animate-pulse-glow"></div>
+<div class="absolute top-1/4 right-10 w-[700px] h-[400px] bg-gradient-to-br from-violet-600/20 via-pink-500/15 to-transparent blur-[120px] rounded-full"></div>
+<!-- Soft Twinkling Constellation Dots -->
+<div class="absolute inset-0 opacity-40">
+<div class="absolute top-[8%] left-[12%] w-2 h-2 bg-white rounded-full shadow-[0_0_8px_#fff]"></div>
+<div class="absolute top-[16%] left-[34%] w-1.5 h-1.5 bg-sky-200 rounded-full"></div>
+<div class="absolute top-[11%] left-[58%] w-2.5 h-2.5 bg-yellow-200 rounded-full shadow-[0_0_10px_#ffe066]"></div>
+<div class="absolute top-[22%] left-[84%] w-1.5 h-1.5 bg-white rounded-full"></div>
+<div class="absolute top-[38%] left-[6%] w-2 h-2 bg-cyan-200 rounded-full"></div>
+<div class="absolute top-[42%] left-[92%] w-2 h-2 bg-amber-200 rounded-full"></div>
+</div>
+<!-- Panoramic Distant Mountain Silhouettes & Nebula Horizon -->
+<svg class="absolute bottom-0 w-full h-[420px] opacity-35" fill="none" viewbox="0 0 1920 420">
+<path d="M0 320L180 260C320 213 470 290 620 240L790 180C940 130 1110 240 1260 210L1450 170C1610 137 1760 220 1920 190V420H0V320Z" fill="#151C42"></path>
+<path d="M0 380L240 330C410 295 560 360 740 325L960 280C1180 240 1320 330 1520 295L1740 260C1830 245 1920 270 1920 270V420H0V380Z" fill="#0D132D"></path>
+</svg>
+</div>
+<!-- END: AmbientEnchantedBackground -->
+<!-- BEGIN: ApplicationCanvas (80px Overscan Protection Safe Area) -->
+<main class="relative z-10 w-full h-full p-20 flex flex-col justify-between">
+<!-- BEGIN: TopBarNavigation -->
+<!-- Safe Area Header: Brand, Profile & TV Status Indicators -->
+<header class="flex items-center justify-between h-20 w-full" data-purpose="tv-top-bar">
+<!-- FamilyTV Branding & Mascot Tag -->
+<div class="flex items-center space-x-5">
+<div class="w-16 h-16 rounded-3xl bg-gradient-to-tr from-cyan-400 to-sky-200 p-1 shadow-lg shadow-cyan-500/30 flex items-center justify-center">
+<!-- Mascot Mini Lumi Badge Face -->
+<div class="w-full h-full bg-[#58C3E5] rounded-[22px] flex items-center justify-center relative overflow-hidden">
+<div class="w-2.5 h-2.5 bg-[#162740] rounded-full absolute left-3 top-5"></div>
+<div class="w-2.5 h-2.5 bg-[#162740] rounded-full absolute right-3 top-5"></div>
+<div class="w-4 h-2 border-b-2 border-[#162740] rounded-full absolute bottom-4"></div>
+<div class="w-1.5 h-3 bg-white/60 rounded-full absolute top-1 right-2"></div>
+</div>
+</div>
+<div>
+<div class="flex items-center space-x-3">
+<h1 class="text-3xl font-extrabold tracking-tight text-white drop-shadow-md">FamilyTV</h1>
+<span class="px-3 py-1 rounded-full text-xs uppercase font-bold tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+              Детский режим
+            </span>
+</div>
+<p class="text-sky-200/80 text-lg font-medium">Волшебная Поляна: выбирай остров стрелками на пульте</p>
+</div>
+</div>
+<!-- Quick Action TV Pills (10-Foot Target Dimensions) -->
+<div class="flex items-center space-x-4">
+<!-- Voice Assistant Indicator -->
+<button class="h-14 px-6 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 focus:ring-4 focus:ring-sky-400 focus:outline-none flex items-center space-x-3 transition-all backdrop-blur-md" tabindex="0">
+<svg class="w-6 h-6 text-sky-300" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"></path>
+<path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"></path>
+</svg>
+<span class="text-lg font-semibold tracking-wide">«Луми, давай играть!»</span>
+</button>
+<!-- Parents Lounge Button -->
+<button class="h-14 px-7 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 focus:ring-4 focus:ring-sky-400 focus:outline-none flex items-center space-x-3 transition-all backdrop-blur-md" tabindex="0">
+<svg class="w-6 h-6 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="3"></circle>
+<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+</svg>
+<span class="text-lg font-semibold tracking-wide">Родителям</span>
+</button>
+</div>
+</header>
+<!-- END: TopBarNavigation -->
+<!-- BEGIN: VisualPlaygroundPanorama -->
+<!-- Centerpiece Interactive Living Diorama: 5 Thematic Environmental Landmarks -->
+<section class="relative w-full my-auto py-2" data-purpose="interactive-diorama">
+<!-- Active Stage Spotlight Beam (Highlights active focus zone) -->
+<div class="absolute top-1/2 left-[28%] -translate-y-1/2 w-80 h-[480px] bg-gradient-to-b from-sky-300/20 via-sky-400/5 to-transparent blur-2xl pointer-events-none transition-all duration-500 transform -rotate-3" id="active-spotlight"></div>
+<!-- Islands Grid Layout: Clean Left-to-Right 5-Station Spatial Layout -->
+<div class="grid grid-cols-5 gap-7 items-end relative z-10">
+<!-- STATION 1: Смотреть (Cinema Airship / Звёздный Кинотеатр) -->
+<article class="world-station group rounded-3xl p-5 cursor-pointer bg-gradient-to-b from-[#1C2454]/90 to-[#121838]/95 border-2 border-indigo-400/30 backdrop-blur-xl shadow-2xl flex flex-col items-center" data-purpose="world-station" data-station-id="watch" tabindex="0">
+<div class="selection-ring absolute -inset-2 rounded-[28px] border-2 border-sky-400/80 opacity-0 transition-all pointer-events-none"></div>
+<!-- Environmental Landmark Art: Floating Observatory Airship -->
+<div class="w-full h-44 rounded-2xl bg-gradient-to-b from-indigo-900/60 to-blue-950/80 flex items-center justify-center relative overflow-hidden mb-4 group-hover:scale-105 transition-transform duration-300">
+<!-- Starlight Glow -->
+<div class="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-transparent"></div>
+<!-- Airship Silhouette SVG Art -->
+<svg class="w-32 h-32 text-sky-300 drop-shadow-[0_10px_20px_rgba(56,189,248,0.35)] animate-float" fill="none" viewbox="0 0 120 120">
+<!-- Airship Body -->
+<ellipse cx="60" cy="52" fill="#38BDF8" fill-opacity="0.85" rx="46" ry="24"></ellipse>
+<ellipse cx="60" cy="52" fill="#1E293B" rx="38" ry="18"></ellipse>
+<!-- Screen Lens Beam -->
+<polygon fill="url(#lensBeam)" opacity="0.35" points="60,54 20,95 100,95"></polygon>
+<!-- Cinema Reel Propeller -->
+<circle cx="20" cy="52" fill="#F8FAFC" r="7"></circle>
+<circle cx="20" cy="52" fill="#0284C7" r="3"></circle>
+<rect fill="#FBBF24" height="10" rx="4" width="16" x="52" y="70"></rect>
+<defs>
+<lineargradient id="lensBeam" x1="60" x2="60" y1="54" y2="95">
+<stop stop-color="#38BDF8"></stop>
+<stop offset="1" stop-color="#38BDF8" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+<span class="absolute bottom-2 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/30 text-blue-200 border border-blue-400/30">
+              Мультфильмы &amp; Истории
+            </span>
+</div>
+<!-- Station Label & Non-Reader Iconic Badge -->
+<div class="text-center">
+<span class="text-xs uppercase font-extrabold tracking-wider text-sky-400">Остров 1</span>
+<h2 class="text-2xl font-black tracking-wide text-white group-focus:text-sky-300">Смотреть</h2>
+<p class="text-sm text-sky-200/70 mt-1">Кино-дирижабль и сказки</p>
+</div>
+<!-- TV Mini Quick Preview Pill (Reveals on Focus) -->
+<div class="preview-badge mt-3 opacity-80 group-focus:opacity-100 transition-opacity bg-white/10 rounded-xl px-3 py-1.5 flex items-center space-x-2 border border-white/10">
+<span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
+<span class="text-xs font-bold text-sky-100">Новая серия: Звёздный патруль</span>
+</div>
+</article>
+<!-- STATION 2: Играть (Active Focused Island — Игровая Крепость) -->
+<article class="world-station active-island group rounded-3xl p-5 cursor-pointer bg-gradient-to-b from-[#1E2D62] to-[#141C47] border-2 border-emerald-400/80 backdrop-blur-xl shadow-2xl flex flex-col items-center" data-purpose="world-station" data-station-id="play" tabindex="0">
+<div class="selection-ring absolute -inset-2 rounded-[28px] border-2 border-emerald-400 opacity-100 transition-all pointer-events-none shadow-[0_0_40px_rgba(52,211,153,0.5)]"></div>
+<!-- LUMI MASCOT HOVERING OVER ACTIVE STATION -->
+<div class="absolute -top-16 -right-6 z-50 animate-lumi pointer-events-none" data-purpose="lumi-character">
+<div class="relative w-24 h-24">
+<!-- Glow Aura -->
+<div class="absolute inset-0 bg-cyan-400/40 rounded-full blur-xl animate-pulse"></div>
+<!-- Mini Lumi Character Icon Container -->
+<div class="w-24 h-24 rounded-full bg-gradient-to-b from-[#83E1FF] via-[#58C3E5] to-[#34A4CA] p-1.5 shadow-2xl border-2 border-white/60 flex items-center justify-center relative">
+<!-- Antenna -->
+<div class="absolute -top-3 w-2 h-4 bg-sky-300 rounded-full"></div>
+<div class="absolute -top-4 w-3.5 h-3.5 bg-yellow-300 rounded-full border border-white shadow-[0_0_8px_#fde047]"></div>
+<!-- Eyes -->
+<div class="w-3.5 h-3.5 bg-[#12233D] rounded-full absolute left-5 top-8">
+<div class="w-1.5 h-1.5 bg-white rounded-full ml-1 mt-0.5"></div>
+</div>
+<div class="w-3.5 h-3.5 bg-[#12233D] rounded-full absolute right-5 top-8">
+<div class="w-1.5 h-1.5 bg-white rounded-full ml-1 mt-0.5"></div>
+</div>
+<!-- Cheeks -->
+<div class="w-3 h-1.5 bg-pink-400/50 rounded-full absolute left-4 top-12"></div>
+<div class="w-3 h-1.5 bg-pink-400/50 rounded-full absolute right-4 top-12"></div>
+<!-- Big Friendly Smile -->
+<div class="w-6 h-3 border-b-[3px] border-[#12233D] rounded-full absolute bottom-5"></div>
+<!-- Magic Wand / Toy Waving Hand -->
+<div class="absolute -left-2 top-11 bg-amber-300 text-[10px] px-1.5 py-0.5 rounded-full font-black text-amber-950 shadow">
+                  ★
+                </div>
+</div>
+</div>
+</div>
+<!-- Environmental Landmark Art: Toy Workshop & Play Castle -->
+<div class="w-full h-44 rounded-2xl bg-gradient-to-b from-emerald-950/70 to-teal-950/90 flex items-center justify-center relative overflow-hidden mb-4">
+<!-- Castle & Cogwheel Artwork -->
+<svg class="w-32 h-32 text-emerald-300 drop-shadow-[0_10px_25px_rgba(52,211,153,0.45)]" fill="none" viewbox="0 0 120 120">
+<!-- Castle Base & Battlements -->
+<rect fill="#10B981" height="42" rx="6" width="64" x="28" y="55"></rect>
+<rect fill="#34D399" height="24" rx="3" width="16" x="24" y="44"></rect>
+<rect fill="#34D399" height="24" rx="3" width="16" x="80" y="44"></rect>
+<rect fill="#6EE7B7" height="28" rx="3" width="20" x="50" y="38"></rect>
+<!-- Castle Gate -->
+<path d="M50 97V72C50 66.5 54.5 62 60 62C65.5 62 70 66.5 70 72V97H50Z" fill="#064E3B"></path>
+<!-- Magic Flying Blocks (Geometry Toy) -->
+<rect fill="#FBBF24" height="12" rx="2" transform="rotate(15 36 24)" width="12" x="36" y="24"></rect>
+<circle cx="86" cy="28" fill="#F43F5E" r="7"></circle>
+<polygon fill="#60A5FA" points="60,18 68,32 52,32"></polygon>
+</svg>
+<span class="absolute bottom-2 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400/40">
+              Логика и Счёт
+            </span>
+</div>
+<div class="text-center">
+<span class="text-xs uppercase font-extrabold tracking-wider text-emerald-300">Остров 2 • Выбран</span>
+<h2 class="text-2xl font-black tracking-wide text-white">Играть</h2>
+<p class="text-sm text-emerald-200/80 mt-1">Крепость весёлых игр</p>
+</div>
+<!-- Featured Activities Callout (Based on DataStore: Математика, Цвета) -->
+<div class="preview-badge mt-3 w-full bg-emerald-950/80 border border-emerald-400/40 rounded-2xl p-2.5 flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="w-6 h-6 rounded-lg bg-emerald-500/30 flex items-center justify-center text-xs font-bold text-emerald-200">12</span>
+<span class="text-xs font-bold text-white tracking-wide">Математика &amp; Цвета</span>
+</div>
+<span class="text-[11px] font-black uppercase tracking-wider text-emerald-300 bg-emerald-400/20 px-2 py-0.5 rounded-md">
+              OK
+            </span>
+</div>
+</article>
+<!-- STATION 3: Исследовать (Secret Treehouse Science Lab & Observatory) -->
+<article class="world-station group rounded-3xl p-5 cursor-pointer bg-gradient-to-b from-[#1C274E]/90 to-[#111933]/95 border-2 border-teal-400/30 backdrop-blur-xl shadow-2xl flex flex-col items-center" data-purpose="world-station" data-station-id="explore" tabindex="0">
+<div class="selection-ring absolute -inset-2 rounded-[28px] border-2 border-cyan-400/80 opacity-0 transition-all pointer-events-none"></div>
+<!-- Environmental Landmark Art: Bio Treehouse & Observatory Dome -->
+<div class="w-full h-44 rounded-2xl bg-gradient-to-b from-teal-950/60 to-cyan-950/80 flex items-center justify-center relative overflow-hidden mb-4 group-hover:scale-105 transition-transform duration-300">
+<svg class="w-32 h-32 text-cyan-300 drop-shadow-[0_10px_20px_rgba(45,212,191,0.3)] animate-float" fill="none" style="animation-delay: -2s;" viewbox="0 0 120 120">
+<!-- Giant Tree Silhouette -->
+<path d="M48 98C48 70 54 62 46 50C38 38 42 22 60 22C78 22 82 38 74 50C66 62 72 70 72 98H48Z" fill="#115E59"></path>
+<!-- Glass Observatory Dome inside Tree -->
+<circle cx="60" cy="46" fill="#2DD4BF" fill-opacity="0.35" r="22" stroke="#5EEAD4" stroke-width="2"></circle>
+<!-- Telescope Poking Out -->
+<line stroke="#FDE047" stroke-linecap="round" stroke-width="5" x1="60" x2="84" y1="46" y2="30"></line>
+<!-- Mini Planet Rings -->
+<ellipse cx="60" cy="46" rx="26" ry="7" stroke="#99F6E4" stroke-width="2" transform="rotate(-18 60 46)"></ellipse>
+</svg>
+<span class="absolute bottom-2 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-teal-500/30 text-teal-200 border border-teal-400/30">
+              Наука &amp; Погода
+            </span>
+</div>
+<div class="text-center">
+<span class="text-xs uppercase font-extrabold tracking-wider text-teal-300">Остров 3</span>
+<h2 class="text-2xl font-black tracking-wide text-white group-focus:text-teal-300">Исследовать</h2>
+<p class="text-sm text-teal-200/70 mt-1">Дом-обсерватория в кроне</p>
+</div>
+<div class="preview-badge mt-3 opacity-80 group-focus:opacity-100 transition-opacity bg-white/10 rounded-xl px-3 py-1.5 flex items-center space-x-2 border border-white/10">
+<span class="w-2 h-2 rounded-full bg-teal-400"></span>
+<span class="text-xs font-bold text-teal-100">Лаборатория погоды</span>
+</div>
+</article>
+<!-- STATION 4: Создавать (Color Fountain & Magic Easel Glade) -->
+<article class="world-station group rounded-3xl p-5 cursor-pointer bg-gradient-to-b from-[#2B1E48]/90 to-[#1A122E]/95 border-2 border-pink-400/30 backdrop-blur-xl shadow-2xl flex flex-col items-center" data-purpose="world-station" data-station-id="create" tabindex="0">
+<div class="selection-ring absolute -inset-2 rounded-[28px] border-2 border-pink-400/80 opacity-0 transition-all pointer-events-none"></div>
+<!-- Environmental Landmark Art: Color Geyser & Magic Paint Easel -->
+<div class="w-full h-44 rounded-2xl bg-gradient-to-b from-purple-950/60 to-pink-950/80 flex items-center justify-center relative overflow-hidden mb-4 group-hover:scale-105 transition-transform duration-300">
+<svg class="w-32 h-32 text-pink-300 drop-shadow-[0_10px_20px_rgba(244,114,182,0.3)] animate-float" fill="none" style="animation-delay: -3.5s;" viewbox="0 0 120 120">
+<!-- Magic Canvas / Easel Stand -->
+<line stroke="#A855F7" stroke-linecap="round" stroke-width="4" x1="38" x2="56" y1="96" y2="38"></line>
+<line stroke="#A855F7" stroke-linecap="round" stroke-width="4" x1="82" x2="64" y1="96" y2="38"></line>
+<line stroke="#9333EA" stroke-width="3" x1="60" x2="60" y1="36" y2="96"></line>
+<!-- Glowing Paint Palette Canvas -->
+<rect fill="#F472B6" height="34" rx="5" width="48" x="36" y="38"></rect>
+<!-- Rainbow Color Splashes -->
+<circle cx="48" cy="52" fill="#FDE047" r="5"></circle>
+<circle cx="60" cy="56" fill="#38BDF8" r="6"></circle>
+<circle cx="72" cy="50" fill="#34D399" r="4.5"></circle>
+<!-- Magic Spark Brush -->
+<path d="M78 28L88 18L92 22L82 32Z" fill="#FBBF24"></path>
+<path d="M78 28L72 34L76 38L82 32Z" fill="#FB923C"></path>
+</svg>
+<span class="absolute bottom-2 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-pink-500/30 text-pink-200 border border-pink-400/30">
+              Краски &amp; Музыка
+            </span>
+</div>
+<div class="text-center">
+<span class="text-xs uppercase font-extrabold tracking-wider text-pink-300">Остров 4</span>
+<h2 class="text-2xl font-black tracking-wide text-white group-focus:text-pink-300">Создавать</h2>
+<p class="text-sm text-pink-200/70 mt-1">Поляна живых красок</p>
+</div>
+<div class="preview-badge mt-3 opacity-80 group-focus:opacity-100 transition-opacity bg-white/10 rounded-xl px-3 py-1.5 flex items-center space-x-2 border border-white/10">
+<span class="w-2 h-2 rounded-full bg-pink-400"></span>
+<span class="text-xs font-bold text-pink-100">Рисуем созвездия</span>
+</div>
+</article>
+<!-- STATION 5: Двигаться (Rhythm Meadow & Trampoline Park) -->
+<article class="world-station group rounded-3xl p-5 cursor-pointer bg-gradient-to-b from-[#2E2416]/90 to-[#1B140B]/95 border-2 border-amber-400/30 backdrop-blur-xl shadow-2xl flex flex-col items-center" data-purpose="world-station" data-station-id="move" tabindex="0">
+<div class="selection-ring absolute -inset-2 rounded-[28px] border-2 border-amber-400/80 opacity-0 transition-all pointer-events-none"></div>
+<!-- Environmental Landmark Art: Trampoline Mushroom & Energy Spring -->
+<div class="w-full h-44 rounded-2xl bg-gradient-to-b from-amber-950/60 to-yellow-950/80 flex items-center justify-center relative overflow-hidden mb-4 group-hover:scale-105 transition-transform duration-300">
+<svg class="w-32 h-32 text-amber-300 drop-shadow-[0_10px_20px_rgba(251,191,36,0.3)] animate-float" fill="none" style="animation-delay: -1s;" viewbox="0 0 120 120">
+<!-- Trampoline Bounce Pad -->
+<ellipse cx="60" cy="74" fill="#F59E0B" rx="42" ry="16"></ellipse>
+<ellipse cx="60" cy="72" fill="#FEF08A" rx="34" ry="11"></ellipse>
+<path d="M26 76L20 96M94 76L100 96M45 84L42 98M75 84L78 98" stroke="#D97706" stroke-linecap="round" stroke-width="4"></path>
+<!-- Rhythm Musical Notes Bouncing -->
+<circle cx="50" cy="38" fill="#FDE047" r="6"></circle>
+<rect fill="#FDE047" height="15" width="4" x="54" y="24"></rect>
+<circle cx="70" cy="32" fill="#FDE047" r="6"></circle>
+<rect fill="#FDE047" height="15" width="4" x="74" y="18"></rect>
+<polygon fill="#FDE047" points="54,24 78,18 78,22 54,28"></polygon>
+</svg>
+<span class="absolute bottom-2 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/30 text-amber-200 border border-amber-400/30">
+              Зарядка &amp; Танцы
+            </span>
+</div>
+<div class="text-center">
+<span class="text-xs uppercase font-extrabold tracking-wider text-amber-300">Остров 5</span>
+<h2 class="text-2xl font-black tracking-wide text-white group-focus:text-amber-300">Двигаться</h2>
+<p class="text-sm text-amber-200/70 mt-1">Трамплины и ритм-парк</p>
+</div>
+<div class="preview-badge mt-3 opacity-80 group-focus:opacity-100 transition-opacity bg-white/10 rounded-xl px-3 py-1.5 flex items-center space-x-2 border border-white/10">
+<span class="w-2 h-2 rounded-full bg-amber-400"></span>
+<span class="text-xs font-bold text-amber-100">Космическая разминка</span>
+</div>
+</article>
+</div>
+</section>
+<!-- END: VisualPlaygroundPanorama -->
+<!-- BEGIN: ForegroundResumeLaunchpad -->
+<!-- Front Stage Hero Dock: "1-Click Resume" for Northern Lights Starship Quest -->
+<section class="w-full" data-purpose="resume-mission-launchpad">
+<div class="group w-full bg-gradient-to-r from-[#17234F]/95 via-[#1E306E]/95 to-[#162758]/95 border-2 border-cyan-400/60 rounded-[32px] p-6 px-8 flex items-center justify-between shadow-[0_15px_40px_rgba(8,12,30,0.8)] backdrop-blur-2xl focus:border-cyan-300 focus:ring-4 focus:ring-cyan-400/60 focus:outline-none transition-all duration-300 transform focus:-translate-y-1" tabindex="0">
+<!-- Left: Mission Status & Iconography -->
+<div class="flex items-center space-x-6">
+<!-- Starship Glowing Icon Capsule -->
+<div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-cyan-600 to-sky-400 p-0.5 flex items-center justify-center shadow-lg shadow-cyan-500/40">
+<div class="w-full h-full bg-[#111C3D] rounded-[14px] flex items-center justify-center">
+<svg class="w-12 h-12 text-cyan-300 animate-pulse" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2.5s4.5 4.5 4.5 10.5c0 3.5-2 6.5-4.5 6.5S7.5 16.5 7.5 13C7.5 7 12 2.5 12 2.5z"></path>
+<circle cx="12" cy="12" fill="#111C3D" r="2.5"></circle>
+<path d="M5.5 14.5L3 17l4 1 1-3.5zM18.5 14.5L21 17l-4 1-1-3.5z" fill="#38BDF8"></path>
+</svg>
+</div>
+</div>
+<!-- Mission Narrative Details (Synchronized with 01_layout_full.png data) -->
+<div>
+<div class="flex items-center space-x-3 mb-1">
+<span class="px-3 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-cyan-400/20 text-cyan-300 border border-cyan-300/30">
+                Текущая миссия • Продолжить в 1 клик
+              </span>
+<span class="text-sm text-sky-200/60">Сохранено 15 минут назад</span>
+</div>
+<h3 class="text-3xl font-extrabold text-white tracking-tight">
+              Корабль «Северное сияние» — Запуск двигателей
+            </h3>
+<p class="text-base text-cyan-100/80 mt-0.5">
+              Луми ждёт тебя у главного пульта: осталось починить генератор звёздной энергии!
+            </p>
+</div>
+</div>
+<!-- Right: Primary 10-Foot Action Button -->
+<div class="flex items-center space-x-5">
+<div class="text-right">
+<div class="text-xs uppercase font-bold tracking-widest text-sky-300">Быстрый старт</div>
+<div class="text-sm font-medium text-white/70">Нажмите центральную кнопку</div>
+</div>
+<button class="h-16 px-10 rounded-2xl bg-gradient-to-r from-cyan-400 to-sky-300 hover:from-cyan-300 hover:to-white text-slate-950 font-black text-2xl tracking-wide shadow-[0_0_30px_rgba(56,189,248,0.5)] flex items-center space-x-3 group-focus:scale-105 group-focus:shadow-[0_0_45px_rgba(56,189,248,0.85)] transition-all duration-300" tabindex="-1">
+<span>Продолжить</span>
+<svg class="w-7 h-7 text-slate-950" fill="currentColor" viewbox="0 0 24 24">
+<path d="M8 5v14l11-7z"></path>
+</svg>
+</button>
+</div>
+</div>
+</section>
+<!-- END: ForegroundResumeLaunchpad -->
+<!-- BEGIN: RemoteControlHelperFooter -->
+<!-- Android TV Standard Remote Legend / D-Pad Dock -->
+<footer class="flex items-center justify-between text-sm text-sky-200/70 border-t border-white/10 pt-4 mt-2" data-purpose="remote-legend">
+<!-- D-Pad Navigation Hint -->
+<div class="flex items-center space-x-6">
+<div class="flex items-center space-x-2">
+<span class="px-2.5 py-1 rounded-lg bg-white/15 text-white font-mono font-bold text-xs border border-white/20">◀ ▶</span>
+<span>Переход между островами</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="px-2.5 py-1 rounded-lg bg-white/15 text-white font-mono font-bold text-xs border border-white/20">▲ ▼</span>
+<span>К ракете / в меню</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="px-3 py-1 rounded-lg bg-emerald-400 text-slate-950 font-black text-xs shadow-sm">OK</span>
+<span class="text-white font-medium">Войти в мир</span>
+</div>
+</div>
+<!-- Quick Remote Shortcuts -->
+<div class="flex items-center space-x-6">
+<div class="flex items-center space-x-2">
+<span class="w-6 h-6 rounded-full bg-cyan-400/20 text-cyan-300 flex items-center justify-center font-bold text-xs border border-cyan-400/40">🎙</span>
+<span>Удерживайте микрофон для Луми</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="px-2.5 py-1 rounded-lg bg-white/15 text-white font-semibold text-xs border border-white/20">Домой</span>
+<span>Главное меню</span>
+</div>
+</div>
+</footer>
+<!-- END: RemoteControlHelperFooter -->
+</main>
+<!-- END: ApplicationCanvas -->
+<!-- TV D-Pad Spatial Navigation Script -->
+<script data-purpose="dpad-remote-controller">
+    // Minimalistic Remote Control simulator for smooth 10-foot interaction demonstration
+    document.addEventListener('DOMContentLoaded', () => {
+      const stations = document.querySelectorAll('.world-station');
+      const spotlight = document.getElementById('active-spotlight');
+
+      stations.forEach((station, index) => {
+        station.addEventListener('focus', () => {
+          stations.forEach(s => s.classList.remove('active-island'));
+          station.classList.add('active-island');
+
+          // Dynamically shift spotlight beam over active island
+          const offsets = ['8%', '28%', '48%', '68%', '88%'];
+          if (spotlight && offsets[index]) {
+            spotlight.style.left = offsets[index];
+          }
+        });
+      });
+    });
+  </script>
+</body></html>

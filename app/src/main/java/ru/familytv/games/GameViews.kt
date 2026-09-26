@@ -24,11 +24,24 @@ internal object GameStyle {
     val teal = Color.rgb(25, 115, 99)
     val peach = Color.rgb(255, 230, 217)
     val lavender = Color.rgb(231, 230, 251)
+
     fun dp(context: Context, value: Int) = (value * context.resources.displayMetrics.density).toInt()
+
+    /** Reads Parent Mode accessibility prefs without coupling to parent package. */
+    fun textScale(context: Context): Float {
+        val prefs = context.applicationContext.getSharedPreferences("familytv_family_settings", Context.MODE_PRIVATE)
+        return if (prefs.getBoolean("large_text", false)) 1.28f else 1f
+    }
+
+    fun focusStrokeDp(context: Context): Int {
+        val prefs = context.applicationContext.getSharedPreferences("familytv_family_settings", Context.MODE_PRIVATE)
+        return if (prefs.getBoolean("high_focus", true)) 5 else 3
+    }
+
     fun rounded(context: Context, color: Int, radius: Int = 22, stroke: Int = 0) = GradientDrawable().apply {
         setColor(color)
         cornerRadius = dp(context, radius).toFloat()
-        if (stroke != 0) setStroke(dp(context, 3), stroke)
+        if (stroke != 0) setStroke(dp(context, focusStrokeDp(context)), stroke)
     }
     fun focusBackground(context: Context, color: Int) = StateListDrawable().apply {
         addState(intArrayOf(android.R.attr.state_focused), rounded(context, color, stroke = teal))
@@ -37,13 +50,13 @@ internal object GameStyle {
     }
     fun text(context: Context, value: String, size: Float, bold: Boolean = false) = TextView(context).apply {
         text = value
-        textSize = size
+        textSize = size * textScale(context)
         setTextColor(ink)
         if (bold) typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
     }
     fun button(context: Context, title: String, action: () -> Unit) = Button(context).apply {
         text = title
-        textSize = 18f
+        textSize = 18f * textScale(context)
         isAllCaps = false
         setTextColor(ink)
         minHeight = dp(context, 52)
@@ -51,6 +64,9 @@ internal object GameStyle {
         setPadding(dp(context, 20), 0, dp(context, 20), 0)
         background = focusBackground(context, Color.WHITE)
         setOnClickListener { action() }
+        // TV: always focusable for D-pad; do not rely on touch
+        isFocusable = true
+        isFocusableInTouchMode = false
     }
 }
 

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=1920, height=1080, initial-scale=1.0" name="viewport"/>
+<title>FamilyTV — Попробуем ещё раз</title>
+<!-- Tailwind CSS CDN with forms & container queries plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cosmic: {
+              900: '#070B19',
+              800: '#0E172E',
+              700: '#172346',
+              cyan: '#38EDDE',
+              amber: '#F59E0B',
+              blue: '#3B82F6',
+              warm: '#FDE047'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+<!-- BEGIN: Custom TV Presentation Styles -->
+<style data-purpose="tv-screen-setup">
+    /* Fixed 1080p TV viewport with zero scroll and TV overscan safe padding */
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      min-width: 1920px;
+      min-height: 1080px;
+      max-width: 1920px;
+      max-height: 1080px;
+      overflow: hidden;
+      user-select: none;
+      background-color: #070B19;
+      color: #F8FAFC;
+    }
+  </style>
+<style data-purpose="glow-and-animations">
+    /* Gentle pulsing effect for the active target blue paint jar */
+    @keyframes gentlePulse {
+      0%, 100% {
+        box-shadow: 0 0 25px rgba(56, 237, 222, 0.45), 0 0 60px rgba(59, 130, 246, 0.35);
+        transform: translateY(-4px) scale(1.02);
+      }
+      50% {
+        box-shadow: 0 0 45px rgba(56, 237, 222, 0.75), 0 0 85px rgba(59, 130, 246, 0.55);
+        transform: translateY(-8px) scale(1.035);
+      }
+    }
+
+    .pulse-glow-active {
+      animation: gentlePulse 2.8s ease-in-out infinite;
+    }
+
+    /* Soft ambient shimmer for cosmic hint badge */
+    @keyframes softShimmer {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 1; }
+    }
+
+    .shimmer-hint {
+      animation: softShimmer 2s ease-in-out infinite;
+    }
+  </style>
+<!-- END: Custom TV Presentation Styles -->
+</head>
+<body class="relative flex flex-col justify-between font-sans antialiased overflow-hidden bg-slate-950 text-white">
+<!-- BEGIN: Background Ambient Layer -->
+<div class="absolute inset-0 pointer-events-none z-0 overflow-hidden" data-purpose="ambient-lighting">
+<div class="absolute -top-32 left-1/4 w-[700px] h-[700px] bg-cyan-600/10 rounded-full blur-[140px]"></div>
+<div class="absolute bottom-10 right-1/4 w-[800px] h-[600px] bg-blue-600/15 rounded-full blur-[160px]"></div>
+<div class="absolute top-1/2 left-1/3 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[150px]"></div>
+</div>
+<!-- END: Background Ambient Layer -->
+<!-- BEGIN: MainHeader -->
+<header class="relative z-20 flex items-center justify-between px-16 pt-9 pb-3" data-purpose="top-navigation-bar">
+<!-- Back Button -->
+<div class="flex items-center">
+<div class="flex items-center gap-3 px-6 py-2.5 rounded-full bg-slate-900/80 border border-slate-700/70 shadow-lg backdrop-blur-md text-slate-200">
+<span class="text-2xl text-cyan-300">‹</span>
+<span class="text-xl font-medium tracking-wide">Назад</span>
+</div>
+</div>
+<!-- Center: Gentle Lumi Comforting Prompt -->
+<div class="flex items-center gap-4 px-8 py-3 rounded-full bg-slate-900/85 border border-cyan-400/40 shadow-[0_0_30px_rgba(56,237,222,0.18)] backdrop-blur-md" data-purpose="lumi-gentle-dialogue">
+<!-- Lumi Avatar Icon -->
+<div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-500 flex items-center justify-center shadow-inner">
+<span class="text-xl">🤖</span>
+</div>
+<!-- Prompt text -->
+<p class="text-2xl tracking-wide font-normal text-slate-100">
+<span class="font-semibold text-cyan-300">Робот Люми:</span> «Нам нужен другой цвет! Попробуем синий, как звёздное небо.»
+      </p>
+</div>
+<!-- Header Right Meta -->
+<div class="flex items-center gap-5">
+<div class="px-5 py-2 rounded-full bg-slate-900/80 border border-slate-700/60 backdrop-blur-md text-lg text-slate-300 font-medium">
+        Задание <span class="text-cyan-300 font-semibold">3</span> из 5
+      </div>
+<div class="flex items-center gap-2.5 px-5 py-2 rounded-full bg-slate-900/80 border border-emerald-500/40 backdrop-blur-md text-emerald-300 font-medium text-lg">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+<span>🎤 Голос</span>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: CenterStage -->
+<main class="relative z-10 flex-1 flex items-center justify-center px-16 py-1" data-purpose="stage-game-canvas">
+<div class="relative w-[1376px] h-[610px] rounded-3xl overflow-hidden border border-slate-700/60 shadow-[0_20px_50px_rgba(0,0,0,0.65)] bg-slate-900/50 flex items-center justify-center">
+<!-- Rocket Encouraging Illustration (IMAGE_22) -->
+<img alt="Gentle try again encouragement scene with robot Lumi and wooden rocket waiting for blue color" class="w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida/AEtjO1W_wfunpN3x-e_fc8MtRq9mHWVHJtiVpivy642XfRRUMyVN2d-j-yF9rQ9nwrsXvr9Qxrzxu1op-XFBfk809ZFNaveUdVjidcPQs0XvS9P_BJ75pOTYrbuLprASOk-zpvCs3-X9utBeMf24ST4bUD0-FO-hFwKui-c2SUI_ZvVg6SfSbfoq44hooBpyUIUcyqbklyAOu3-l9IwQzgMr9CiuXCRUQAA6weErt517GRju5fkPYr-5yA3VDA"/>
+<!-- Subtle starlight corner vignette overlay to emphasize TV focus -->
+<div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/20"></div>
+<!-- Encouraging status overlay chip floating near top of rocket -->
+<div class="absolute top-6 left-8 flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-slate-950/80 border border-cyan-400/40 backdrop-blur-md text-cyan-200 shadow-lg">
+<span class="text-xl">✨</span>
+<span class="text-lg font-medium">Крыло ждёт синюю краску</span>
+</div>
+</div>
+</main>
+<!-- END: CenterStage -->
+<!-- BEGIN: BottomControls -->
+<section class="relative z-20 px-16 pb-7 flex flex-col gap-4" data-purpose="paint-selection-and-voice-controls">
+<div class="flex items-end justify-between gap-6">
+<!-- Left Voice Command Hint Pill -->
+<div class="w-[340px] flex items-center gap-3.5 p-4 rounded-2xl bg-slate-900/80 border border-slate-700/60 shadow-lg backdrop-blur-md" data-purpose="voice-command-hint">
+<div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300 text-2xl flex-shrink-0">
+          🎤
+        </div>
+<div>
+<div class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Голосовой ответ</div>
+<div class="text-xl font-bold text-cyan-200">Скажи: «Синий»</div>
+</div>
+</div>
+<!-- Center: 3 Paint Jar Cards -->
+<div class="flex items-center gap-6" data-purpose="paint-jars-selection">
+<!-- Jar 1: Red (Wrong previously selected, gently marked "Почти!") -->
+<div class="relative w-56 h-36 rounded-2xl bg-slate-900/70 border border-amber-500/40 p-3.5 flex flex-col items-center justify-between opacity-80 transition duration-300" data-purpose="red-jar-soft-feedback">
+<!-- Gentle soft amber badge -->
+<div class="absolute -top-3.5 px-3 py-1 rounded-full bg-amber-500/90 border border-amber-300/60 text-slate-950 font-bold text-xs shadow-md tracking-wider uppercase">
+            Почти!
+          </div>
+<div class="flex items-center justify-center pt-2">
+<!-- Red Jar Paint Color Indicator -->
+<div class="relative w-14 h-14 rounded-full bg-gradient-to-br from-rose-500 to-red-600 border-2 border-white/30 shadow-inner flex items-center justify-center">
+<span class="w-5 h-5 rounded-full bg-rose-400/50 blur-[2px]"></span>
+</div>
+</div>
+<div class="text-center pb-1">
+<div class="text-lg font-bold text-rose-200">Красный</div>
+<div class="text-xs text-slate-400 font-medium">Отдохнём немного</div>
+</div>
+</div>
+<!-- Jar 2: Blue (Invitingly highlighted with glowing teal border, Ready to choose!) -->
+<div class="relative w-64 h-40 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-cyan-300 p-4 flex flex-col items-center justify-between pulse-glow-active transition-all" data-purpose="blue-jar-active-target">
+<!-- Glowing Action Badge -->
+<div class="absolute -top-4 px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-black text-sm shadow-[0_0_15px_rgba(56,237,222,0.8)] tracking-wide flex items-center gap-1.5">
+<span>Выбери синий</span>
+<span class="bg-slate-950/20 px-1.5 py-0.2 rounded font-bold">[ OK ]</span>
+</div>
+<div class="flex items-center justify-center pt-2">
+<!-- Blue Jar Paint Color Indicator with Cyan Halo -->
+<div class="relative w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-4 border-cyan-200 shadow-[0_0_20px_rgba(56,237,222,0.6)] flex items-center justify-center">
+<span class="text-white text-xl font-bold">✓</span>
+</div>
+</div>
+<div class="text-center pb-1">
+<div class="text-2xl font-black text-cyan-200 tracking-wide">Синий</div>
+<div class="text-xs text-cyan-300 font-semibold">Идеально для космоса!</div>
+</div>
+</div>
+<!-- Jar 3: Yellow (Neutral state) -->
+<div class="relative w-56 h-36 rounded-2xl bg-slate-900/60 border border-slate-700/60 p-3.5 flex flex-col items-center justify-between opacity-85 transition duration-300" data-purpose="yellow-jar-neutral">
+<div class="flex items-center justify-center pt-3">
+<!-- Yellow Jar Paint Color Indicator -->
+<div class="w-14 h-14 rounded-full bg-gradient-to-br from-amber-300 to-yellow-500 border-2 border-white/20 shadow-inner flex items-center justify-center">
+<span class="w-4 h-4 rounded-full bg-yellow-200/60 blur-[2px]"></span>
+</div>
+</div>
+<div class="text-center pb-1">
+<div class="text-lg font-bold text-yellow-200">Жёлтый</div>
+<div class="text-xs text-slate-400 font-medium">Для звёздочек</div>
+</div>
+</div>
+</div>
+<!-- Right Hint from Lumi Card -->
+<div class="w-[340px] flex items-center gap-3.5 p-4 rounded-2xl bg-slate-900/80 border border-cyan-500/30 shadow-lg backdrop-blur-md shimmer-hint" data-purpose="lumi-gentle-hint-box">
+<div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-300 text-2xl flex-shrink-0">
+          💡
+        </div>
+<div>
+<div class="text-xs uppercase tracking-wider text-amber-300 font-semibold">Подсказка от Люми</div>
+<div class="text-lg font-medium text-slate-100 leading-snug">«Посмотри на синюю баночку»</div>
+</div>
+</div>
+</div>
+<!-- Bottom Remote Navigation Bar -->
+<footer class="w-full flex items-center justify-center pt-2 border-t border-slate-800/80" data-purpose="tv-remote-legend">
+<div class="flex items-center gap-8 text-base font-medium text-slate-400">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-cyan-300 font-semibold text-sm">◄ ►</span>
+<span>Выбор</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-cyan-400 text-slate-950 font-bold text-sm shadow-[0_0_10px_rgba(56,237,222,0.4)]">[ OK ]</span>
+<span class="text-slate-200 font-semibold">Подтвердить</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-semibold text-sm">▲</span>
+<span>Подсказка</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-emerald-400 font-semibold text-sm">🎤</span>
+<span>Голос</span>
+</div>
+</div>
+</footer>
+</section>
+<!-- END: BottomControls -->
+</body></html>

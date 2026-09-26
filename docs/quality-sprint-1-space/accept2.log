@@ -1,0 +1,9 @@
+=== Mon Sep 21 11:02:31 AM MSK 2026 ===
+  mCurrentFocus=Window{60db507 u0 ru.familytv/ru.familytv.adventure.AdventureActivity}
+REC=2272140
+UI hierchary dumped to: /sdcard/uidump.xml
+sample texts: ['Луми: Я Луми. Смотри на двигатель — он не горит. Давай починим!', 'Выберите всей командой.', 'Корабль «Северное сияние» не может взлететь — в двигателе нет энергии.', 'Двигатель молчит. Нужна энергия.', 'Дальше']
+has Энергия False
+has Камень False
+has Дальше True
+challenge_bytes=173298

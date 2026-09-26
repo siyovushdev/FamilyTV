@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "id": "forest-trail",
+  "title": "Следопыты: тайна леса",
+  "world": "explore",
+  "readingSupport": "AUDIO_FIRST",
+  "description": "Короткое лесное приключение на тех же механиках.",
+  "learningGoals": ["CLASSIFICATION", "PATTERN_RECOGNITION", "COUNTING", "COOPERATION"],
+  "estimatedMinutes": 7,
+  "difficulty": { "min": 1, "max": 2 },
+  "startSceneId": "hello",
+  "variables": {},
+  "objectives": [
+    { "id": "find", "title": "Находки" },
+    { "id": "sort", "title": "Группы" },
+    { "id": "path", "title": "Тропа" }
+  ],
+  "guide": { "id": "lumi", "name": "Луми", "defaultEmotion": "CURIOUS" },
+  "scenes": [
+    {
+      "id": "hello",
+      "kind": "STORY",
+      "text": "В лесу пропала карта следопытов. Поможем Луми её восстановить!",
+      "spokenPrompt": "Карта пропала. Поможем Луми.",
+      "narrationAudio": "forest-trail/hello.wav",
+      "guideLine": "Слушай шорохи. Смотри внимательно.",
+      "guideEmotion": "CURIOUS",
+      "groupMode": "ALL_TOGETHER",
+      "next": "search_leaves"
+    },
+    {
+      "id": "search_leaves",
+      "kind": "CHALLENGE",
+      "groupMode": "DISCUSS_TOGETHER",
+      "challenge": {
+        "id": "find-living",
+        "mechanic": "VISUAL_SEARCH",
+        "prompt": "Найди двух живых существ на поляне.",
+        "spokenPrompt": "Найди двух живых существ.",
+        "promptAudio": "forest-trail/find-living.wav",
+        "learningGoals": ["CLASSIFICATION", "COUNTING"],
+        "scaffolding": {
+          "hint1": "Живое может двигаться и расти.",
+          "hint2": "Подсвечу существ.",
+          "visualHint": true,
+          "explanation": "Белка и птица — живые. Камень и шишка — нет."
+        },
+        "params": {
+          "objects": [
+            { "id": "squirrel", "label": "Белка", "voiceAliases": ["белка"] },
+            { "id": "rock", "label": "Камень", "voiceAliases": ["камень"] },
+            { "id": "bird", "label": "Птица", "voiceAliases": ["птица"] },
+            { "id": "cone", "label": "Шишка", "voiceAliases": ["шишка"] }
+          ],
+          "requiredIds": ["squirrel", "bird"],
+          "minSelect": 2
+        },
+        "successSets": { "obj:find": 1 },
+        "successNext": "sort_nature"
+      }
+    },
+    {
+      "id": "sort_nature",
+      "kind": "CHALLENGE",
+      "groupMode": "TAKE_TURNS",
+      "challenge": {
+        "id": "plant-animal",
+        "mechanic": "SORT_AND_CLASSIFY",
+        "prompt": "Что растение, а что животное?",
+        "spokenPrompt": "Что растение? Что животное?",
+        "promptAudio": "forest-trail/sort-nature.wav",
+        "learningGoals": ["CLASSIFICATION"],
+        "scaffolding": {
+          "hint1": "Растения обычно зелёные и растут на месте.",
+          "explanation": "Ёлка — растение, лиса — животное."
+        },
+        "params": {
+          "categories": [
+            { "id": "plant", "label": "Растение" },
+            { "id": "animal", "label": "Животное" }
+          ],
+          "items": [
+            { "id": "fir", "label": "Ёлка", "correctCategoryId": "plant", "voiceAliases": ["елка", "ёлка"] },
+            { "id": "fox", "label": "Лиса", "correctCategoryId": "animal", "voiceAliases": ["лиса"] },
+            { "id": "moss", "label": "Мох", "correctCategoryId": "plant", "voiceAliases": ["мох"] }
+          ]
+        },
+        "successSets": { "obj:sort": 1 },
+        "successNext": "trail_seq"
+      }
+    },
+    {
+      "id": "trail_seq",
+      "kind": "CHALLENGE",
+      "groupMode": "ALL_TOGETHER",
+      "challenge": {
+        "id": "footprint-seq",
+        "mechanic": "PATTERN_SEQUENCE",
+        "prompt": "Следы: большой, маленький, большой, ?. Что дальше?",
+        "spokenPrompt": "Большой. Маленький. Большой. Что дальше?",
+        "promptAudio": "forest-trail/trail-seq.wav",
+        "learningGoals": ["PATTERN_RECOGNITION"],
+        "scaffolding": {
+          "hint1": "Ритм повторяется.",
+          "explanation": "Большой — маленький — большой — маленький."
+        },
+        "params": {
+          "display": ["Б", "м", "Б", "?"],
+          "blankIndex": 3,
+          "options": ["Б", "м", "С"],
+          "correctOption": "м",
+          "voiceAccept": ["маленький", "м"]
+        },
+        "successSets": { "obj:path": 1 },
+        "successNext": "voice_why"
+      }
+    },
+    {
+      "id": "voice_why",
+      "kind": "DIALOGUE",
+      "prompt": "Зачем животным разный размер следов?",
+      "spokenPrompt": "Зачем животным разный размер следов?",
+      "narrationAudio": "forest-trail/voice-why.wav",
+      "groupMode": "DISCUSS_TOGETHER",
+      "accepted": [
+        {
+          "id": "size",
+          "phrases": ["размер", "больш", "маленьк", "разны", "различ"],
+          "reply": "Верно: разные звери оставляют разные следы."
+        }
+      ],
+      "unknownReply": "Подумай про размер лап разных зверей.",
+      "onMappedNext": "end",
+      "next": "end"
+    },
+    {
+      "id": "end",
+      "kind": "REFLECTION",
+      "text": "Карта собрана. Лес хранит много тайн — до встречи на тропе!",
+      "continueLabel": "К мирам"
+    }
+  ]
+}

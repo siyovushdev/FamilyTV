@@ -1,0 +1,21 @@
+shot 00_home.png
+shot 01_details.png
+btn Начать 226 897
+shot before_problem.png
+btn Дальше 796 984
+shot 02_challenge.png
+rocks [(640, 937, 192, 200)]
+shot wrong_action.png
+btn Помоги 1188 1067
+btn Дальше 796 1066
+shot help_visual.png
+btn Повтори 1028 1066
+cells 0 [(848, 937, 192, 200), (1264, 937, 192, 200)]
+prog ['Энергия 1 из 3']
+shot object_installed.png
+cells 1 [(1264, 937, 192, 200)]
+prog ['Энергия 2 из 3']
+cells 2 []
+Traceback (most recent call last):
+  File "<stdin>", line 69, in <module>
+AssertionError: no energy 2

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=1920, height=1080, initial-scale=1.0" name="viewport"/>
+<title>FamilyTV — 8. Color Correct (Крыло покрашено!)</title>
+<!-- Tailwind CSS CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cosmic: {
+              950: '#090d1f',
+              900: '#0d132e',
+              850: '#131b40',
+              800: '#1b2654',
+              teal: '#38d9d2',
+              tealDark: '#1aa39d',
+              gold: '#ffd15c',
+              goldGlow: '#ffe082',
+              cardBorder: 'rgba(255, 255, 255, 0.16)',
+            }
+          },
+          boxShadow: {
+            'glow-cyan': '0 0 35px 8px rgba(56, 217, 210, 0.55), 0 0 15px 2px rgba(255, 255, 255, 0.4) inset',
+            'badge-glow': '0 0 20px rgba(56, 217, 210, 0.4)',
+            'frame-glow': '0 12px 40px rgba(0, 0, 0, 0.7), 0 0 35px rgba(56, 217, 210, 0.2)'
+          },
+          fontFamily: {
+            sans: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Base Stylesheet -->
+<style data-purpose="tv-viewport-lock">
+    /* Strict 1920x1080 10-foot TV UI viewport constraints */
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      max-width: 1920px;
+      max-height: 1080px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      user-select: none;
+      background-color: #090d1f;
+    }
+  </style>
+<style data-purpose="pulsing-animations">
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 30px 6px rgba(56, 217, 210, 0.5), 0 0 16px rgba(255, 255, 255, 0.3) inset;
+        transform: scale(1.06);
+      }
+      50% {
+        box-shadow: 0 0 45px 12px rgba(56, 217, 210, 0.75), 0 0 24px rgba(255, 255, 255, 0.6) inset;
+        transform: scale(1.08);
+      }
+    }
+
+    .pulse-focused-cta {
+      animation: pulseGlow 2.4s infinite ease-in-out;
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 0.85; transform: scale(1.15); }
+    }
+
+    .twinkle-star {
+      animation: starTwinkle 3s infinite ease-in-out;
+    }
+  </style>
+<!-- END: Base Stylesheet -->
+</head>
+<body class="w-[1920px] h-[1080px] bg-gradient-to-b from-[#070b1a] via-[#0d1430] to-[#070b1a] text-white flex flex-col justify-between p-10 font-sans relative">
+<!-- Ambient Cosmic Background Highlights -->
+<div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-cyan-600/15 rounded-full blur-[130px] pointer-events-none"></div>
+<div class="absolute -bottom-32 -right-32 w-[650px] h-[650px] bg-indigo-500/15 rounded-full blur-[140px] pointer-events-none"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[700px] bg-blue-600/10 rounded-full blur-[160px] pointer-events-none"></div>
+<!-- BEGIN: Header -->
+<header class="relative z-10 w-full flex items-center justify-between h-[84px] px-8 bg-cosmic-900/80 backdrop-blur-md rounded-2xl border border-cosmic-cardBorder shadow-lg">
+<!-- Back Button -->
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-2xl font-medium tracking-wide" type="button">
+<span class="text-3xl font-light -mt-0.5">‹</span>
+<span>Назад</span>
+</button>
+</div>
+<!-- Center Prompt: Robot Lumi Celebratory Speech -->
+<div class="flex items-center gap-3 bg-indigo-950/70 border border-cyan-400/30 px-6 py-2.5 rounded-full shadow-[0_0_20px_rgba(56,217,210,0.18)]">
+<span class="text-2xl twinkle-star">✨</span>
+<p class="text-2xl font-semibold text-slate-100 tracking-wide">
+<span class="text-cosmic-teal font-bold">Робот Люми:</span> «Ура! Крыло стало ярко-синим! Ракета готова к полёту!»
+      </p>
+<span class="text-2xl twinkle-star">⭐</span>
+</div>
+<!-- Status & Voice Input -->
+<div class="flex items-center gap-5">
+<div class="flex items-center gap-2 px-4 py-2 bg-emerald-500/15 border border-emerald-400/40 rounded-xl">
+<span class="text-emerald-400 font-bold text-xl">Задание 3 из 5 — Готово! ✓</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-slate-300">
+<span class="text-2xl">🎤</span>
+<span class="text-xl font-medium">Голос</span>
+</div>
+</div>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: CenterStage -->
+<!-- CRITICAL: Prominently renders the cartoon illustration showing the painted blue wing and joyful Lumi -->
+<main class="relative z-10 flex-1 flex flex-col items-center justify-center my-4" data-purpose="center-illustration-stage">
+<div class="relative w-[1000px] h-[560px] rounded-3xl overflow-hidden border-[3px] border-cosmic-teal/50 shadow-frame-glow bg-cosmic-950">
+<!-- Primary Success Illustration -->
+<img alt="Ракета с ярко-синим крылом на стартовой площадке в окружении красок и танцующего робота Люми" class="w-full h-full object-cover object-center select-none" draggable="false" src="https://lh3.googleusercontent.com/aida/AEtjO1VBY3Yh3vZtbLBaeN2ZAm_SKXOX13pQUuRHcLpV1AQRXoLkHYsC6h5N6KCo28k0sQBQaliASYGjvVSe7HDcFzzFE_6Y_-8HsJ7zcFbwWvxGUUlT7p9UgwKyFJ7nezID5q7nhZU7_RG27JWNfQYqSQlpNkC4opBq80K6mxryoETxRxeheImcuSXb4-TApmkiLA8-AVS_TOqlzxGmvpkAsdnwPqVyQlYL6nPs9FrUY5wL_M62PmdnoBxo7BQ"/>
+<!-- Subtle Vignette & Frame Highlight -->
+<div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-3xl pointer-events-none"></div>
+<!-- Top-Left Success Badge -->
+<div class="absolute top-5 left-5 bg-cosmic-950/85 backdrop-blur-md border border-cyan-400/70 px-5 py-2.5 rounded-2xl shadow-badge-glow flex items-center gap-2.5">
+<span class="w-3.5 h-3.5 rounded-full bg-cyan-400 animate-ping"></span>
+<span class="text-2xl font-bold text-cyan-300 tracking-wide">✓ Синее крыло готово!</span>
+</div>
+<!-- Top-Right Sparkle Indicator -->
+<div class="absolute top-5 right-5 bg-cosmic-950/80 backdrop-blur-sm border border-yellow-400/40 px-4 py-2 rounded-2xl flex items-center gap-2 text-yellow-300 text-lg font-medium shadow-md">
+<span>🎨</span>
+<span>Цвет совпал: Синий</span>
+</div>
+</div>
+</main>
+<!-- END: CenterStage -->
+<!-- BEGIN: BottomSection -->
+<footer class="relative z-10 w-full flex flex-col gap-4">
+<!-- Controls Bar -->
+<div class="w-full flex items-center justify-between px-6" data-purpose="action-controls-row">
+<!-- Secondary Audio Action (Left) -->
+<div class="w-1/4 flex justify-start">
+<button class="flex items-center gap-3 px-6 py-4 rounded-2xl bg-cosmic-900/90 border border-white/15 text-slate-200 text-2xl font-medium tracking-wide hover:bg-white/10 active:scale-95 transition-all" type="button">
+<span class="text-3xl">🔊</span>
+<span>Послушать снова</span>
+</button>
+</div>
+<!-- Focused Primary Action CTA (Center) -->
+<div class="w-2/4 flex justify-center">
+<button class="pulse-focused-cta px-12 py-5 rounded-2xl bg-gradient-to-r from-[#20c2ba] via-[#38d9d2] to-[#20c2ba] text-[#071324] font-extrabold text-3xl tracking-wide flex items-center gap-4 cursor-pointer border-2 border-white/80 active:scale-95 transition-transform" tabindex="1" type="button">
+<span class="text-4xl">🚀</span>
+<span>Запустить ракету!</span>
+<span class="ml-2 px-3.5 py-1 bg-black/25 text-white/95 rounded-lg text-2xl font-black border border-white/20 tracking-wider">OK</span>
+</button>
+</div>
+<!-- Remote Control Hint (Right) -->
+<div class="w-1/4 flex justify-end">
+<div class="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-slate-300 text-xl font-medium">
+<span class="text-2xl text-yellow-400">💡</span>
+<span>Нажмите <strong>OK</strong> для старта</span>
+</div>
+</div>
+</div>
+<!-- D-pad Remote Bottom Navigation Helper -->
+<div class="w-full h-11 bg-cosmic-900/60 backdrop-blur-sm rounded-xl border border-white/5 flex items-center justify-center text-slate-400 text-lg gap-8">
+<span class="flex items-center gap-2">
+<span class="text-slate-300 font-bold tracking-widest">◄ ►</span>
+<span>Выбор</span>
+</span>
+<span class="text-white/20">•</span>
+<span class="flex items-center gap-2 text-cyan-300">
+<span class="font-bold border border-cyan-400/40 bg-cyan-950/60 px-2 py-0.5 rounded text-sm">[ OK ]</span>
+<span class="font-medium">Запустить ракету</span>
+</span>
+<span class="text-white/20">•</span>
+<span class="flex items-center gap-2">
+<span class="text-slate-300">🎤</span>
+<span>Голос</span>
+</span>
+</div>
+</footer>
+<!-- END: BottomSection -->
+</body></html>

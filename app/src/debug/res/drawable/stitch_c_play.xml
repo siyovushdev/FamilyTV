@@ -1,0 +1,13 @@
+<!-- Native vector transcribed from local Variant C code.html. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="120dp" android:height="120dp" android:viewportWidth="120" android:viewportHeight="120">
+  <path android:pathData="M34.0,55.0 H86.0 Q92.0,55.0 92.0,61.0 V91.0 Q92.0,97.0 86.0,97.0 H34.0 Q28.0,97.0 28.0,91.0 V61.0 Q28.0,55.0 34.0,55.0 Z" android:fillColor="#10B981" android:fillAlpha="1.0" />
+  <path android:pathData="M27.0,44.0 H37.0 Q40.0,44.0 40.0,47.0 V65.0 Q40.0,68.0 37.0,68.0 H27.0 Q24.0,68.0 24.0,65.0 V47.0 Q24.0,44.0 27.0,44.0 Z" android:fillColor="#34D399" android:fillAlpha="1.0" />
+  <path android:pathData="M83.0,44.0 H93.0 Q96.0,44.0 96.0,47.0 V65.0 Q96.0,68.0 93.0,68.0 H83.0 Q80.0,68.0 80.0,65.0 V47.0 Q80.0,44.0 83.0,44.0 Z" android:fillColor="#34D399" android:fillAlpha="1.0" />
+  <path android:pathData="M53.0,38.0 H67.0 Q70.0,38.0 70.0,41.0 V63.0 Q70.0,66.0 67.0,66.0 H53.0 Q50.0,66.0 50.0,63.0 V41.0 Q50.0,38.0 53.0,38.0 Z" android:fillColor="#6EE7B7" android:fillAlpha="1.0" />
+  <path android:pathData="M50 97V72C50 66.5 54.5 62 60 62C65.5 62 70 66.5 70 72V97H50Z" android:fillColor="#064E3B" android:fillAlpha="1.0" />
+  <group android:rotation="15" android:pivotX="36" android:pivotY="24">
+    <path android:pathData="M38.0,24.0 H46.0 Q48.0,24.0 48.0,26.0 V34.0 Q48.0,36.0 46.0,36.0 H38.0 Q36.0,36.0 36.0,34.0 V26.0 Q36.0,24.0 38.0,24.0 Z" android:fillColor="#FBBF24" android:fillAlpha="1.0" />
+  </group>
+  <path android:pathData="M79.0,28.0 A7.0,7.0 0,1 0,93.0,28.0 A7.0,7.0 0,1 0,79.0,28.0 Z" android:fillColor="#F43F5E" android:fillAlpha="1.0" />
+  <path android:pathData="M60,18 L68,32 L52,32 Z" android:fillColor="#60A5FA" android:fillAlpha="1.0" />
+</vector>

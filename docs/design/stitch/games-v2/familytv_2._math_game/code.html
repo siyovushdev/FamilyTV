@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FamilyTV — Математика: 2 + 3 яблока</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cosmic: {
+              950: '#090b14',
+              900: '#0e1322',
+              850: '#141b30',
+              800: '#1d2745',
+              700: '#2c3b66',
+              cyan: '#38d9d2',
+              cyanGlow: 'rgba(56, 217, 210, 0.45)',
+              gold: '#ffd15c',
+              apple: '#ff5459'
+            }
+          },
+          fontFamily: {
+            display: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif']
+          },
+          boxShadow: {
+            'dpad-active': '0 0 35px rgba(56, 217, 210, 0.6), inset 0 0 16px rgba(56, 217, 210, 0.35)',
+            'tv-diorama': '0 24px 60px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(56, 217, 210, 0.15)',
+            'bubble-glow': '0 8px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2)'
+          }
+        }
+      }
+    };
+  </script>
+<!-- BEGIN: Custom TV Display Rules -->
+<style data-purpose="tv-screen-setup">
+    /* Strict 1920x1080 fixed 10-foot TV canvas constraints */
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      min-width: 1920px;
+      min-height: 1080px;
+      max-width: 1920px;
+      max-height: 1080px;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      background-color: #080c16;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+  </style>
+<style data-purpose="ambient-decorations">
+    /* Subtle starry cosmic background glow */
+    .bg-cosmic-gradient {
+      background: radial-gradient(circle at 50% 18%, #1a2544 0%, #0c1221 55%, #060911 100%);
+    }
+
+    /* Voice visualizer animation bars */
+    .voice-bar {
+      animation: soundWave 1.4s ease-in-out infinite alternate;
+    }
+    .voice-bar:nth-child(2) { animation-delay: 0.25s; }
+    .voice-bar:nth-child(3) { animation-delay: 0.5s; }
+    .voice-bar:nth-child(4) { animation-delay: 0.15s; }
+    .voice-bar:nth-child(5) { animation-delay: 0.4s; }
+
+    @keyframes soundWave {
+      0% { height: 6px; }
+      100% { height: 26px; }
+    }
+  </style>
+<!-- END: Custom TV Display Rules -->
+</head>
+<body class="bg-cosmic-gradient text-white flex flex-col justify-between relative overflow-hidden" data-purpose="tv-viewport">
+<!-- Background decorative light blooms -->
+<div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[1100px] h-[350px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[1400px] h-[300px] bg-indigo-600/15 rounded-full blur-[140px] pointer-events-none"></div>
+<!-- Safe Area Wrapper: 88px left/right, 64px top/bottom for 10-foot UI -->
+<div class="w-full h-full px-[88px] py-[56px] flex flex-col justify-between relative z-10 box-border">
+<!-- BEGIN: Header Section -->
+<header class="w-full flex items-center justify-between h-[84px]" data-purpose="game-header">
+<!-- Back pill button -->
+<button class="flex items-center gap-3 px-6 py-3.5 rounded-full bg-cosmic-850/90 border border-slate-700/70 text-slate-200 text-2xl font-medium tracking-wide shadow-md hover:border-slate-500 transition-colors" data-purpose="back-navigation">
+<span class="text-3xl text-cosmic-cyan leading-none font-bold">‹</span>
+<span>Назад</span>
+</button>
+<!-- Center: Robot Lumi prompt with animated speech wave -->
+<div class="flex items-center gap-5 px-8 py-3.5 bg-cosmic-900/95 border-2 border-cosmic-cyan/60 rounded-full shadow-bubble-glow" data-purpose="lumi-speech-bubble">
+<!-- Robot Avatar Icon with Cyan Ring -->
+<div class="relative w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center border-2 border-cosmic-cyan shadow-sm shadow-cosmic-cyan/40">
+<span class="text-3xl">🤖</span>
+<span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-900 rounded-full"></span>
+</div>
+<!-- Speech Text -->
+<div class="flex items-baseline gap-2">
+<span class="text-cosmic-cyan font-bold text-2xl tracking-wide">Робот Люми:</span>
+<span class="text-white text-3xl font-extrabold tracking-wide">«Сколько яблок получилось вместе?»</span>
+</div>
+<!-- Audio wave graphic -->
+<div class="flex items-center gap-1.5 h-8 pl-3 border-l border-slate-700/80">
+<span class="voice-bar w-1.5 bg-cosmic-cyan rounded-full"></span>
+<span class="voice-bar w-1.5 bg-cosmic-cyan rounded-full"></span>
+<span class="voice-bar w-1.5 bg-cosmic-cyan rounded-full"></span>
+<span class="voice-bar w-1.5 bg-cosmic-cyan rounded-full"></span>
+<span class="voice-bar w-1.5 bg-cosmic-cyan rounded-full"></span>
+</div>
+</div>
+<!-- Right HUD: Session info & Voice indicator -->
+<div class="flex items-center gap-4" data-purpose="session-info">
+<div class="px-6 py-3 bg-cosmic-850/90 border border-slate-700/70 rounded-full flex items-center gap-3 shadow-md">
+<span class="text-slate-300 text-xl font-semibold">Задание <span class="text-cosmic-gold text-2xl font-black">2</span> из 5</span>
+<span class="text-slate-500">•</span>
+<span class="flex items-center gap-2 text-cosmic-cyan font-semibold text-xl">
+<span class="text-2xl">🎤</span> Голос
+          </span>
+</div>
+</div>
+</header>
+<!-- END: Header Section -->
+<!-- BEGIN: Center Stage -->
+<main class="w-full flex flex-col items-center justify-center my-auto" data-purpose="center-stage">
+<!-- Diorama Display Frame with 16:9 Illustration -->
+<div class="relative w-[1000px] h-[520px] rounded-3xl overflow-hidden border-4 border-slate-700/80 shadow-tv-diorama bg-slate-950 flex items-center justify-center group" data-purpose="orchard-diorama-frame">
+<!-- Main Cartoon Illustration -->
+<img alt="Волшебный яблоневый сад с роботом Люми и двумя корзинами яблок на деревянном столе" class="w-full h-full object-cover rounded-[20px]" src="https://lh3.googleusercontent.com/aida/AEtjO1XnQczl1zMwFlpb4MjMn2zZNFbCQsAMUJzsPLtbIFVE1ufMbPijPn0cArOjM8U3nZ_526BFMPgtUq2z_HtDwbLVU9JAA0Bj1jcJQZvxPAsCf9r7GGwhhxU0Wl8RU9Ty9zH1v-0c6qJevR7ngSp9J-XMc_AwiRQhBb6hzDfs5jvXZc8SJHfZ5vqQMe_BGKX6rLcmoutD-vf-IXkI_pWYlKBrXjNxQlNLzuPO8yfcvjviAef2Hk3FXyqrbHM"/>
+<!-- Subtle Inner Highlight Rim for Premium TV Glass Look -->
+<div class="absolute inset-0 rounded-[20px] border border-white/20 pointer-events-none"></div>
+</div>
+<!-- Visual Equation Pill: Non-reader friendly representation -->
+<div class="mt-5 px-10 py-3.5 bg-cosmic-900/95 border-2 border-slate-700/80 rounded-2xl shadow-xl flex items-center gap-6" data-purpose="visual-math-equation">
+<!-- Left Term: 2 Apples / Dots -->
+<div class="flex flex-col items-center gap-1">
+<div class="flex items-center gap-1.5">
+<span class="w-3.5 h-3.5 rounded-full bg-cosmic-apple shadow-sm shadow-red-500/50"></span>
+<span class="w-3.5 h-3.5 rounded-full bg-cosmic-apple shadow-sm shadow-red-500/50"></span>
+</div>
+<span class="text-3xl font-black text-white tracking-wider">2</span>
+</div>
+<span class="text-3xl font-black text-cosmic-cyan">+</span>
+<!-- Right Term: 3 Apples / Dots -->
+<div class="flex flex-col items-center gap-1">
+<div class="flex items-center gap-1.5">
+<span class="w-3.5 h-3.5 rounded-full bg-cosmic-apple shadow-sm shadow-red-500/50"></span>
+<span class="w-3.5 h-3.5 rounded-full bg-cosmic-apple shadow-sm shadow-red-500/50"></span>
+<span class="w-3.5 h-3.5 rounded-full bg-cosmic-apple shadow-sm shadow-red-500/50"></span>
+</div>
+<span class="text-3xl font-black text-white tracking-wider">3</span>
+</div>
+<span class="text-3xl font-black text-cosmic-cyan">=</span>
+<!-- Target Question Mark -->
+<div class="w-14 h-14 rounded-xl bg-cosmic-800 border-2 border-dashed border-cosmic-cyan flex items-center justify-center shadow-inner">
+<span class="text-3xl font-extrabold text-cosmic-gold animate-pulse">?</span>
+</div>
+</div>
+</main>
+<!-- END: Center Stage -->
+<!-- BEGIN: Bottom Controls & Remote Guidance -->
+<footer class="w-full flex flex-col gap-4" data-purpose="bottom-controls">
+<!-- Main Interaction Row: Left Action + 3 Large D-Pad Answer Cards + Right Hints -->
+<div class="w-full flex items-center justify-between px-2">
+<!-- Left Secondary Action -->
+<div class="w-[280px] flex justify-start">
+<button class="flex items-center gap-3 px-6 py-4 rounded-2xl bg-cosmic-850/80 border border-slate-700/80 text-slate-300 hover:text-white text-2xl font-bold shadow-md transition-all active:scale-95" data-purpose="listen-prompt-button">
+<span class="text-3xl text-cosmic-cyan">🔊</span>
+<span>Послушать</span>
+</button>
+</div>
+<!-- Center: 3 Tactile D-Pad Answer Cards -->
+<div class="flex items-center gap-8" data-purpose="dpad-answers-container">
+<!-- Answer Card 4 (Inactive) -->
+<div class="relative w-44 h-40 rounded-3xl bg-cosmic-900 border-2 border-slate-700/70 flex flex-col items-center justify-center gap-2 opacity-85 shadow-lg cursor-pointer transition-transform hover:scale-105" data-purpose="answer-option">
+<span class="text-6xl font-black text-slate-200">4</span>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+</div>
+</div>
+<!-- Answer Card 5 (ACTIVE D-PAD FOCUS with Cyan Glow) -->
+<div class="relative w-48 h-44 rounded-3xl bg-gradient-to-b from-cosmic-850 to-cosmic-900 border-4 border-cosmic-cyan shadow-dpad-active flex flex-col items-center justify-center gap-2 scale-105" data-purpose="answer-option-selected">
+<!-- Active Remote Badge -->
+<div class="absolute -top-4 px-4 py-1 rounded-full bg-cosmic-cyan text-slate-950 font-black text-sm tracking-wider uppercase shadow-md shadow-cosmic-cyan/50">
+              ВЫБРАНО ПУЛЬТОМ
+            </div>
+<!-- Big Digit -->
+<span class="text-7xl font-black text-white drop-shadow-md">5</span>
+<!-- 5 Visual Counting Dots -->
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-cosmic-cyan shadow-sm shadow-cosmic-cyan"></span>
+<span class="w-3 h-3 rounded-full bg-cosmic-cyan shadow-sm shadow-cosmic-cyan"></span>
+<span class="w-3 h-3 rounded-full bg-cosmic-cyan shadow-sm shadow-cosmic-cyan"></span>
+<span class="w-3 h-3 rounded-full bg-cosmic-cyan shadow-sm shadow-cosmic-cyan"></span>
+<span class="w-3 h-3 rounded-full bg-cosmic-cyan shadow-sm shadow-cosmic-cyan"></span>
+</div>
+</div>
+<!-- Answer Card 6 (Inactive) -->
+<div class="relative w-44 h-40 rounded-3xl bg-cosmic-900 border-2 border-slate-700/70 flex flex-col items-center justify-center gap-2 opacity-85 shadow-lg cursor-pointer transition-transform hover:scale-105" data-purpose="answer-option">
+<span class="text-6xl font-black text-slate-200">6</span>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+</div>
+</div>
+</div>
+<!-- Right Secondary Action & Speech Tip -->
+<div class="w-[280px] flex flex-col items-end gap-2">
+<button class="flex items-center gap-3 px-6 py-4 rounded-2xl bg-cosmic-850/80 border border-slate-700/80 text-amber-300 hover:text-amber-200 text-2xl font-bold shadow-md transition-all active:scale-95" data-purpose="hint-button">
+<span class="text-3xl text-cosmic-gold">💡</span>
+<span>Подсказка (▲)</span>
+</button>
+<div class="text-slate-400 text-lg font-medium tracking-wide flex items-center gap-1.5 pr-2">
+<span>🎤 Или скажи:</span>
+<span class="text-cosmic-cyan font-bold">«Пять»</span>
+</div>
+</div>
+</div>
+<!-- Remote Control Legend Bar (10-Foot Accessibility Guidance) -->
+<div class="w-full py-3 bg-cosmic-950/80 border-t border-slate-800/80 rounded-2xl flex items-center justify-center gap-10 text-slate-300 text-xl font-medium" data-purpose="tv-remote-legend">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-slate-800 border border-slate-600 rounded text-base font-bold text-cosmic-cyan">◄ ►</span>
+<span>Выбор ответа</span>
+</div>
+<span class="text-slate-600">•</span>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-base font-bold text-emerald-400">[ OK ]</span>
+<span>Подтвердить</span>
+</div>
+<span class="text-slate-600">•</span>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-base font-bold text-cosmic-gold">▲</span>
+<span>Подсказка</span>
+</div>
+<span class="text-slate-600">•</span>
+<div class="flex items-center gap-2">
+<span class="text-2xl leading-none">🎤</span>
+<span>Голос</span>
+</div>
+</div>
+</footer>
+<!-- END: Bottom Controls & Remote Guidance -->
+</div>
+</body></html>

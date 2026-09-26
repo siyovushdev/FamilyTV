@@ -1,0 +1,32 @@
+{
+  "packageId": "colors-shapes",
+  "packageVersion": 1,
+  "schemaVersion": 1,
+  "title": "Цвета и формы",
+  "description": "Учимся различать цвета и простые формы",
+  "content": [
+    {
+      "id": "pkg-colors-shapes",
+      "title": "Цвета и формы",
+      "description": "Выбор и правда/ложь про цвета",
+      "type": "INTERACTIVE",
+      "experienceRef": "experiences/colors-shapes.json",
+      "thumbnail": "images/cover.webp",
+      "enabled": true,
+      "sortOrder": 22,
+      "version": 1,
+      "homeSections": ["learn", "play", "today"],
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 7,
+        "skills": ["COLORS", "SHAPES", "ATTENTION"],
+        "difficulty": "easy",
+        "estimatedMinutes": 4,
+        "topics": ["colors", "shapes"],
+        "interactionModes": ["video", "choice", "true_false"],
+        "locale": "ru",
+        "contentPurpose": "learn"
+      }
+    }
+  ]
+}

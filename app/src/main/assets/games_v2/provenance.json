@@ -1,0 +1,24 @@
+{
+  "approval": "Approved Games V2 preview + ux-polish, explicitly authorized for production promotion on 2026-09-26",
+  "designSource": "docs/design/stitch/games-v2/",
+  "evidence": "docs/design/stitch/games-v2/ux-polish/REPORT.md",
+  "assets": {
+    "app/src/main/assets/games_v2/orchard_background.webp": {
+      "promotedFrom": "app/src/debug/assets/stitch_games/orchard_background.webp",
+      "source": "/home/siovush/.codex/generated_images/01a0d395-49e2-7443-8fa4-f8a30700e78b/exec-eb8e04cb-a74a-4991-a277-19fa7e9e333d.png",
+      "method": "built-in imagegen edit of Games V2 reference only; WebP export at <=1280x720",
+      "sha256": "d3d7f8d92b6db21a0e0f9f25c994020e5b425666ecf6d3113d11459f7bae447a"
+    },
+    "app/src/main/assets/games_v2/workshop_background.webp": {
+      "promotedFrom": "app/src/debug/assets/stitch_games/workshop_background.webp",
+      "source": "/home/siovush/.codex/generated_images/01a0d395-49e2-7443-8fa4-f8a30700e78b/exec-ccc57fc0-bd3d-42c1-8da3-7b938dd4e907.png",
+      "method": "built-in imagegen edit of Games V2 reference only; WebP export at <=1280x720",
+      "sha256": "71d67faec7543dff3047df4dd26c03a6f5db5c6918a315f760382e7b596f38e5"
+    },
+    "app/src/main/assets/games_v2/math_card.webp": {
+      "promotedFrom": "app/src/debug/assets/stitch_games/reference_1.webp",
+      "source": "https://lh3.googleusercontent.com/aida/AEtjO1XnQczl1zMwFlpb4MjMn2zZNFbCQsAMUJzsPLtbIFVE1ufMbPijPn0cArOjM8U3nZ_526BFMPgtUq2z_HtDwbLVU9JAA0Bj1jcJQZvxPAsCf9r7GGwhhxU0Wl8RU9Ty9zH1v-0c6qJevR7ngSp9J-XMc_AwiRQhBb6hzDfs5jvXZc8SJHfZ5vqQMe_BGKX6rLcmoutD-vf-IXkI_pWYlKBrXjNxQlNLzuPO8yfcvjviAef2Hk3FXyqrbHM",
+      "sha256": "13bd002abeb86bb33d603527a852de5b5a4b62df2e70066dc6372b5b25194162"
+    }
+  }
+}

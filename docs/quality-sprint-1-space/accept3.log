@@ -1,0 +1,13 @@
+UI hierchary dumped to: /sdcard/uidump.xml
+<node index="6" text="" resource-id="" class="android.widget.LinearLayout" package="ru.familytv" content-desc="" checkable="false" checked="false" clickable="false" enabled="true" focusable="false" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[80,968][1840,1080]"><node index="0" text="Дальше" resource-id="" class="android.widget.Button" package="ru.familytv" content-desc="" checkable="false" checked="false" clickable="true" enabled="true" focusable="true" focused="false" scrollable="false" long-clickable="false" password="false" selected="false" bounds="[666,968][926,1080]" />
+---
+--- try ENTER ---
+UI hierchary dumped to: /sdcard/uidump.xml
+Энергия True
+Камень True
+Дальше False
+ship-power hint True
+T: Луми: Вставь три синие батарейки энергии в пустые места на корабле.
+T: Обсудите вместе и скажите ответ.
+T: Вставь три синие батарейки энергии в пустые места на корабле.
+T: Двигатель молчит. Нужна энергия.

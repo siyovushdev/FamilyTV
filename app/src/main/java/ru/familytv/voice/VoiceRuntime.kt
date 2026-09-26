@@ -29,6 +29,8 @@ internal class VoiceRuntime private constructor(context: Context) {
     val diagnostics: StateFlow<VoiceLabState> = _diagnostics.asStateFlow()
     private var backend: VoiceLabController? = null
     private var releasing = false
+    private var diagnosticReserved = false
+    private var prewarmRequested = false
     private var owner: VoiceAnswerPipeline? = null
     var initializationCount = 0
         private set
@@ -46,6 +48,7 @@ internal class VoiceRuntime private constructor(context: Context) {
 
     fun prewarm() {
         checkMain()
+        if (diagnosticReserved) { prewarmRequested = true; return }
         if (backend != null || releasing) return
         _readiness.value = AiReadiness.AI_INITIALIZING
         initializationCount++
@@ -60,6 +63,29 @@ internal class VoiceRuntime private constructor(context: Context) {
                 else -> AiReadiness.AI_INITIALIZING
             }
             owner?.accept(snapshot)
+        }
+    }
+
+    /** Exclusive diagnostic ownership: finish old native work before a lab loads models.
+     * Release on main only after the lab worker has closed all native/audio resources.
+     */
+    fun reserveForDiagnostics(onReady: () -> Unit): () -> Unit {
+        checkMain()
+        check(!diagnosticReserved && !releasing) { "Voice runtime is busy releasing diagnostic resources" }
+        diagnosticReserved = true
+        prewarmRequested = false
+        owner?.revoked()
+        backend?.stop()
+        owner = null
+        releaseBackend(onReady)
+        var returned = false
+        return {
+            checkMain()
+            if (!returned) {
+                returned = true
+                diagnosticReserved = false
+                if (prewarmRequested) prewarm()
+            }
         }
     }
 
@@ -118,7 +144,14 @@ internal class VoiceRuntime private constructor(context: Context) {
         releaseBackend { prewarm() }
     }
 
-    /** Diagnostic/test teardown: no reload can start until both native owners are freed. */
+    /** Diagnostic/test teardown: no reload can start until both native owners are freed.
+     *
+     * M8.1: Automatic idle unload after N minutes is **not** enabled.
+     * VoiceRuntime retains models until [releaseIdle] / diagnostic reserve.
+     * Auto unload/reload thrash would risk H728 latency spikes; call [releaseIdle]
+     * only from explicit Parent Mode / lab tooling when no voice session owns the runtime.
+     * Home must never call [prewarm] — AI=0 on cold Home remains required.
+     */
     fun releaseIdle(onReleased: () -> Unit = {}) {
         checkMain()
         check(owner == null) { "A foreground voice session still owns the runtime" }
@@ -153,5 +186,8 @@ internal class VoiceRuntime private constructor(context: Context) {
         fun get(context: Context): VoiceRuntime = instance ?: synchronized(this) {
             instance ?: VoiceRuntime(context.applicationContext).also { instance = it }
         }
+
+        /** Returns the shared runtime only if it was already created. Does not load models. */
+        fun peek(): VoiceRuntime? = instance
     }
 }

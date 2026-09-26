@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="ru" style=""><head>
+  <meta charset="UTF-8">
+  <title>FamilyTV — 7. Build &amp; Test: Укрытие для льда (Android TV)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #080d1e;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tv-stage {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      background: #080d1e;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .glow-cyan {
+      box-shadow: 0 0 50px rgba(56, 217, 210, 0.7), 0 0 100px rgba(56, 217, 210, 0.35);
+    }
+  </style>
+</head>
+<body>
+  <div class="tv-stage flex flex-col justify-between p-[56px] relative select-none" style="width: 1920px; height: 1080px; max-width: 1920px; max-height: 1080px; overflow: hidden; margin: 0px auto; position: relative; background: rgb(8, 13, 30);">
+    <!-- Lab Shelter Build & Test Illustration -->
+    <div class="absolute inset-0 z-0">
+      <img src="https://lh3.googleusercontent.com/aida/AEtjO1U_4YDx9yx89teNdix0RvwTDunqmiEFdHye2Q03S-qNdlBQ6cTDZM-iz-v6ztsWeSdjNYIeJMFhVNEj2WNBMbyPLhmGt9oIxR6932ZEaX6qUgC0uslLwJoViLloEprM86yllPu8dIvSQA4oef5ch_oMA7aNkavPE8zk_T4cHfK7VB35VtHwjHcABJSMCQtutzM0FtWmO6RgO_SgVz0P0HTRZeYJcdFJhms6fil1bgs_hk74V5j42ooOLg" alt="Build &amp; Test Shelter" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-[#080d1e]/85 via-transparent to-[#080d1e]/70 pointer-events-none"></div>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="relative z-10 flex items-center justify-between w-full">
+      <div class="flex items-center gap-3 bg-[#0d152bb3] backdrop-blur-md px-6 py-3.5 rounded-full border border-white/10 text-white/90 text-xl font-bold">
+        <span class="text-2xl text-[#38d9d2]">‹</span> Назад
+      </div>
+
+      <!-- Lumi Question: How to protect the ice? -->
+      <div class="flex items-center gap-4 bg-[#0d152bfa] backdrop-blur-lg px-8 py-3.5 rounded-full border border-[#38d9d2]/40 shadow-[0_0_30px_rgba(56,217,210,0.25)]">
+        <div class="w-10 h-10 rounded-full bg-[#38d9d2]/20 flex items-center justify-center text-2xl">🤖</div>
+        <span class="text-white text-2xl font-bold tracking-wide">Луми: «Как спрячем лёд от солнца?»</span>
+      </div>
+
+      <div class="flex items-center gap-2 bg-[#0d152bb3] backdrop-blur-md px-5 py-3.5 rounded-full border border-white/10 text-[#38d9d2] text-xl font-bold">
+        <span class="">Опыт №2: Укрытие 🎪</span>
+      </div>
+    </div>
+
+    <!-- Center Callout / Focus on the 2 Large Visual Shelter Objects -->
+    <div class="relative z-10 grid grid-cols-2 gap-16 px-24 items-center">
+      
+      <!-- Object 1: Маленький навес-шатёр (ACTIVE D-PAD FOCUS) -->
+      <div class="flex flex-col items-center">
+        <div class="flex items-center gap-2 bg-[#38d9d2] text-[#080d1e] font-extrabold text-sm px-5 py-1.5 rounded-full mb-3 shadow-lg">
+          <span class="">● ВЫБРАНО ПУЛЬТОМ</span>
+        </div>
+        <div class="w-full max-w-md bg-[#0d162ffa] border-4 border-[#38d9d2] glow-cyan rounded-3xl p-6 text-center scale-105 transition-transform duration-300">
+          <div class="text-5xl mb-2">🎪</div>
+          <div class="text-[#38d9d2] text-3xl font-black mb-1">Навес-шатёр</div>
+          <div class="text-white/80 text-lg mb-5">Плотная тень от лучей</div>
+          <div class="bg-[#38d9d2] text-[#080d1e] text-2xl font-black py-3.5 px-6 rounded-2xl flex items-center justify-center gap-3 shadow-[0_4px_20px_rgba(56,217,210,0.6)]">
+            <span class="">[ OK ]</span>
+            <span class="">Поставить и проверить!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Object 2: Укрытие из листьев -->
+      <div class="flex flex-col items-center opacity-85 hover:opacity-100 transition-opacity">
+        <div class="h-8 mb-3"></div> <!-- Spacer -->
+        <div class="w-full max-w-md bg-[#0d162fcc] backdrop-blur-md border border-white/20 rounded-3xl p-6 text-center">
+          <div class="text-5xl mb-2">🌿</div>
+          <div class="text-white text-3xl font-black mb-1">Зонтик из листьев</div>
+          <div class="text-white/80 text-lg mb-5">Прохладные пальмовые ветви</div>
+          <div class="bg-white/10 text-white text-2xl font-bold py-3.5 px-6 rounded-2xl flex items-center justify-center gap-3 border border-white/10">
+            <span class="">Выбрать листья</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Indicator -->
+    
+  </div>
+
+
+
+</body></html>

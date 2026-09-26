@@ -1,0 +1,139 @@
+{
+  "id": "space-expedition",
+  "world": "explore",
+  "adventureId": "space-expedition",
+  "entries": [
+    {
+      "id": "moon-air",
+      "topic": "moon_air",
+      "entityId": "moon",
+      "aliases": ["луна", "воздух", "атмосфера"],
+      "clarificationLabel": "Луну и воздух",
+      "ageMin": 3,
+      "ageMax": 9,
+      "questionPatterns": ["почему на луне", "нет воздуха", "почти нет воздуха"],
+      "facts": [
+        "На Луне почти нет атмосферы.",
+        "Без атмосферы звук почти не передаётся."
+      ],
+      "additionalFacts": [
+        "На Земле воздух окружает нас плотным слоем — на Луне его почти нет.",
+        "Поэтому на Луне нельзя дышать без скафандра."
+      ],
+      "shortAnswer": "На Луне почти нет воздуха — там очень тонкая атмосфера.",
+      "spokenAnswer": "На Луне почти нет воздуха. Атмосфера там очень тонкая.",
+      "followUps": ["А почему небо тёмное?"],
+      "provenance": {
+        "sourceTitle": "FamilyTV Space pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "moon-dark",
+      "topic": "moon_sky",
+      "entityId": "moon",
+      "aliases": ["тёмно", "небо", "день", "тёмное"],
+      "clarificationLabel": "тёмное небо на Луне",
+      "ageMin": 3,
+      "ageMax": 9,
+      "questionPatterns": ["почему на луне темно", "тёмное небо", "почему небо тёмное", "а днём"],
+      "facts": [
+        "Без плотной атмосферы свет почти не рассеивается.",
+        "Поэтому небо на Луне выглядит тёмным даже днём."
+      ],
+      "additionalFacts": [
+        "На Земле воздух рассеивает солнечный свет — небо кажется голубым.",
+        "На Луне рассеивать почти нечему — небо остаётся тёмным."
+      ],
+      "shortAnswer": "На Луне небо тёмное, потому что почти нет воздуха, который рассеивает свет.",
+      "spokenAnswer": "На Луне почти нет воздуха, поэтому небо выглядит тёмным.",
+      "followUps": ["А почему нет воздуха?"],
+      "provenance": {
+        "sourceTitle": "FamilyTV Space pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "ship-float",
+      "topic": "orbit",
+      "entityId": "ship",
+      "aliases": ["корабль", "падает", "орбита", "не падает", "движение"],
+      "clarificationLabel": "корабль",
+      "ageMin": 5,
+      "ageMax": 9,
+      "questionPatterns": ["почему корабль не падает", "что держит корабль", "как летает корабль"],
+      "facts": [
+        "Корабль движется очень быстро вокруг планеты.",
+        "Это движение называется орбитой — он всё время «падает» мимо."
+      ],
+      "additionalFacts": [
+        "Если бы корабль остановился, он начал бы падать вниз.",
+        "Быстрое движение держит его на орбите."
+      ],
+      "shortAnswer": "Корабль не падает вниз, потому что быстро движется вокруг — это орбита.",
+      "spokenAnswer": "Корабль быстро летит вокруг. Это называется орбита.",
+      "provenance": {
+        "sourceTitle": "FamilyTV Space pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "planets",
+      "topic": "planets",
+      "entityId": "planet",
+      "aliases": ["планета", "планеты", "земля"],
+      "clarificationLabel": "планеты",
+      "ageMin": 4,
+      "ageMax": 9,
+      "questionPatterns": ["что такое планета", "какие планеты", "почему планеты"],
+      "facts": [
+        "Планеты — большие шары, которые движутся вокруг звезды.",
+        "Земля — наша планета; она движется вокруг Солнца."
+      ],
+      "additionalFacts": [
+        "У разных планет разный размер и поверхность.",
+        "Некоторые планеты холодные, некоторые ближе к Солнцу — теплее."
+      ],
+      "shortAnswer": "Планета — большой шар, который движется вокруг звезды, как Земля вокруг Солнца.",
+      "spokenAnswer": "Планета — большой шар вокруг звезды. Земля — наша планета.",
+      "provenance": {
+        "sourceTitle": "FamilyTV Space pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    },
+    {
+      "id": "space-env",
+      "topic": "space_environment",
+      "entityId": "space",
+      "aliases": ["космос", "пространство", "скафандр"],
+      "clarificationLabel": "космос",
+      "ageMin": 4,
+      "ageMax": 9,
+      "questionPatterns": ["что такое космос", "почему в космосе", "зачем скафандр"],
+      "facts": [
+        "В космосе почти нет воздуха и очень холодно в тени.",
+        "Скафандр защищает человека и даёт воздух для дыхания."
+      ],
+      "additionalFacts": [
+        "Без защиты человеку в открытом космосе нельзя находиться.",
+        "Корабль тоже хранит воздух и тепло внутри."
+      ],
+      "shortAnswer": "В космосе почти нет воздуха — поэтому нужен скафандр или корабль.",
+      "spokenAnswer": "В космосе почти нет воздуха. Нужен скафандр или корабль.",
+      "provenance": {
+        "sourceTitle": "FamilyTV Space pack",
+        "sourceOrganization": "FamilyTV",
+        "reviewStatus": "approved",
+        "lastReviewed": "2026-09"
+      }
+    }
+  ]
+}

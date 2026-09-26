@@ -1,0 +1,88 @@
+{
+  "id": "space-world",
+  "title": "Небо и космос",
+  "schemaVersion": 3,
+  "startStepId": "hello",
+  "steps": [
+    {
+      "type": "message",
+      "id": "hello",
+      "text": "Посмотрим на небо!",
+      "continueLabel": "Смотреть",
+      "transitions": {
+        "next": "sky-video"
+      }
+    },
+    {
+      "type": "video",
+      "id": "sky-video",
+      "mediaRef": "media/sky.mp4",
+      "transitions": {
+        "next": "when-stars"
+      }
+    },
+    {
+      "type": "choice",
+      "id": "when-stars",
+      "prompt": "Когда лучше видно звёзды?",
+      "options": [
+        {
+          "id": "night",
+          "text": "Ночью"
+        },
+        {
+          "id": "noon",
+          "text": "В полдень"
+        },
+        {
+          "id": "rain",
+          "text": "В дождь"
+        }
+      ],
+      "correctOptionId": "night",
+      "feedback": {
+        "correct": "Да, звёзды ярче ночью.",
+        "wrong": "Подумай: когда небо тёмное?",
+        "hint": "После заката"
+      },
+      "transitions": {
+        "onCorrect": "sun-tf",
+        "onWrong": "when-stars",
+        "onUnknown": "when-stars"
+      }
+    },
+    {
+      "type": "true_false",
+      "id": "sun-tf",
+      "prompt": "Солнце — это звезда. Правда?",
+      "correct": true,
+      "feedback": {
+        "correct": "Да! Солнце — наша звезда.",
+        "wrong": "Солнце — ближайшая к нам звезда.",
+        "hint": "Попробуй ещё раз спокойно"
+      },
+      "transitions": {
+        "onCorrect": "orbit",
+        "onWrong": "sun-tf",
+        "onUnknown": "sun-tf"
+      }
+    },
+    {
+      "type": "video",
+      "id": "orbit",
+      "mediaRef": "media/orbit.mp4",
+      "transitions": {
+        "next": "bye"
+      }
+    },
+    {
+      "type": "message",
+      "id": "bye",
+      "text": "Космос большой — и ты уже немного его знаешь.",
+      "continueLabel": "Готово",
+      "transitions": {
+        "next": "__end__"
+      }
+    }
+  ]
+}

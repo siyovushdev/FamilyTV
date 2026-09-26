@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
@@ -15,24 +16,85 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FamilyTV">
+        android:theme="@style/Theme.FamilyTV"
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:targetApi="28">
         <activity
-            android:name=".voicelab.VoiceLabActivity"
+            android:name=".home.HomeActivity"
             android:exported="true"
-            android:label="FamilyTV Voice Lab" />
-        <activity android:name=".games.MathVoiceGameActivity" android:exported="true" android:label="Математика" />
-        <activity android:name=".games.ColorVoiceGameActivity" android:exported="true" android:label="Цвета" />
-        <activity android:name=".MainActivity" android:exported="true" />
-        <activity
-            android:name=".games.GameHubActivity"
-            android:exported="true">
+            android:launchMode="singleTask"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".home.watch.WatchActivity"
+            android:exported="false"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/Theme.FamilyTV.Watch" />
+        <activity
+            android:name=".player.VideoPlayerActivity"
+            android:theme="@style/Theme.FamilyTV.Watch"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".adventure.AdventureActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:label="Приключение" />
+        <activity
+            android:name=".creative.CreativeStudioActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:label="Создавай" />
+        <activity
+            android:name=".interactive.InteractiveExperienceActivity"
+            android:exported="false"
+            android:label="Занятие" />
+        <activity
+            android:name=".session.LearningSessionActivity"
+            android:exported="false"
+            android:label="Сессия" />
+        <activity
+            android:name=".journey.JourneyMapActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:label="Карта путешествия" />
+        <activity
+            android:name=".journey.DiscoveryJournalActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:label="Наши открытия" />
+        <activity
+            android:name=".home.ContentDetailsActivity"
+            android:exported="false"
+            android:label="Подробнее" />
+        <activity
+            android:name=".parent.ParentModeActivity"
+            android:exported="false"
+            android:label="Режим родителя" />
+        <activity
+            android:name=".admin.ContentAdminActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:label="Content Admin" />
+        <activity
+            android:name=".voicelab.VoiceLabActivity"
+            android:exported="true"
+            android:label="FamilyTV Voice Lab" />
+        <activity android:name=".games.MathVoiceGameActivity" android:theme="@style/Theme.FamilyTV.Games" android:screenOrientation="landscape" android:exported="true" android:label="Математика" />
+        <activity android:name=".games.ColorVoiceGameActivity" android:theme="@style/Theme.FamilyTV.Games" android:screenOrientation="landscape" android:exported="true" android:label="Цвета" />
+        <activity android:name=".MainActivity" android:exported="true" />
+        <activity
+            android:name=".games.GameHubActivity"
+            android:theme="@style/Theme.FamilyTV.Games"
+            android:screenOrientation="landscape"
+            android:exported="true"
+            android:label="Игры" />
     </application>
 
 </manifest>

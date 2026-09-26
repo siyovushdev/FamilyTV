@@ -1,0 +1,7 @@
+btn Начать
+shot before_problem.png
+btn Дальше
+energies at start [(856, 929, 176), (1240, 929, 176)]
+Traceback (most recent call last):
+  File "<stdin>", line 46, in <module>
+AssertionError: [(856, 929, 176), (1240, 929, 176)]

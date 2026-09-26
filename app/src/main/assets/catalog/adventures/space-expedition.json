@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "id": "space-expedition",
+  "title": "Космическая экспедиция",
+  "world": "explore",
+  "readingSupport": "AUDIO_FIRST",
+  "description": "Почините корабль, проложите курс и исследуйте планету — обучение внутри миссии.",
+  "learningGoals": ["COUNTING", "CLASSIFICATION", "PATTERN_RECOGNITION", "SPATIAL_REASONING", "SCIENCE_REASONING", "COOPERATION"],
+  "estimatedMinutes": 12,
+  "difficulty": { "min": 1, "max": 3 },
+  "startSceneId": "intro",
+  "variables": { "shipPower": 0, "navigated": 0, "repaired": 0, "observed": 0 },
+  "objectives": [
+    { "id": "launch", "title": "Запуск", "description": "Вставить энергию и запустить двигатель" },
+    { "id": "navigate", "title": "Курс", "description": "Пройти маршрут по чётным числам" },
+    { "id": "repair", "title": "Ремонт", "description": "Восстановить последовательность" },
+    { "id": "observe", "title": "Наблюдение", "description": "Классифицировать объекты планеты" }
+  ],
+  "guide": { "id": "lumi", "name": "Луми", "defaultEmotion": "CURIOUS" },
+  "scenes": [
+    {
+      "id": "intro",
+      "kind": "STORY",
+      "text": "Корабль «Северное сияние» не может взлететь — в двигателе нет энергии.",
+      "spokenPrompt": "Смотри: у корабля пустые места. Двигатель молчит. Нужна энергия!",
+      "narrationAudio": "space-expedition/intro.wav",
+      "guideLine": "Я Луми. Смотри на двигатель — он не горит. Давай починим!",
+      "guideEmotion": "EXCITED",
+      "groupMode": "ALL_TOGETHER",
+      "next": "launch_repair",
+      "background": "hangar"
+    },
+    {
+      "id": "launch_repair",
+      "kind": "CHALLENGE",
+      "groupMode": "DISCUSS_TOGETHER",
+      "background": "hangar",
+      "challenge": {
+        "id": "ship-power",
+        "mechanic": "VISUAL_SEARCH",
+        "prompt": "Вставь три синие батарейки энергии в пустые места на корабле.",
+        "spokenPrompt": "Найди три синие батарейки и поставь их в корабль.",
+        "promptAudio": "space-expedition/ship-power.wav",
+        "learningGoals": ["CLASSIFICATION", "COUNTING"],
+        "scaffolding": {
+          "hint1": "Смотри на пустые места у двигателя.",
+          "hint2": "Подходят только синие батарейки энергии.",
+          "visualHint": true,
+          "explanation": "Три батарейки энергии заряжают двигатель. Камень, ключ и звезда не дают силу.",
+          "simplifiedParams": {
+            "objects": [
+              { "id": "cell_a", "label": "Энергия", "voiceAliases": ["энергия", "батарейка", "батарея"] },
+              { "id": "cell_b", "label": "Энергия", "voiceAliases": ["энергия", "батарейка"] },
+              { "id": "rock", "label": "Камень", "voiceAliases": ["камень"] }
+            ],
+            "requiredIds": ["cell_a", "cell_b"],
+            "minSelect": 2
+          }
+        },
+        "params": {
+          "objects": [
+            { "id": "cell_a", "label": "Энергия", "voiceAliases": ["энергия", "батарейка", "батарея", "ячейка"] },
+            { "id": "rock", "label": "Камень", "voiceAliases": ["камень"] },
+            { "id": "cell_b", "label": "Энергия", "voiceAliases": ["энергия", "батарейка", "батарея"] },
+            { "id": "wrench", "label": "Ключ", "voiceAliases": ["ключ", "гаечный"] },
+            { "id": "cell_c", "label": "Энергия", "voiceAliases": ["энергия", "батарейка", "батарея"] },
+            { "id": "star", "label": "Звезда", "voiceAliases": ["звезда"] }
+          ],
+          "requiredIds": ["cell_a", "cell_b", "cell_c"],
+          "minSelect": 3
+        },
+        "successSets": { "shipPower": 1, "obj:launch": 1 },
+        "successNext": "launch_flight"
+      }
+    },
+    {
+      "id": "launch_flight",
+      "kind": "STORY",
+      "text": "Энергия на месте — двигатель ревёт, корабль уходит в космос!",
+      "spokenPrompt": "Ура! Двигатель работает. Корабль летит дальше!",
+      "narrationAudio": "space-expedition/launch-flight.wav",
+      "guideLine": "Мы взлетели! Теперь проложим курс между звёздами.",
+      "guideEmotion": "CELEBRATING",
+      "groupMode": "ALL_TOGETHER",
+      "next": "nav_maze",
+      "background": "stars"
+    },
+    {
+      "id": "nav_maze",
+      "kind": "CHALLENGE",
+      "groupMode": "ALL_TOGETHER",
+      "background": "stars",
+      "challenge": {
+        "id": "even-path",
+        "mechanic": "PATH_MAZE",
+        "prompt": "Корабль летит. Проложи курс к финишу — ходи только по чётным числам!",
+        "spokenPrompt": "Корабль летит. Иди только по чётным числам. До финиша.",
+        "promptAudio": "space-expedition/even-path.wav",
+        "learningGoals": ["SPATIAL_REASONING", "COUNTING"],
+        "scaffolding": {
+          "hint1": "Чётные числа: 2, 4, 6, 8…",
+          "hint2": "Начни со старта и двигайся к соседней чётной клетке.",
+          "explanation": "Курс по чётным клеткам безопасен для двигателя."
+        },
+        "params": {
+          "width": 4,
+          "height": 3,
+          "start": "0,1",
+          "goal": "3,1",
+          "blocked": ["1,0", "2,2"],
+          "cellLabels": {
+            "0,0": "3", "1,0": "✖", "2,0": "5", "3,0": "7",
+            "0,1": "2", "1,1": "4", "2,1": "6", "3,1": "8",
+            "0,2": "1", "1,2": "9", "2,2": "✖", "3,2": "3"
+          },
+          "allowedLabelRule": "EVEN_NUMBERS"
+        },
+        "successSets": { "navigated": 1, "obj:navigate": 1 },
+        "successNext": "repair_pattern"
+      }
+    },
+    {
+      "id": "repair_pattern",
+      "kind": "CHALLENGE",
+      "groupMode": "TAKE_TURNS",
+      "background": "engine",
+      "challenge": {
+        "id": "power-seq",
+        "mechanic": "PATTERN_SEQUENCE",
+        "prompt": "Сигналы двигателя: 2, 4, ?, 8. Что пропущено?",
+        "spokenPrompt": "Два. Четыре. Вопрос. Восемь. Что пропущено?",
+        "promptAudio": "space-expedition/power-seq.wav",
+        "learningGoals": ["PATTERN_RECOGNITION", "ADDITION"],
+        "scaffolding": {
+          "hint1": "Каждый раз прибавляем 2.",
+          "hint2": "После 4 идёт…",
+          "explanation": "Это ряд чётных чисел: 2, 4, 6, 8."
+        },
+        "params": {
+          "display": ["2", "4", "?", "8"],
+          "blankIndex": 2,
+          "options": ["5", "6", "7"],
+          "correctOption": "6",
+          "voiceAccept": ["шесть", "6"]
+        },
+        "successSets": { "repaired": 1, "obj:repair": 1 },
+        "successNext": "planet_sort"
+      }
+    },
+    {
+      "id": "planet_sort",
+      "kind": "CHALLENGE",
+      "groupMode": "DISCUSS_TOGETHER",
+      "background": "planet",
+      "challenge": {
+        "id": "classify-surface",
+        "mechanic": "SORT_AND_CLASSIFY",
+        "prompt": "Разложи находки: вода, суша или воздух.",
+        "spokenPrompt": "Куда положить? Вода. Суша. Или воздух.",
+        "promptAudio": "space-expedition/classify.wav",
+        "learningGoals": ["CLASSIFICATION", "SCIENCE_REASONING"],
+        "scaffolding": {
+          "hint1": "Где живёт рыба? А где летает птица?",
+          "hint2": "Кит — вода, дерево — суша, облако — воздух.",
+          "explanation": "Мы группируем по среде обитания."
+        },
+        "params": {
+          "categories": [
+            { "id": "water", "label": "Вода" },
+            { "id": "land", "label": "Суша" },
+            { "id": "air", "label": "Воздух" }
+          ],
+          "items": [
+            { "id": "whale", "label": "Кит", "correctCategoryId": "water", "voiceAliases": ["кит"] },
+            { "id": "tree", "label": "Дерево", "correctCategoryId": "land", "voiceAliases": ["дерево"] },
+            { "id": "cloud", "label": "Облако", "correctCategoryId": "air", "voiceAliases": ["облако"] },
+            { "id": "fish", "label": "Рыба", "correctCategoryId": "water", "voiceAliases": ["рыба"] }
+          ]
+        },
+        "successSets": { "observed": 1, "obj:observe": 1 },
+        "successNext": "science_talk"
+      }
+    },
+    {
+      "id": "science_talk",
+      "kind": "DIALOGUE",
+      "prompt": "Почему лёд на иллюминаторе растаял, когда стало теплее?",
+      "narrationAudio": "space-expedition/dialogue.wav",
+      "groupMode": "DISCUSS_TOGETHER",
+      "guideEmotion": "THINKING",
+      "accepted": [
+        {
+          "id": "heat",
+          "phrases": ["тепло", "жар", "нагре", "температур", "солнц"],
+          "reply": "Да! Тепло передало льду энергию — и он стал водой.",
+          "learningNote": "Плавление"
+        }
+      ],
+      "unknownReply": "Подумай про тепло. Что происходит со льдом, когда вокруг теплее?",
+      "onMappedNext": "move_break",
+      "next": "move_break"
+    },
+    {
+      "id": "move_break",
+      "kind": "MOVE",
+      "prompt": "Экипаж, разминка: подпрыгните на месте пять раз!",
+      "spokenPrompt": "Экипаж, разминка: подпрыгните на месте пять раз!",
+      "narrationAudio": "space-expedition/move-break.wav",
+      "durationSeconds": 25,
+      "continueLabel": "Готово",
+      "groupMode": "ALL_TOGETHER",
+      "next": "offscreen_circle"
+    },
+    {
+      "id": "offscreen_circle",
+      "kind": "OFFSCREEN",
+      "prompt": "Найдите в комнате предмет в форме круга и скажите «готово».",
+      "spokenPrompt": "Найдите в комнате предмет в форме круга и скажите готово.",
+      "narrationAudio": "space-expedition/offscreen-circle.wav",
+      "continueLabel": "Готово",
+      "guideLine": "Круг повсюду — даже на Земле!",
+      "groupMode": "ALL_TOGETHER",
+      "voiceConfirmPhrases": ["готово", "нашли", "есть", "да"],
+      "next": "finale"
+    },
+    {
+      "id": "finale",
+      "kind": "REFLECTION",
+      "text": "Экспедиция удалась: корабль цел, курс верный, планета изучена. Можно отдохнуть.",
+      "continueLabel": "К мирам",
+      "groupMode": "SOLO_OR_GROUP"
+    }
+  ]
+}

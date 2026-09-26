@@ -20,7 +20,9 @@ internal class VoiceGameSessionController(
     private val scope: CoroutineScope,
     private val session: GameSession,
     private val feedbackMs: Long = 1500,
-    private val telemetry: (GameQuestion, VoiceAnswer, Verdict) -> Unit = { _, _, _ -> }
+    private val telemetry: (GameQuestion, VoiceAnswer, Verdict) -> Unit = { _, _, _ -> },
+    /** Return true if transcript was handled as a FamilyAction command (not an answer). */
+    private val commandInterceptor: (normalized: String) -> Boolean = { false },
 ) : AutoCloseable {
     private val _state = MutableStateFlow(GameViewState(session.question, session.phase))
     val state = _state.asStateFlow()
@@ -46,10 +48,17 @@ internal class VoiceGameSessionController(
                 VoicePhase.RESULT -> voice.answer?.let { answer ->
                     if (answer.requestId != request || answer.requestId == consumed) return@let
                     consumed = answer.requestId
+                    source.stopListening()
+                    if (commandInterceptor(answer.normalizedText.lowercase().trim())) {
+                        // Command handled — resume listening for the same question
+                        awaitingReady = true
+                        source.activate()
+                        if (source.state.value.phase == VoicePhase.READY) listen()
+                        return@let
+                    }
                     val verdict = session.answer(answer.normalizedText)
                     telemetry(session.question, answer, verdict)
                     publish()
-                    source.stopListening()
                     feedback?.cancel()
                     feedback = scope.launch {
                         delay(feedbackMs)

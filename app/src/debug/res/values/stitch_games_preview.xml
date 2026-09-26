@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.FamilyTV.StitchGamesPreview" parent="Theme.FamilyTV">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">#080d1e</item>
+        <item name="android:colorAccent">#38d9d2</item>
+        <item name="android:fontFamily">sans</item>
+    </style>
+</resources>

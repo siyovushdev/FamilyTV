@@ -1,0 +1,79 @@
+REC=2272832
+shot before_problem.png
+tap~ Камень 596 985
+shot wrong_action.png
+MISS Помоги
+shot help_visual.png
+MISS Повтори
+cells [(960, 986), (832, 986), (1304, 986)]
+install 1 960 986
+shot object_installed.png
+shot ship_repaired.png
+phase texts:
+  ✦ Этот не подходит. Посмотрим ещё.
+  Обсудите вместе и скажите ответ.
+  Вставь три синие батарейки энергии в пустые места на корабле.
+  Двигатель молчит. Нужна энергия.
+  Энергия
+  Камень
+  Энергия
+  Ключ
+  Энергия
+  Звезда
+
+Exception occurred while executing 'tap':
+java.lang.IllegalArgumentException: Argument expected after "tap"
+	at com.android.modules.utils.BasicShellCommandHandler.getNextArgRequired(BasicShellCommandHandler.java:295)
+	at com.android.server.input.InputShellCommand.runTap(Unknown Source:6)
+	at com.android.server.input.InputShellCommand.onCommand(Unknown Source:84)
+	at com.android.modules.utils.BasicShellCommandHandler.exec(BasicShellCommandHandler.java:97)
+	at android.os.ShellCommand.exec(ShellCommand.java:38)
+	at com.android.server.input.InputManagerService.onShellCommand(Unknown Source:12)
+	at android.os.Binder.shellCommand(Binder.java:1068)
+	at android.os.Binder.onTransact(Binder.java:888)
+	at android.hardware.input.IInputManager$Stub.onTransact(IInputManager.java:1384)
+	at android.os.Binder.execTransactInternal(Binder.java:1344)
+	at android.os.Binder.execTransact(Binder.java:1275)
+shot engine_started.png
+F ✦ Этот не подходит. Посмотрим ещё.
+F Обсудите вместе и скажите ответ.
+F Вставь три синие батарейки энергии в пустые места на корабле.
+F Двигатель молчит. Нужна энергия.
+
+Exception occurred while executing 'tap':
+java.lang.IllegalArgumentException: Argument expected after "tap"
+	at com.android.modules.utils.BasicShellCommandHandler.getNextArgRequired(BasicShellCommandHandler.java:295)
+	at com.android.server.input.InputShellCommand.runTap(Unknown Source:6)
+	at com.android.server.input.InputShellCommand.onCommand(Unknown Source:84)
+	at com.android.modules.utils.BasicShellCommandHandler.exec(BasicShellCommandHandler.java:97)
+	at android.os.ShellCommand.exec(ShellCommand.java:38)
+	at com.android.server.input.InputManagerService.onShellCommand(Unknown Source:12)
+	at android.os.Binder.shellCommand(Binder.java:1068)
+	at android.os.Binder.onTransact(Binder.java:888)
+	at android.hardware.input.IInputManager$Stub.onTransact(IInputManager.java:1384)
+	at android.os.Binder.execTransactInternal(Binder.java:1344)
+	at android.os.Binder.execTransact(Binder.java:1275)
+shot next_scene.png
+/home/siovush/AndroidStudioProjects/FamilyTV/docs/quality-sprint-1-space/recordings:
+total 26376
+drwxrwxr-x 2 siovush siovush     4096 Sep 21 11:04 .
+drwxrwxr-x 4 siovush siovush     4096 Sep 21 11:03 ..
+-rw-r--r-- 1 siovush siovush 27000746 Sep 21 11:04 space_launch_vertical_slice.mp4
+
+/home/siovush/AndroidStudioProjects/FamilyTV/docs/quality-sprint-1-space/screenshots:
+total 1740
+drwxrwxr-x 2 siovush siovush   4096 Sep 21 11:04 .
+drwxrwxr-x 4 siovush siovush   4096 Sep 21 11:03 ..
+-rw-r--r-- 1 siovush siovush 117414 Sep 21 10:59 00_home.png
+-rw-r--r-- 1 siovush siovush  61116 Sep 21 10:59 01_details.png
+-rw-r--r-- 1 siovush siovush 173298 Sep 21 11:02 02_challenge.png
+-rw-r--r-- 1 siovush siovush 117359 Sep 21 10:59 02_launch_board.png
+-rw-r--r-- 1 siovush siovush 117359 Sep 21 11:00 03_after_repeat.png
+-rw-r--r-- 1 siovush siovush 173359 Sep 21 11:03 before_problem.png
+-rw-r--r-- 1 siovush siovush 163704 Sep 21 11:04 engine_started.png
+-rw-r--r-- 1 siovush siovush 164001 Sep 21 11:03 help_visual.png
+-rw-r--r-- 1 siovush siovush 164154 Sep 21 11:04 next_scene.png
+-rw-r--r-- 1 siovush siovush 164154 Sep 21 11:04 object_installed.png
+-rw-r--r-- 1 siovush siovush 164154 Sep 21 11:04 ship_repaired.png
+-rw-r--r-- 1 siovush siovush 163986 Sep 21 11:03 wrong_action.png
+           TOTAL PSS:   141309            TOTAL RSS:   228100       TOTAL SWAP PSS:      263

@@ -1,0 +1,33 @@
+shot 00_home.png 583920
+shot 01_details.png 63857
+btn Начать 226 897
+shot before_problem.png 194576
+btn Дальше 796 984
+shot 02_challenge.png 209302
+rock 640 937
+shot wrong_action.png 199965
+btn Помоги 1188 1067
+btn Дальше 796 1066
+shot help_visual.png 202197
+btn Повтори 1028 1066
+round 0 [(848, 937), (960, 937), (1264, 937)]
+shot object_installed.png 202441
+ progress texts ['Энергия 1 из 3', 'Энергия', 'Энергия', 'Энергия']
+round 1 [(960, 937), (1264, 937)]
+ progress texts ['Энергия 1 из 3', 'Энергия', 'Энергия', 'Энергия']
+round 2 [(960, 938), (1264, 938)]
+ progress texts ['Энергия 1 из 3', 'Энергия', 'Энергия', 'Энергия']
+shot ship_repaired.png 199657
+T Космическая экспедиция
+T ✦ Этот не подходит. Посмотрим ещё.
+T Обсудите вместе и скажите ответ.
+T Вставь три синие батарейки энергии в пустые места на корабле.
+T Энергия 1 из 3
+T &#127908; Сказать
+miss Дальше
+shot engine_started.png 201635
+miss Дальше
+shot next_scene.png 147378
+video 59025935
+TOTAL PSS:   131342            TOTAL RSS:   218036       TOTAL SWAP PSS:      262
+DONE

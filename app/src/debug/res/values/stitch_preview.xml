@@ -1,0 +1,11 @@
+<resources>
+    <style name="Theme.FamilyTV.StitchPreview" parent="Theme.FamilyTV">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">#090D21</item>
+        <item name="android:colorAccent">#58C3E5</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:navigationBarColor">#090D21</item>
+    </style>
+</resources>

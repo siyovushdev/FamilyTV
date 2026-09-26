@@ -1,0 +1,32 @@
+{
+  "packageId": "space-world",
+  "packageVersion": 1,
+  "schemaVersion": 1,
+  "title": "Небо и космос",
+  "description": "Короткие факты про небо и звёзды",
+  "content": [
+    {
+      "id": "pkg-space-world",
+      "title": "Небо и космос",
+      "description": "Узнаём про день, ночь и звёзды",
+      "type": "INTERACTIVE",
+      "experienceRef": "experiences/space-world.json",
+      "thumbnail": "images/cover.webp",
+      "enabled": true,
+      "sortOrder": 24,
+      "version": 1,
+      "homeSections": ["learn", "today"],
+      "metadata": {
+        "ageMin": 5,
+        "ageMax": 10,
+        "skills": ["WORLD_KNOWLEDGE", "LOGIC"],
+        "difficulty": "easy",
+        "estimatedMinutes": 5,
+        "topics": ["space", "sky", "nature"],
+        "interactionModes": ["video", "choice", "true_false"],
+        "locale": "ru",
+        "contentPurpose": "learn"
+      }
+    }
+  ]
+}

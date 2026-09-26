@@ -1,0 +1,158 @@
+[
+  {
+    "truth": "ноль",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "0"
+  },
+  {
+    "truth": "один",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "1"
+  },
+  {
+    "truth": "два",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "2"
+  },
+  {
+    "truth": "три",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "3"
+  },
+  {
+    "truth": "четыре",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "4"
+  },
+  {
+    "truth": "пять",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "5"
+  },
+  {
+    "truth": "шесть",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "6"
+  },
+  {
+    "truth": "семь",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "7"
+  },
+  {
+    "truth": "восемь",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "8"
+  },
+  {
+    "truth": "девять",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "9"
+  },
+  {
+    "truth": "десять",
+    "category": "number",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "10"
+  },
+  {
+    "truth": "красный",
+    "category": "color",
+    "domain": "COLOR",
+    "answerTruth": "красный"
+  },
+  {
+    "truth": "синий",
+    "category": "color",
+    "domain": "COLOR",
+    "answerTruth": "синий"
+  },
+  {
+    "truth": "зелёный",
+    "category": "color",
+    "domain": "COLOR",
+    "answerTruth": "зелёный"
+  },
+  {
+    "truth": "жёлтый",
+    "category": "color",
+    "domain": "COLOR",
+    "answerTruth": "жёлтый"
+  },
+  {
+    "truth": "да",
+    "category": "yes-no",
+    "domain": "YES_NO",
+    "answerTruth": "да"
+  },
+  {
+    "truth": "нет",
+    "category": "yes-no",
+    "domain": "YES_NO",
+    "answerTruth": "нет"
+  },
+  {
+    "truth": "мой ответ пять",
+    "category": "phrase",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "5"
+  },
+  {
+    "truth": "я думаю шесть",
+    "category": "phrase",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "6"
+  },
+  {
+    "truth": "мне кажется семь",
+    "category": "phrase",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "7"
+  },
+  {
+    "truth": "не пять а шесть",
+    "category": "phrase",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "6"
+  },
+  {
+    "truth": "сначала семь нет восемь",
+    "category": "phrase",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "8"
+  },
+  {
+    "truth": "я выбираю синий",
+    "category": "phrase",
+    "domain": "COLOR",
+    "answerTruth": "синий"
+  },
+  {
+    "truth": "цвет зелёный",
+    "category": "phrase",
+    "domain": "COLOR",
+    "answerTruth": "зелёный"
+  },
+  {
+    "truth": "круг красный",
+    "category": "phrase",
+    "domain": "COLOR",
+    "answerTruth": "красный"
+  },
+  {
+    "truth": "не знаю",
+    "category": "phrase",
+    "domain": "NUMBER_0_10",
+    "answerTruth": "UNKNOWN"
+  }
+]

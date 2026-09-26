@@ -1,0 +1,64 @@
+{
+  "id": "short-story",
+  "title": "Тёплый вечер",
+  "schemaVersion": 3,
+  "startStepId": "hello",
+  "steps": [
+    {
+      "type": "message",
+      "id": "hello",
+      "text": "Сейчас будет короткая история.",
+      "continueLabel": "Слушать",
+      "transitions": {
+        "next": "story-video"
+      }
+    },
+    {
+      "type": "video",
+      "id": "story-video",
+      "mediaRef": "media/story.mp4",
+      "transitions": {
+        "next": "feel"
+      }
+    },
+    {
+      "type": "choice",
+      "id": "feel",
+      "prompt": "Каким был свет в истории?",
+      "options": [
+        {
+          "id": "warm",
+          "text": "Тёплым"
+        },
+        {
+          "id": "cold",
+          "text": "Холодным"
+        },
+        {
+          "id": "dark",
+          "text": "Тёмным"
+        }
+      ],
+      "correctOptionId": "warm",
+      "feedback": {
+        "correct": "Да, свет был тёплым.",
+        "wrong": "Вспомни название: тёплый вечер.",
+        "hint": "Попробуй ещё раз спокойно"
+      },
+      "transitions": {
+        "onCorrect": "bye",
+        "onWrong": "feel",
+        "onUnknown": "feel"
+      }
+    },
+    {
+      "type": "message",
+      "id": "bye",
+      "text": "История закончилась. Можно отдохнуть.",
+      "continueLabel": "Готово",
+      "transitions": {
+        "next": "__end__"
+      }
+    }
+  ]
+}

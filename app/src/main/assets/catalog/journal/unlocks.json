@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "unlocks": [
+    {
+      "id": "space-visited-moon",
+      "type": "WORLD_VISITED",
+      "title": "Мы были у Луны",
+      "body": "Мы отправились в космос и исследовали лунный путь.",
+      "spokenBody": "Мы были у Луны.",
+      "world": "explore",
+      "requireDiscovery": true
+    },
+    {
+      "id": "space-light-note",
+      "type": "FACT_DISCOVERED",
+      "title": "Свет и цвет",
+      "body": "Мы учились замечать цвета — так проще различать свет и тень.",
+      "spokenBody": "Мы узнали про цвета и свет.",
+      "world": "explore",
+      "requireDiscovery": true
+    },
+    {
+      "id": "ice-melts-with-heat",
+      "type": "FACT_DISCOVERED",
+      "title": "Лёд и тепло",
+      "body": "Лёд тает быстрее, когда получает больше тепла.",
+      "spokenBody": "Лёд тает быстрее от тепла.",
+      "world": "explore",
+      "knowledgeId": "ice-melting",
+      "requireDiscovery": true
+    },
+    {
+      "id": "exp-where-melts-faster",
+      "type": "EXPERIMENT_OBSERVED",
+      "title": "Мы проверили лёд",
+      "body": "Мы проверили лёд: в тепле он растаял быстрее.",
+      "spokenBody": "Мы проверили: в тепле лёд тает быстрее.",
+      "world": "explore",
+      "requireDiscovery": true
+    },
+    {
+      "id": "space-journey-done",
+      "type": "JOURNEY_SUMMARY",
+      "title": "Космическая экспедиция",
+      "body": "Мы закончили большую космическую экспедицию.",
+      "spokenBody": "Мы закончили космическую экспедицию.",
+      "world": "explore",
+      "requireDiscovery": true
+    },
+    {
+      "id": "forest-visited",
+      "type": "WORLD_VISITED",
+      "title": "Мы были в лесу",
+      "body": "Мы прошли лесную тропу и искали следы.",
+      "spokenBody": "Мы были в лесу.",
+      "world": "explore",
+      "requireDiscovery": true
+    },
+    {
+      "id": "owl-night-fact",
+      "type": "FACT_DISCOVERED",
+      "title": "Сова ночью",
+      "body": "Сова хорошо видит в сумерках и охотится ночью.",
+      "spokenBody": "Сова летает ночью, потому что так ей удобнее охотиться.",
+      "world": "explore",
+      "knowledgeId": "owl-night",
+      "requireDiscovery": true
+    }
+  ]
+}

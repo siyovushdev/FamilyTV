@@ -1,0 +1,43 @@
+{
+  "id": "count-apples",
+  "title": "Считаем яблоки",
+  "readingSupport": "AUDIO_FIRST",
+  "steps": [
+    {
+      "type": "MESSAGE",
+      "id": "intro",
+      "text": "Давай посчитаем яблоки!",
+      "spokenPrompt": "Давай посчитаем яблоки!",
+      "promptAudio": "count-apples/prompt.wav",
+      "continueLabel": "Начать"
+    },
+    {
+      "type": "QUESTION",
+      "id": "q-sum",
+      "prompt": "Сколько яблок получилось?",
+      "spokenPrompt": "Сколько яблок получилось?",
+      "promptAudio": "count-apples/prompt.wav",
+      "questionType": "VOICE_NUMBER",
+      "expected": "5",
+      "correctFeedback": "Правильно!",
+      "wrongFeedback": "Попробуй ещё раз",
+      "feedback": {
+        "hint": "Посчитай слева и справа и сложи.",
+        "correctAudio": "count-apples/correct.wav"
+      },
+      "visual": {
+        "kind": "APPLES",
+        "left": 2,
+        "right": 3
+      }
+    },
+    {
+      "type": "MESSAGE",
+      "id": "outro",
+      "text": "Отлично! Ты умеешь складывать.",
+      "spokenPrompt": "Отлично! Ты умеешь складывать.",
+      "promptAudio": "common:well_done",
+      "continueLabel": "Готово"
+    }
+  ]
+}

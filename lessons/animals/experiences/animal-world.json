@@ -1,0 +1,80 @@
+{
+  "id": "animal-world",
+  "title": "Мир животных",
+  "schemaVersion": 3,
+  "startStepId": "hello",
+  "steps": [
+    {
+      "type": "message",
+      "id": "hello",
+      "text": "Сегодня узнаем про животных!",
+      "continueLabel": "Смотреть",
+      "transitions": {
+        "next": "nature-video"
+      }
+    },
+    {
+      "type": "video",
+      "id": "nature-video",
+      "mediaRef": "media/nature.mp4",
+      "transitions": {
+        "next": "who-flies"
+      }
+    },
+    {
+      "type": "choice",
+      "id": "who-flies",
+      "prompt": "Кто умеет летать?",
+      "options": [
+        {
+          "id": "bird",
+          "text": "Птица"
+        },
+        {
+          "id": "fish",
+          "text": "Рыба"
+        },
+        {
+          "id": "cow",
+          "text": "Корова"
+        }
+      ],
+      "correctOptionId": "bird",
+      "feedback": {
+        "correct": "Да! Птицы летают.",
+        "wrong": "Подумай: у кого есть крылья?",
+        "hint": "Смотри в небо"
+      },
+      "transitions": {
+        "onCorrect": "tf-water",
+        "onWrong": "who-flies",
+        "onUnknown": "who-flies"
+      }
+    },
+    {
+      "type": "true_false",
+      "id": "tf-water",
+      "prompt": "Рыба живёт в воде. Это правда?",
+      "correct": true,
+      "feedback": {
+        "correct": "Верно!",
+        "wrong": "Рыбы живут в воде.",
+        "hint": "Попробуй ещё раз спокойно"
+      },
+      "transitions": {
+        "onCorrect": "bye",
+        "onWrong": "tf-water",
+        "onUnknown": "tf-water"
+      }
+    },
+    {
+      "type": "message",
+      "id": "bye",
+      "text": "Отлично! Ты много узнал о животных.",
+      "continueLabel": "Готово",
+      "transitions": {
+        "next": "__end__"
+      }
+    }
+  ]
+}

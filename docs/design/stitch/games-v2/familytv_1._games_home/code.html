@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=1920, height=1080, initial-scale=1.0" name="viewport"/>
+<title>FamilyTV — Остров игр</title>
+<!-- Tailwind CSS v3 with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Custom Config -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cosmic: {
+              950: '#050814',
+              900: '#080d1e',
+              850: '#0c132b',
+              800: '#111b38',
+              700: '#1a274d',
+            },
+            lumicyan: {
+              300: '#7eeded',
+              400: '#38d9d2',
+              500: '#22b8b2',
+              glow: 'rgba(56, 217, 210, 0.45)',
+            },
+            aurora: {
+              purple: '#9d4edd',
+              amber: '#f59e0b',
+              emerald: '#10b981',
+            }
+          },
+          fontFamily: {
+            sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- Typography & Global TV Viewport Styles -->
+<style data-purpose="layout">
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      min-width: 1920px;
+      min-height: 1080px;
+      max-width: 1920px;
+      max-height: 1080px;
+      overflow: hidden;
+      user-select: none;
+      background-color: #080d1e;
+      color: #f1f5f9;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    /* Ambient stars layer */
+    .cosmic-backdrop {
+      background: 
+        radial-gradient(circle at 15% 20%, rgba(56, 217, 210, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(157, 78, 221, 0.10) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(34, 184, 178, 0.08) 0%, transparent 50%),
+        #080d1e;
+    }
+
+    /* Active Card TV Focus Glow Effect */
+    .tv-focus-glow {
+      box-shadow: 0 0 35px 4px rgba(56, 217, 210, 0.4), inset 0 0 16px rgba(56, 217, 210, 0.2);
+    }
+
+    .bubble-glow {
+      box-shadow: 0 0 24px -2px rgba(56, 217, 210, 0.25);
+    }
+  </style>
+</head>
+<body class="cosmic-backdrop relative w-[1920px] h-[1080px] overflow-hidden flex flex-col justify-between">
+<!-- BEGIN: AmbientStarfield -->
+<!-- Subtle decorative cosmic specks to simulate quiet night TV sky -->
+<div class="absolute inset-0 pointer-events-none opacity-40" data-purpose="ambient-stars">
+<div class="absolute top-[85px] left-[320px] w-1.5 h-1.5 bg-white rounded-full opacity-60"></div>
+<div class="absolute top-[130px] right-[480px] w-1 h-1 bg-cyan-200 rounded-full opacity-70"></div>
+<div class="absolute top-[480px] left-[90px] w-1 h-1 bg-white rounded-full opacity-40"></div>
+<div class="absolute top-[260px] left-[740px] w-2 h-2 bg-yellow-100 rounded-full opacity-50 blur-[0.5px]"></div>
+<div class="absolute bottom-[200px] right-[140px] w-1.5 h-1.5 bg-teal-200 rounded-full opacity-60"></div>
+<div class="absolute top-[90px] right-[180px] w-1 h-1 bg-white rounded-full opacity-45"></div>
+</div>
+<!-- END: AmbientStarfield -->
+<!-- BEGIN: TopBarSafeHeader -->
+<!-- Top Safe Margins: 72px from top, 88px from sides -->
+<header class="pt-[72px] px-[88px] flex items-center justify-between w-full z-20" data-purpose="tv-top-bar">
+<!-- Left: Back Navigation Button -->
+<div class="w-[340px] flex items-center" data-purpose="back-navigation">
+<button class="flex items-center gap-3 px-6 py-3.5 rounded-full bg-cosmic-850/80 border border-slate-700/60 text-slate-300 text-xl font-medium tracking-wide shadow-md hover:border-slate-500 transition-colors">
+<span class="text-2xl leading-none text-slate-400">‹</span>
+<span>На главную</span>
+</button>
+</div>
+<!-- Center: Lumi Companion Speech Bubble -->
+<div class="flex items-center gap-4 bg-cosmic-850/90 border border-lumicyan-400/50 rounded-full px-7 py-3 bubble-glow" data-purpose="lumi-speech-bubble">
+<!-- Animated mini Lumi face icon -->
+<div class="relative w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-teal-300 flex items-center justify-center p-0.5 shadow-inner">
+<div class="w-full h-full bg-cosmic-900 rounded-full flex items-center justify-center">
+<span class="text-lumicyan-400 text-lg font-bold tracking-tighter">ᵔ◡ᵔ</span>
+</div>
+<span class="absolute -top-1 -right-0.5 w-3 h-3 bg-lumicyan-400 rounded-full border-2 border-cosmic-900 animate-pulse"></span>
+</div>
+<span class="text-xl font-medium text-cyan-50 tracking-wide">
+        «Выбирай игру стрелками или назови вслух!»
+      </span>
+</div>
+<!-- Right: Session Status & Voice Indicator -->
+<div class="w-[340px] flex items-center justify-end gap-3.5" data-purpose="tv-indicators">
+<!-- Timer -->
+<div class="flex items-center gap-2 bg-cosmic-850/70 border border-slate-700/50 px-5 py-3 rounded-full text-slate-300 text-lg font-medium">
+<span class="text-base">⏳</span>
+<span>25 мин</span>
+</div>
+<!-- Voice Mic Status -->
+<div class="flex items-center gap-2.5 bg-emerald-950/40 border border-emerald-500/40 px-5 py-3 rounded-full text-emerald-300 text-lg font-medium">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+</span>
+<span>Голос активен</span>
+</div>
+</div>
+</header>
+<!-- END: TopBarSafeHeader -->
+<!-- BEGIN: GameBiomesContainer -->
+<!-- Main game selection area: Horizontal row of 4 large TV cards -->
+<main class="w-full px-[88px] my-auto flex flex-col justify-center z-10" data-purpose="game-biomes-carousel">
+<div class="grid grid-cols-4 gap-7 items-center w-full" data-purpose="cards-grid">
+<!-- CARD 1: ACTIVE FOCUSED CARD (Математика: Остров яблок) -->
+<article class="relative flex flex-col rounded-3xl bg-cosmic-850 border-[3.5px] border-lumicyan-400 tv-focus-glow scale-[1.05] transition-all duration-300 overflow-hidden shadow-2xl h-[530px]" data-purpose="game-card-active">
+<!-- D-Pad TV Focus Selection Badge -->
+<div class="absolute top-4 left-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-lumicyan-400 text-cosmic-950 font-bold text-xs uppercase tracking-wider shadow-lg">
+<span class="w-2 h-2 rounded-full bg-cosmic-950"></span>
+<span>ВЫБРАНО ПУЛЬТОМ</span>
+</div>
+<!-- Biome Thumbnail Image -->
+<div class="relative w-full h-[320px] overflow-hidden bg-slate-900">
+<img alt="Остров яблок и робот Люми" class="w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida/AEtjO1XnQczl1zMwFlpb4MjMn2zZNFbCQsAMUJzsPLtbIFVE1ufMbPijPn0cArOjM8U3nZ_526BFMPgtUq2z_HtDwbLVU9JAA0Bj1jcJQZvxPAsCf9r7GGwhhxU0Wl8RU9Ty9zH1v-0c6qJevR7ngSp9J-XMc_AwiRQhBb6hzDfs5jvXZc8SJHfZ5vqQMe_BGKX6rLcmoutD-vf-IXkI_pWYlKBrXjNxQlNLzuPO8yfcvjviAef2Hk3FXyqrbHM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-cosmic-850 via-transparent to-transparent"></div>
+</div>
+<!-- Card Meta & TV Primary Action Button -->
+<div class="p-6 flex flex-col justify-between flex-grow">
+<div>
+<h2 class="text-2xl font-bold text-white tracking-wide flex items-center gap-2">
+              Математика
+              <span class="text-sm px-2.5 py-0.5 rounded-md bg-teal-500/20 text-teal-300 font-semibold border border-teal-500/30">Счёт 1-5</span>
+</h2>
+<p class="text-slate-300 text-base mt-1 font-normal">Счёт и яблоки • Остров яблок</p>
+</div>
+<!-- TV OK Play Button -->
+<button class="w-full mt-3 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-lumicyan-400 to-teal-400 text-cosmic-950 font-black text-xl flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-transform">
+<span class="px-2 py-0.5 rounded-lg bg-cosmic-950/20 text-base font-extrabold border border-cosmic-950/20">[ OK ]</span>
+<span>Играть</span>
+</button>
+</div>
+</article>
+<!-- CARD 2: UNFOCUS (Цвета и формы) -->
+<article class="relative flex flex-col rounded-3xl bg-cosmic-850/80 border border-slate-700/60 opacity-90 hover:opacity-100 transition-all duration-300 overflow-hidden h-[490px]" data-purpose="game-card">
+<!-- Biome Graphic Container -->
+<div class="relative w-full h-[290px] bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 flex items-center justify-center overflow-hidden">
+<!-- Stylized cartoon rocket & paint buckets illustration motif -->
+<div class="absolute -top-10 -right-10 w-48 h-48 rounded-full bg-purple-500/10 blur-2xl"></div>
+<div class="relative flex flex-col items-center justify-center text-center p-6">
+<div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-5xl shadow-xl transform rotate-3">
+              🚀
+            </div>
+<div class="flex gap-2 mt-4">
+<span class="w-5 h-5 rounded-full bg-red-400 shadow-md"></span>
+<span class="w-5 h-5 rounded-full bg-amber-400 shadow-md"></span>
+<span class="w-5 h-5 rounded-full bg-sky-400 shadow-md"></span>
+</div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-cosmic-850 via-transparent to-transparent"></div>
+</div>
+<!-- Card Meta -->
+<div class="p-6 flex flex-col justify-between flex-grow">
+<div>
+<h2 class="text-2xl font-bold text-white tracking-wide">Цвета и формы</h2>
+<p class="text-slate-400 text-base mt-1">Ракета и краски</p>
+</div>
+<div class="text-sm font-medium text-slate-500">Нажмите [OK] для выбора</div>
+</div>
+</article>
+<!-- CARD 3: UNFOCUS (Погода и пар) -->
+<article class="relative flex flex-col rounded-3xl bg-cosmic-850/80 border border-slate-700/60 opacity-90 hover:opacity-100 transition-all duration-300 overflow-hidden h-[490px]" data-purpose="game-card">
+<!-- Biome Graphic Container -->
+<div class="relative w-full h-[290px] bg-gradient-to-br from-sky-950 via-slate-900 to-teal-950 flex items-center justify-center overflow-hidden">
+<!-- Stylized glass dome cloud weather station motif -->
+<div class="absolute -bottom-8 -left-8 w-44 h-44 rounded-full bg-sky-500/10 blur-2xl"></div>
+<div class="relative flex flex-col items-center justify-center text-center p-6">
+<div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-5xl shadow-xl transform -rotate-2">
+              🧪
+            </div>
+<div class="flex items-center gap-1.5 mt-4 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-200 text-xs font-medium">
+<span>☁️ Облака и капли</span>
+</div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-cosmic-850 via-transparent to-transparent"></div>
+</div>
+<!-- Card Meta -->
+<div class="p-6 flex flex-col justify-between flex-grow">
+<div>
+<h2 class="text-2xl font-bold text-white tracking-wide">Погода и пар</h2>
+<p class="text-slate-400 text-base mt-1">Остров науки</p>
+</div>
+<div class="text-sm font-medium text-slate-500">Нажмите [OK] для выбора</div>
+</div>
+</article>
+<!-- CARD 4: UNFOCUS (Лабиринты звёзд) -->
+<article class="relative flex flex-col rounded-3xl bg-cosmic-850/80 border border-slate-700/60 opacity-90 hover:opacity-100 transition-all duration-300 overflow-hidden h-[490px]" data-purpose="game-card">
+<!-- Biome Graphic Container -->
+<div class="relative w-full h-[290px] bg-gradient-to-br from-amber-950/40 via-slate-900 to-indigo-950 flex items-center justify-center overflow-hidden">
+<!-- Stylized constellation puzzle motif -->
+<div class="absolute top-0 right-0 w-44 h-44 rounded-full bg-amber-500/10 blur-2xl"></div>
+<div class="relative flex flex-col items-center justify-center text-center p-6">
+<div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-5xl shadow-xl transform rotate-2">
+              🪐
+            </div>
+<div class="flex items-center gap-1.5 mt-4 px-3 py-1 rounded-full bg-amber-950/60 border border-amber-500/30 text-amber-200 text-xs font-medium">
+<span>✨ Созвездия</span>
+</div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-cosmic-850 via-transparent to-transparent"></div>
+</div>
+<!-- Card Meta -->
+<div class="p-6 flex flex-col justify-between flex-grow">
+<div>
+<h2 class="text-2xl font-bold text-white tracking-wide">Лабиринты звёзд</h2>
+<p class="text-slate-400 text-base mt-1">Остров логики</p>
+</div>
+<div class="text-sm font-medium text-slate-500">Нажмите [OK] для выбора</div>
+</div>
+</article>
+</div>
+</main>
+<!-- END: GameBiomesContainer -->
+<!-- BEGIN: BottomNavHintBar -->
+<!-- Bottom Safe Margins: 72px from bottom, 88px from sides -->
+<footer class="pb-[72px] px-[88px] w-full z-20" data-purpose="tv-dpad-bottom-bar">
+<div class="w-full flex items-center justify-center gap-10 py-3.5 px-8 rounded-2xl bg-cosmic-850/60 border border-slate-800/80 backdrop-blur-sm text-slate-300 text-lg font-medium shadow-lg">
+<!-- TV D-pad Arrows Guide -->
+<div class="flex items-center gap-2.5">
+<span class="flex items-center justify-center px-2.5 py-1 rounded-lg bg-cosmic-700/80 border border-slate-600 text-slate-200 font-bold text-sm tracking-widest">
+          ◄ ►
+        </span>
+<span class="text-slate-300">Выбор игры</span>
+</div>
+<span class="text-slate-600">•</span>
+<!-- OK Enter Button Guide -->
+<div class="flex items-center gap-2.5">
+<span class="flex items-center justify-center px-3 py-1 rounded-lg bg-lumicyan-400/20 border border-lumicyan-400/50 text-lumicyan-300 font-bold text-sm">
+          [ OK ]
+        </span>
+<span class="text-slate-200 font-medium">Играть</span>
+</div>
+<span class="text-slate-600">•</span>
+<!-- TV Remote Voice Guide -->
+<div class="flex items-center gap-2.5">
+<span class="text-base text-teal-400">🎤</span>
+<span class="text-slate-300">Скажи в пульт: <span class="text-lumicyan-300 font-semibold tracking-wide">«Математика»</span></span>
+</div>
+</div>
+</footer>
+<!-- END: BottomNavHintBar -->
+</body></html>

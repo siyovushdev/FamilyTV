@@ -1,0 +1,13 @@
+{
+  "id": "today-together",
+  "title": "Сегодня вместе",
+  "description": "Конечная семейная сессия без бесконечного автоплея",
+  "estimatedMinutes": 20,
+  "items": [
+    { "contentId": "pkg-animal-world", "optional": true },
+    { "contentId": "pkg-colors-shapes", "optional": true },
+    { "contentId": "game-math", "optional": true },
+    { "contentId": "pkg-move-break", "optional": true },
+    { "contentId": "pkg-short-story", "optional": true }
+  ]
+}

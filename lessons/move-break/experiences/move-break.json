@@ -1,0 +1,71 @@
+{
+  "id": "move-break",
+  "title": "Подвигаемся",
+  "schemaVersion": 3,
+  "startStepId": "ready",
+  "steps": [
+    {
+      "type": "message",
+      "id": "ready",
+      "text": "Пора немного подвигаться!",
+      "continueLabel": "Готов",
+      "transitions": {
+        "next": "warmup"
+      }
+    },
+    {
+      "type": "video",
+      "id": "warmup",
+      "mediaRef": "media/warmup.mp4",
+      "transitions": {
+        "next": "tf-stand"
+      }
+    },
+    {
+      "type": "true_false",
+      "id": "tf-stand",
+      "prompt": "Перед прыжками лучше встать. Правда?",
+      "correct": true,
+      "feedback": {
+        "correct": "Да! Встань удобно.",
+        "wrong": "Встань на ноги перед прыжками.",
+        "hint": "Попробуй ещё раз спокойно"
+      },
+      "transitions": {
+        "onCorrect": "jumps",
+        "onWrong": "tf-stand"
+      }
+    },
+    {
+      "type": "move",
+      "id": "jumps",
+      "prompt": "Подпрыгни на месте десять раз",
+      "durationSeconds": 20,
+      "continueMode": "button",
+      "continueLabel": "Я попрыгал",
+      "transitions": {
+        "next": "clap"
+      }
+    },
+    {
+      "type": "move",
+      "id": "clap",
+      "prompt": "Хлопни в ладоши пять раз",
+      "durationSeconds": 10,
+      "continueMode": "button",
+      "continueLabel": "Готово",
+      "transitions": {
+        "next": "done"
+      }
+    },
+    {
+      "type": "message",
+      "id": "done",
+      "text": "Супер! Можно вернуться к играм.",
+      "continueLabel": "Домой",
+      "transitions": {
+        "next": "__end__"
+      }
+    }
+  ]
+}

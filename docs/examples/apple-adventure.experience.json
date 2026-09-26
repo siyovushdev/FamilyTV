@@ -1,0 +1,74 @@
+{
+  "id": "apple-adventure",
+  "title": "Приключение с яблоками",
+  "schemaVersion": 2,
+  "startStepId": "intro",
+  "steps": [
+    {
+      "type": "message",
+      "id": "intro",
+      "text": "Отправляемся в приключение с яблоками!",
+      "continueLabel": "Начать",
+      "transitions": { "next": "intro-video" }
+    },
+    {
+      "type": "video",
+      "id": "intro-video",
+      "mediaRef": "media/intro.mp4",
+      "transitions": { "next": "animal-choice" }
+    },
+    {
+      "type": "choice",
+      "id": "animal-choice",
+      "prompt": "Какое животное живёт в воде?",
+      "options": [
+        { "id": "fish", "text": "Рыба" },
+        { "id": "cat", "text": "Кошка" },
+        { "id": "horse", "text": "Лошадь" }
+      ],
+      "correctOptionId": "fish",
+      "correctFeedback": "Верно! Рыба живёт в воде.",
+      "wrongFeedback": "Подумай ещё раз",
+      "transitions": {
+        "onCorrect": "apple-msg",
+        "onWrong": "animal-choice",
+        "onUnknown": "animal-choice"
+      }
+    },
+    {
+      "type": "message",
+      "id": "apple-msg",
+      "text": "Теперь посчитаем яблоки.",
+      "continueLabel": "Дальше",
+      "transitions": { "next": "apple-voice" }
+    },
+    {
+      "type": "question",
+      "id": "apple-voice",
+      "prompt": "Сколько яблок получилось?",
+      "questionType": "VOICE_NUMBER",
+      "expected": "5",
+      "correctFeedback": "Правильно!",
+      "wrongFeedback": "Попробуй ещё раз",
+      "visual": { "kind": "APPLES", "left": 2, "right": 3 },
+      "transitions": {
+        "onCorrect": "finale-video",
+        "onWrong": "apple-voice",
+        "onUnknown": "apple-voice"
+      }
+    },
+    {
+      "type": "video",
+      "id": "finale-video",
+      "mediaRef": "media/finale.mp4",
+      "transitions": { "next": "outro" }
+    },
+    {
+      "type": "message",
+      "id": "outro",
+      "text": "Ура! Приключение закончено.",
+      "continueLabel": "Готово",
+      "transitions": { "next": "__end__" }
+    }
+  ]
+}

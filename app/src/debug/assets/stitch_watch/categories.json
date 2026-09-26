@@ -1,0 +1,76 @@
+[
+  {
+    "id": "nature",
+    "title": "Животные и природа",
+    "line1": "Животные",
+    "line2": "и природа",
+    "art": "category_nature",
+    "accent": "#34D399",
+    "keywords": [
+      "animals",
+      "nature",
+      "forest",
+      "природа",
+      "животные"
+    ]
+  },
+  {
+    "id": "space",
+    "title": "Космос и наука",
+    "line1": "Космос",
+    "line2": "и наука",
+    "art": "category_space",
+    "accent": "#38D9D2",
+    "keywords": [
+      "space",
+      "science",
+      "космос",
+      "наука"
+    ]
+  },
+  {
+    "id": "how",
+    "title": "Как всё устроено",
+    "line1": "Как всё",
+    "line2": "устроено",
+    "art": "category_how",
+    "accent": "#FBBF24",
+    "keywords": [
+      "how",
+      "machines",
+      "technology",
+      "устройство",
+      "техника"
+    ]
+  },
+  {
+    "id": "stories",
+    "title": "Истории и сказки",
+    "line1": "Истории",
+    "line2": "и сказки",
+    "art": "category_stories",
+    "accent": "#C084FC",
+    "keywords": [
+      "stories",
+      "story",
+      "сказка",
+      "истории",
+      "calm"
+    ]
+  },
+  {
+    "id": "creativity",
+    "title": "Творчество",
+    "line1": "Творчество",
+    "line2": "и музыка",
+    "art": "category_creativity",
+    "accent": "#FB7185",
+    "keywords": [
+      "creative",
+      "creativity",
+      "music",
+      "творчество",
+      "музыка"
+    ]
+  }
+]

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>FamilyTV — Каталог видео: Космос и наука</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+      background-color: #080d1e;
+      color: #f1f5f9;
+      user-select: none;
+    }
+    .tv-focus-cyan {
+      box-shadow: 0 0 0 5px #38d9d2, 0 16px 44px rgba(56, 217, 210, 0.45);
+      transform: scale(1.06);
+    }
+  </style>
+</head>
+<body class="relative w-[1920px] h-[1080px] bg-[#080d1e] overflow-hidden flex flex-col justify-between">
+  <!-- Atmospheric cosmic glow -->
+  <div class="absolute inset-0 pointer-events-none opacity-30">
+    <div class="absolute top-0 right-1/4 w-[700px] h-[500px] bg-cyan-600/20 rounded-full blur-[150px]"></div>
+    <div class="absolute bottom-0 left-10 w-[600px] h-[400px] bg-blue-700/20 rounded-full blur-[140px]"></div>
+  </div>
+
+  <!-- TV Safe Area Header (Y: 72px, X: 88px) -->
+  <header class="relative z-10 pt-[72px] px-[88px] flex items-center justify-between">
+    <div class="flex items-center gap-6">
+      <!-- Back Button Indicator -->
+      <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-300 text-sm font-semibold">
+        <span class="px-2 py-0.5 rounded bg-slate-700 font-mono text-xs">BACK</span>
+        <span>К мирам</span>
+      </div>
+      <!-- Category Title & Icon -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-cyan-400/20 border border-cyan-400/50 flex items-center justify-center">
+          <svg class="w-6 h-6 text-cyan-300" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2.5a.75.75 0 01.75.75v1.28a9.006 9.006 0 017.72 7.72h1.28a.75.75 0 010 1.5h-1.28a9.006 9.006 0 01-7.72 7.72v1.28a.75.75 0 01-1.5 0v-1.28a9.006 9.006 0 01-7.72-7.72H2.25a.75.75 0 010-1.5h1.28a9.006 9.006 0 017.72-7.72V3.25a.75.75 0 01.75-.75zm0 3.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zm0 3a4.5 4.5 0 110 9 4.5 4.5 0 010-9z"/>
+          </svg>
+        </div>
+        <h1 class="text-3xl font-extrabold text-white tracking-tight">Космос и наука</h1>
+        <span class="text-slate-400 text-lg font-medium ml-2">• 6 приключений</span>
+      </div>
+    </div>
+
+    <!-- Parent Gate: PIN Only -->
+    <div class="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-slate-900/80 border border-slate-800 text-slate-300 text-sm font-semibold">
+      <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 00-7.5 0v3h7.5z" clip-rule="evenodd" />
+      </svg>
+      <span>Родителям (PIN)</span>
+    </div>
+  </header>
+
+  <!-- Video Browse Grid: Exactly 5-6 Large Video Cards (No Wall of Text) -->
+  <main class="relative z-10 px-[88px] my-auto">
+    <div class="grid grid-cols-5 gap-6">
+
+      <!-- Card 1: Active D-Pad Focus (1.06x + Cyan Glow) -->
+      <div class="relative rounded-3xl bg-slate-900 border-[3px] border-[#38d9d2] overflow-hidden tv-focus-cyan transition-all duration-300 z-20 flex flex-col">
+        <div class="h-[280px] w-full relative overflow-hidden bg-slate-950">
+          <img src="https://lh3.googleusercontent.com/aida/AEtjO1W-t7krbjmf78fw-ARcqA8HBRVMtBbgwKMrAZxxdGLIr2CvPVz_f-5xFGiC5w-RZz5TkcWuU6cOGP-mL2dc7sYysWs5AEEH9EzWqWpHOFkr76pJQREL_pe5g7uSP39HXshmIB4KXSNyG0RJiQGQfVH6k_FK19E0jNGytc9fUATYyVB3GWQTnY5qRagpyu1VmEUsS9biSFGqxVUTDUtKpSExciIBRbePOg6AFZWQOAqrpDxdjW8VDqaG2yw" class="w-full h-full object-cover scale-105" alt="Тайна Сатурна">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+          
+          <!-- Large Duration Pill on Artwork -->
+          <div class="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white font-bold text-xs flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-cyan-300" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 13H11V7h1.5v8z"/></svg>
+            8 мин
+          </div>
+
+          <!-- Active Focus Play indicator -->
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-16 h-16 rounded-full bg-[#38d9d2] text-[#041d1c] flex items-center justify-center shadow-xl shadow-cyan-500/50">
+              <svg class="w-8 h-8 ml-1" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="p-5 bg-gradient-to-b from-slate-900 to-slate-950 flex flex-col justify-between flex-1">
+          <h2 class="text-xl font-bold text-cyan-200 line-clamp-1">Тайна Сатурна</h2>
+          <div class="flex items-center justify-between mt-3 text-xs font-semibold text-slate-400">
+            <span class="text-cyan-400">Серия 1</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-cyan-400/20 text-cyan-300 border border-cyan-400/30">Нажми OK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="group relative rounded-3xl bg-slate-900/80 border-2 border-slate-700/60 overflow-hidden shadow-xl flex flex-col">
+        <div class="h-[280px] w-full relative overflow-hidden bg-slate-950">
+          <img src="https://lh3.googleusercontent.com/aida/AEtjO1XNZaDgAo-UAuNPScPFk-u2e8q5Fb4KyPw5Pk-XTdaOGGGoW8VDm8Bv6x_qh3GY0RNGLB7VgElLObj4UD1LjrpTXY5GQh4gU1vn_7xNGu5eGJkw94FUKFI-gZqjZTPVru719YIRnaIEFCkrH2mX9HQdrfHr608B68DuPvKUjhOOZjvW8-KIv29HbQkZ9vjDVvFE-watUGc6TVHO1oRMYrk4VLb44eXMCEIzvXvmQvPf17ye_SuzFC_1tjU" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Комета Луми">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+          <div class="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white font-bold text-xs flex items-center gap-1.5">
+            10 мин
+          </div>
+        </div>
+        <div class="p-5 bg-gradient-to-b from-slate-900 to-slate-950 flex flex-col justify-between flex-1">
+          <h2 class="text-xl font-bold text-white line-clamp-1">Комета Луми</h2>
+          <div class="flex items-center justify-between mt-3 text-xs font-semibold text-slate-400">
+            <span>Серия 2</span>
+            <span>Приключение</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="group relative rounded-3xl bg-slate-900/80 border-2 border-slate-700/60 overflow-hidden shadow-xl flex flex-col">
+        <div class="h-[280px] w-full relative overflow-hidden bg-slate-950">
+          <img src="https://lh3.googleusercontent.com/aida/AEtjO1WuUZWEcoB3Q_IWxZRdRlD38VQ45wj8WCFtdrkNrHSjIICmeBli8K1_bPlVmeMZZE1SdkhA747bsmcWxf14CvKVtunPkxTHJSLejIoVgwUcAlb1pNjYMwaFrv9yQSa_y1nYv0b_hEKtutxyolr2fDcUgeeKMs8PBaD_DuSQf-F8ZfUpG1HD6Hq-BkrAaKe6WhKIip4kdUNh5tVKZSzSR_coaqY3yAe4JL_01bl1nC2jIvWPV_gKVny6awc" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Музыка Луны">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+          <div class="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white font-bold text-xs flex items-center gap-1.5">
+            7 мин
+          </div>
+        </div>
+        <div class="p-5 bg-gradient-to-b from-slate-900 to-slate-950 flex flex-col justify-between flex-1">
+          <h2 class="text-xl font-bold text-white line-clamp-1">Музыка Луны</h2>
+          <div class="flex items-center justify-between mt-3 text-xs font-semibold text-slate-400">
+            <span>Серия 3</span>
+            <span>Сказка</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="group relative rounded-3xl bg-slate-900/80 border-2 border-slate-700/60 overflow-hidden shadow-xl flex flex-col">
+        <div class="h-[280px] w-full relative overflow-hidden bg-slate-950">
+          <img src="https://lh3.googleusercontent.com/aida/AEtjO1X0vkda6NWS9h2H-lYJTtqheTg1ClTogUSJiXsNT4hBoWcUJ48iVOOW0XtsJ63C1ktQ_hYYH3K5Aut1t2FjxgXI1HdpNlzCyQfvhIyFMejQQfGGO1lWmOouuqVtHjqFttRUBKtyH7GPKZhoxQwF3UttVp414GxtkNnuYILe5oBmoo7fQjgLnpuTIfZ7_nVdS-odOWtOMzpc3Tb4tpu2VEUbvN5gVDL4Os71GmoXZwGLUJQ1Xynlq4BCSH8" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Звёздный кит">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+          <div class="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white font-bold text-xs flex items-center gap-1.5">
+            12 мин
+          </div>
+        </div>
+        <div class="p-5 bg-gradient-to-b from-slate-900 to-slate-950 flex flex-col justify-between flex-1">
+          <h2 class="text-xl font-bold text-white line-clamp-1">Звёздный кит</h2>
+          <div class="flex items-center justify-between mt-3 text-xs font-semibold text-slate-400">
+            <span>Серия 4</span>
+            <span>Океан звёзд</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="group relative rounded-3xl bg-slate-900/80 border-2 border-slate-700/60 overflow-hidden shadow-xl flex flex-col">
+        <div class="h-[280px] w-full relative overflow-hidden bg-slate-950">
+          <img src="https://lh3.googleusercontent.com/aida/AEtjO1UXWnIRQCxgbiYK4eF868_1zraNnl9WR6V-hlPbizBRzkFduXA1oG2QQQ2S_h2ZCuY8ncEPYYJrEG1Vcwp1g45rdgug_Sm5X0FtOLUuefaqWmQbkv-p5S6x9L_aCm3Mnu8KtiySvR8ESnQ1sIz79anZLCLEPo9eJH0E1HoXz6MB2cxILSBBDDjnnqI8wDzcfDxSNh0hddVLDPrH0J2GyjDmfubxCT_TUCGvOjutCLfcvtXtlmreZ6GHm9Q" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Солнечный луч">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+          <div class="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white font-bold text-xs flex items-center gap-1.5">
+            6 мин
+          </div>
+        </div>
+        <div class="p-5 bg-gradient-to-b from-slate-900 to-slate-950 flex flex-col justify-between flex-1">
+          <h2 class="text-xl font-bold text-white line-clamp-1">Солнечный луч</h2>
+          <div class="flex items-center justify-between mt-3 text-xs font-semibold text-slate-400">
+            <span>Серия 5</span>
+            <span>Эксперимент</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- TV Safe Area Footer (Y: 72px, X: 88px) -->
+  <footer class="relative z-10 pb-[72px] px-[88px] flex items-center justify-between">
+    <!-- Lumi Spoken Voice Guide -->
+    <div class="flex items-center gap-4 px-6 py-3.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 shadow-2xl backdrop-blur-xl">
+      <div class="w-10 h-10 rounded-full bg-cyan-400/20 border-2 border-cyan-400 flex items-center justify-center shrink-0">
+        <svg class="w-6 h-6 text-cyan-300" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2a2 2 0 012 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 017 7h1a1 1 0 011 1v3a1 1 0 01-1 1h-1v1a2 2 0 01-2 2H5a2 2 0 01-2-2v-1H2a1 1 0 01-1-1v-3a1 1 0 011-1h1a7 7 0 017-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 012-2zM7.5 13a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm9 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/>
+        </svg>
+      </div>
+      <span class="text-base font-semibold text-slate-200">«Тайна Сатурна: полетели смотреть на ледяные кольца!»</span>
+    </div>
+
+    <!-- D-pad Remote Hints -->
+    <div class="flex items-center gap-6 text-sm font-semibold text-slate-300">
+      <div class="flex items-center gap-2">
+        <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs text-white">◄ ►</span>
+        <span>Выбор серии</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="px-3 py-1 rounded-lg bg-[#38d9d2] text-slate-950 font-bold text-xs">OK</span>
+        <span class="text-white">Смотреть</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 font-mono text-xs">BACK</span>
+        <span>Назад к мирам</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

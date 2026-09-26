@@ -13,3 +13,36 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Private accuracy recordings and generated experiment reports
+/voice-benchmark/audio/*.wav
+/voice-benchmark/runs/
+/voice-benchmark/local-*/
+
+# Public derived corpora and optional cloud benchmark artifacts/secrets
+/voice-benchmark/public/
+/voice-benchmark/public-source/
+/voice-benchmark/cloud-cache/
+/voice-benchmark/cloud-results/
+/voice-benchmark/secrets/
+/voice-benchmark/.env*
+__pycache__/
+
+# Content signing private keys (never commit)
+.secrets/
+secrets/content-signing/
+*.ed25519.sk
+publish/
+
+# Android Studio local device state
+/.idea/deploymentTargetSelector.xml
+
+# Build outputs in all modules
+**/build/
+
+# Generated distribution output
+/dist/
+
+# Heavy QA/video evidence and exported archives
+/docs/**/recordings/
+/docs/**/*.zip
