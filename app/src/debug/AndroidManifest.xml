@@ -7,6 +7,12 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:usesCleartextTraffic">
         <activity
+            android:name=".explore.stitch.StitchExploreWeatherPreviewActivity"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.FamilyTV.StitchGamesPreview"
+            android:label="FamilyTV · Explore Weather preview" />
+        <activity
             android:name=".games.stitch.StitchGamesPreviewActivity"
             android:exported="true"
             android:screenOrientation="landscape"

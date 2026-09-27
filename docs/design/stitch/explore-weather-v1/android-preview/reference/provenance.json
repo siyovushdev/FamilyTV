@@ -1,0 +1,33 @@
+{
+  "https://lh3.googleusercontent.com/aida/AEtjO1XXs52xrkGAxMPYBqFM2qpTode683B1zOMPrcSrFeGDdI0B89RDDBNJACkqLxchzf6tgAzlVHNcMhxnVyVs96G--wJhvmuXLJnr2bYLFQovaB2rmWYOa5w1fLjD1rtndNgZf7q9sDxOICsCay_J2jUIMsggV8DmBwXlyU5asntpG_SdjyLjAXKAuL7b2VTelXworVx4RzJ3GN48zx22IV2A0a6_jiPxLS7ZFvaU5It9Yph3t_DxwbNvzcA": {
+    "file": "docs/design/stitch/explore-weather-v1/android-preview/reference/explore_world.png",
+    "designFiles": [
+      "docs/design/stitch/explore-weather-v1/01_explore_home/code.html"
+    ],
+    "sha256": "10b764e6eb0cdf35c1a2155e16dff97afbac4f8595d20e238462de13f0f1f711"
+  },
+  "https://lh3.googleusercontent.com/aida/AEtjO1XjwFBvbPLoUQPIC5DqtXjTP_LCr_RQAMrCwq-yTMKm91GY46dqsUM4mH2Lix5H_WavqlTxlZf31YZD_UoR6AYLvmhaiRx9y4tnFuFUXK0uHQh5gCJHdTUXNCQQyf_xMIdIc9FFdHI1Ink7T67tzHTg7_uG2ak_eZ3n4fbRehdpebrmHB8KhLJ7BVpkEW3Hr8BmWIEjhDeoFaOycnQXt2T9FR8WEYd6n9ksY68Heyuy7a3jT_rVAMu4NQ": {
+    "file": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_intro.png",
+    "designFiles": [
+      "docs/design/stitch/explore-weather-v1/02_weather_intro/code.html",
+      "docs/design/stitch/explore-weather-v1/03_prediction/code.html"
+    ],
+    "sha256": "ad76a52b33cf060a84634ef9d20193557023bfb316183df25ecd45244fdb8702"
+  },
+  "https://lh3.googleusercontent.com/aida/AEtjO1Wv6s_J_Bbvy-w1Eeu5vGpD-SShO1-EaHaReu51-WqiiKB1OgWopZTXJVDlaHRYJmGzkiqK3WtvNDMrPNdkGZ-O-J5e6Gr5y_TKhOnZiZ0ic2WeXjlvG1mF--EgmQVKeczAKrgtBmVDk8b8JLsENY9onT55pShKkeemaymAA246hfuPCLaiSKZthj20OPbhbLjqpa7fSj3_RQ7rTadh38nN17mj25rFTtw3M3ilDOGkK8B1jTSiPYx7psM": {
+    "file": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_comparison.png",
+    "designFiles": [
+      "docs/design/stitch/explore-weather-v1/04_experiment/code.html",
+      "docs/design/stitch/explore-weather-v1/05_result/code.html",
+      "docs/design/stitch/explore-weather-v1/06_ask_lumi/code.html"
+    ],
+    "sha256": "aa3a209b9e88c2e9644a13aa3c33502efaa07113be89d760cdc208a7f6b14f9b"
+  },
+  "https://lh3.googleusercontent.com/aida/AEtjO1U_4YDx9yx89teNdix0RvwTDunqmiEFdHye2Q03S-qNdlBQ6cTDZM-iz-v6ztsWeSdjNYIeJMFhVNEj2WNBMbyPLhmGt9oIxR6932ZEaX6qUgC0uslLwJoViLloEprM86yllPu8dIvSQA4oef5ch_oMA7aNkavPE8zk_T4cHfK7VB35VtHwjHcABJSMCQtutzM0FtWmO6RgO_SgVz0P0HTRZeYJcdFJhms6fil1bgs_hk74V5j42ooOLg": {
+    "file": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_build.png",
+    "designFiles": [
+      "docs/design/stitch/explore-weather-v1/07_build_test/code.html"
+    ],
+    "sha256": "d95c578cda970984cd9ce755c4c7c6c85b5ff9bbe56ef2dcc7ac5af6a253bbee"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "design": "docs/design/stitch/explore-weather-v1",
+  "originals": {
+    "https://lh3.googleusercontent.com/aida/AEtjO1XXs52xrkGAxMPYBqFM2qpTode683B1zOMPrcSrFeGDdI0B89RDDBNJACkqLxchzf6tgAzlVHNcMhxnVyVs96G--wJhvmuXLJnr2bYLFQovaB2rmWYOa5w1fLjD1rtndNgZf7q9sDxOICsCay_J2jUIMsggV8DmBwXlyU5asntpG_SdjyLjAXKAuL7b2VTelXworVx4RzJ3GN48zx22IV2A0a6_jiPxLS7ZFvaU5It9Yph3t_DxwbNvzcA": {
+      "file": "docs/design/stitch/explore-weather-v1/android-preview/reference/explore_world.png",
+      "designFiles": [
+        "docs/design/stitch/explore-weather-v1/01_explore_home/code.html"
+      ],
+      "sha256": "10b764e6eb0cdf35c1a2155e16dff97afbac4f8595d20e238462de13f0f1f711"
+    },
+    "https://lh3.googleusercontent.com/aida/AEtjO1XjwFBvbPLoUQPIC5DqtXjTP_LCr_RQAMrCwq-yTMKm91GY46dqsUM4mH2Lix5H_WavqlTxlZf31YZD_UoR6AYLvmhaiRx9y4tnFuFUXK0uHQh5gCJHdTUXNCQQyf_xMIdIc9FFdHI1Ink7T67tzHTg7_uG2ak_eZ3n4fbRehdpebrmHB8KhLJ7BVpkEW3Hr8BmWIEjhDeoFaOycnQXt2T9FR8WEYd6n9ksY68Heyuy7a3jT_rVAMu4NQ": {
+      "file": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_intro.png",
+      "designFiles": [
+        "docs/design/stitch/explore-weather-v1/02_weather_intro/code.html",
+        "docs/design/stitch/explore-weather-v1/03_prediction/code.html"
+      ],
+      "sha256": "ad76a52b33cf060a84634ef9d20193557023bfb316183df25ecd45244fdb8702"
+    },
+    "https://lh3.googleusercontent.com/aida/AEtjO1Wv6s_J_Bbvy-w1Eeu5vGpD-SShO1-EaHaReu51-WqiiKB1OgWopZTXJVDlaHRYJmGzkiqK3WtvNDMrPNdkGZ-O-J5e6Gr5y_TKhOnZiZ0ic2WeXjlvG1mF--EgmQVKeczAKrgtBmVDk8b8JLsENY9onT55pShKkeemaymAA246hfuPCLaiSKZthj20OPbhbLjqpa7fSj3_RQ7rTadh38nN17mj25rFTtw3M3ilDOGkK8B1jTSiPYx7psM": {
+      "file": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_comparison.png",
+      "designFiles": [
+        "docs/design/stitch/explore-weather-v1/04_experiment/code.html",
+        "docs/design/stitch/explore-weather-v1/05_result/code.html",
+        "docs/design/stitch/explore-weather-v1/06_ask_lumi/code.html"
+      ],
+      "sha256": "aa3a209b9e88c2e9644a13aa3c33502efaa07113be89d760cdc208a7f6b14f9b"
+    },
+    "https://lh3.googleusercontent.com/aida/AEtjO1U_4YDx9yx89teNdix0RvwTDunqmiEFdHye2Q03S-qNdlBQ6cTDZM-iz-v6ztsWeSdjNYIeJMFhVNEj2WNBMbyPLhmGt9oIxR6932ZEaX6qUgC0uslLwJoViLloEprM86yllPu8dIvSQA4oef5ch_oMA7aNkavPE8zk_T4cHfK7VB35VtHwjHcABJSMCQtutzM0FtWmO6RgO_SgVz0P0HTRZeYJcdFJhms6fil1bgs_hk74V5j42ooOLg": {
+      "file": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_build.png",
+      "designFiles": [
+        "docs/design/stitch/explore-weather-v1/07_build_test/code.html"
+      ],
+      "sha256": "d95c578cda970984cd9ce755c4c7c6c85b5ff9bbe56ef2dcc7ac5af6a253bbee"
+    }
+  },
+  "assets": [
+    {
+      "asset": "app/src/debug/assets/explore_weather/explore_world.webp",
+      "source": "docs/design/stitch/explore-weather-v1/android-preview/reference/explore_world.png",
+      "sha256": "80aa57c3b8e74dade61b8e1667745352d68cb5aa1edf63442c75b6d0a153154e",
+      "sourceSha256": "10b764e6eb0cdf35c1a2155e16dff97afbac4f8595d20e238462de13f0f1f711",
+      "edit": null,
+      "conversion": "WebP quality 94; no crop, retouch or rescale"
+    },
+    {
+      "asset": "app/src/debug/assets/explore_weather/weather_intro.webp",
+      "source": "docs/design/stitch/explore-weather-v1/ux-polish/reference/weather_intro_one_lumi.png",
+      "sha256": "53e049200a6e438553602eb34df77323ad0d37e9c8437a2cb3cf1da60a9713a2",
+      "sourceSha256": "0e698688fa28b0b4d5f32b14ee071379bce646af1f8aba84ba11fe836dd2be17",
+      "oneLumiEdit": {
+        "reason": "UX polish: FamilyTV has one Lumi guide; remove the second, smaller robot baked into the Intro / Prediction background.",
+        "base": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_intro_clean.png",
+        "baseSha256": "b5bc8fa5995a2b2d87ad47c4f047277c27fcb57d5cf2bfaa999761336a631aaf",
+        "previousAsset": "docs/design/stitch/explore-weather-v1/ux-polish/reference/weather_intro_two_robots_previous.webp",
+        "previousAssetSha256": "247ad1c49975c57d467625e90fcbc63aa3f31f87812f55f33703620055fb105d",
+        "tool": "Cursor GenerateImage (reference-image edit) + deterministic masked composite",
+        "prompt": "Precise minimal edit of the provided APPROVED FamilyTV cartoon storybook illustration (reference image). Remove ONLY the small white-and-teal robot with two antennas standing at the right side, beside the right end of the wooden table (the smaller robot with the round cyan chest light, waving). Fill the area where it stood with the continuous original background exactly as it would appear behind it: the wooden porch railing posts and top rail continuing across, the dark blue-green night foliage and bushes, small glowing stars, the purple tree trunk on the right, and the wooden deck floor, in the same brushwork and lighting. Keep the LARGER floating blue-white robot (upper center-right, with big dark visor face and cyan belly light) completely unchanged \u2014 it is the one and only guide character. Preserve EVERYTHING ELSE exactly: full wide composition, framing, aspect ratio, camera, the smiling sun with light beam, moon, planet, trees, the wooden table with its golden left plate and grey right plate, flowers, colors, style. Do not add any new objects, characters, text or borders. Output the entire wide scene.",
+        "candidate": "docs/design/stitch/explore-weather-v1/ux-polish/reference/weather_intro_one_lumi_candidate.png",
+        "candidateSha256": "f437c411f32d55ac784f23906bfe55964a02473d4825d241b5cfd8489d8e98d3",
+        "composite": "docs/design/stitch/explore-weather-v1/ux-polish/reference/composite_one_lumi.py",
+        "mask": "docs/design/stitch/explore-weather-v1/ux-polish/reference/weather_intro_one_lumi_mask.png",
+        "scope": "Only pixels inside the feathered robot mask come from the aligned candidate; changed bbox x1194..1535 y297..731 of 1678x937 (100154 px, 6.4%). Every pixel outside is identical to the base: main Lumi, sun, beam, table, plates, composition."
+      },
+      "edit": {
+        "tool": "image_gen.imagegen",
+        "mode": "targeted existing-art clean-background edit",
+        "prompt": "Make a precise clean-background asset edit of this APPROVED FamilyTV cartoon storybook illustration. Remove ONLY the central blue ice cube and the small floating water droplet immediately above it. Leave the left golden plate and right blue plate completely intact. Fill the removed objects with matching original wooden tabletop/backdrop. Keep BOTH friendly robot figures unchanged. Preserve EVERYTHING ELSE: exact full wide composition, framing, aspect ratio, camera, all scenery, colors, brushwork, lighting, sun, tree, clouds, props and robot design. Do not redesign, add objects, lettering, borders or change art style. This empty background will have animated native ice overlaid. Output the entire original wide scene.",
+        "outputPath": "/home/siovush/.codex/generated_images/01a0d395-49e2-7443-8fa4-f8a30700e78b/exec-8f73627f-67c7-4711-8eaf-9832d373aa88.png"
+      },
+      "conversion": "WebP quality 94; no crop, retouch or rescale"
+    },
+    {
+      "asset": "app/src/debug/assets/explore_weather/weather_comparison.webp",
+      "source": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_comparison_clean.png",
+      "sha256": "eeba6ead6c18742f12ece476af7bc417089f170f5adb2d65e527fdf2cf8fc8bd",
+      "sourceSha256": "467c6708b339af0011ffc4b5b627a94c255970b7ee8cdadcdb2614e32d555cc4",
+      "edit": {
+        "tool": "image_gen.imagegen",
+        "mode": "targeted existing-art clean-background edit",
+        "prompt": "Make a precise clean-background asset edit of this APPROVED FamilyTV cartoon storybook illustration. Remove ONLY the ice cubes and blue water puddles from BOTH foreground plates. Leave two clean EMPTY original plates: golden left plate and pale right plate. Preserve the original plate rims and wooden tabletop. Keep the single friendly robot at center unchanged. Preserve EVERYTHING ELSE: exact full wide composition, framing, aspect ratio, camera, all scenery, colors, brushwork, lighting, sun, tree, clouds, props and robot design. Do not redesign, add objects, lettering, borders or change art style. This empty background will have animated native ice overlaid. Output the entire original wide scene.",
+        "outputPath": "/home/siovush/.codex/generated_images/01a0d395-49e2-7443-8fa4-f8a30700e78b/exec-f4899895-4fa8-490f-b6ce-67d2f8a7b661.png"
+      },
+      "conversion": "WebP quality 94; no crop, retouch or rescale"
+    },
+    {
+      "asset": "app/src/debug/assets/explore_weather/weather_build.webp",
+      "source": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_build_clean.png",
+      "sha256": "4dbfbd7e66940fb3fcf09b2f22a48220950d7ed5857da971740efed5e229738d",
+      "sourceSha256": "303f242a3df2e31abf0a595c83a149fb6fae41e5a16c972c11af91d14077ffbc",
+      "edit": {
+        "tool": "image_gen.imagegen",
+        "mode": "targeted existing-art clean-background edit",
+        "prompt": "Make a precise clean-background asset edit of this APPROVED FamilyTV cartoon storybook illustration. Remove ONLY the striped small canopy/tent (roof and its poles) and the blue ice cube directly underneath it at the center of the foreground table. Fill their footprints with the same continuous original wooden tabletop and background. Keep the friendly robot on the right unchanged. Preserve EVERYTHING ELSE: exact full wide composition, framing, aspect ratio, camera, all scenery, colors, brushwork, lighting, sun, tree, clouds, props and robot design. Do not redesign, add objects, lettering, borders or change art style. This empty background will have animated native ice overlaid. Output the entire original wide scene.",
+        "outputPath": "/home/siovush/.codex/generated_images/01a0d395-49e2-7443-8fa4-f8a30700e78b/exec-34eddf0a-5517-4bd5-8649-d806e453b1a9.png"
+      },
+      "conversion": "WebP quality 94; no crop, retouch or rescale"
+    }
+  ]
+}

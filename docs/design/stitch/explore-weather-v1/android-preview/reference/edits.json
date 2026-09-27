@@ -1,0 +1,20 @@
+{
+  "weather_intro": {
+    "tool": "image_gen.imagegen",
+    "mode": "targeted existing-art clean-background edit",
+    "prompt": "Make a precise clean-background asset edit of this APPROVED FamilyTV cartoon storybook illustration. Remove ONLY the central blue ice cube and the small floating water droplet immediately above it. Leave the left golden plate and right blue plate completely intact. Fill the removed objects with matching original wooden tabletop/backdrop. Keep BOTH friendly robot figures unchanged. Preserve EVERYTHING ELSE: exact full wide composition, framing, aspect ratio, camera, all scenery, colors, brushwork, lighting, sun, tree, clouds, props and robot design. Do not redesign, add objects, lettering, borders or change art style. This empty background will have animated native ice overlaid. Output the entire original wide scene.",
+    "outputPath": "/home/siovush/.codex/generated_images/01a0d395-49e2-7443-8fa4-f8a30700e78b/exec-8f73627f-67c7-4711-8eaf-9832d373aa88.png"
+  },
+  "weather_comparison": {
+    "tool": "image_gen.imagegen",
+    "mode": "targeted existing-art clean-background edit",
+    "prompt": "Make a precise clean-background asset edit of this APPROVED FamilyTV cartoon storybook illustration. Remove ONLY the ice cubes and blue water puddles from BOTH foreground plates. Leave two clean EMPTY original plates: golden left plate and pale right plate. Preserve the original plate rims and wooden tabletop. Keep the single friendly robot at center unchanged. Preserve EVERYTHING ELSE: exact full wide composition, framing, aspect ratio, camera, all scenery, colors, brushwork, lighting, sun, tree, clouds, props and robot design. Do not redesign, add objects, lettering, borders or change art style. This empty background will have animated native ice overlaid. Output the entire original wide scene.",
+    "outputPath": "/home/siovush/.codex/generated_images/01a0d395-49e2-7443-8fa4-f8a30700e78b/exec-f4899895-4fa8-490f-b6ce-67d2f8a7b661.png"
+  },
+  "weather_build": {
+    "tool": "image_gen.imagegen",
+    "mode": "targeted existing-art clean-background edit",
+    "prompt": "Make a precise clean-background asset edit of this APPROVED FamilyTV cartoon storybook illustration. Remove ONLY the striped small canopy/tent (roof and its poles) and the blue ice cube directly underneath it at the center of the foreground table. Fill their footprints with the same continuous original wooden tabletop and background. Keep the friendly robot on the right unchanged. Preserve EVERYTHING ELSE: exact full wide composition, framing, aspect ratio, camera, all scenery, colors, brushwork, lighting, sun, tree, clouds, props and robot design. Do not redesign, add objects, lettering, borders or change art style. This empty background will have animated native ice overlaid. Output the entire original wide scene.",
+    "outputPath": "/home/siovush/.codex/generated_images/01a0d395-49e2-7443-8fa4-f8a30700e78b/exec-34eddf0a-5517-4bd5-8649-d806e453b1a9.png"
+  }
+}
