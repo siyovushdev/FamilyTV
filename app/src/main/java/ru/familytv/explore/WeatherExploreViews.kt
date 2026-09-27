@@ -1,4 +1,4 @@
-package ru.familytv.explore.stitch
+package ru.familytv.explore
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -31,13 +31,13 @@ internal object WeatherGeometry {
 }
 
 /** Transparent accessible focus target. The world itself paints the illuminated physical object. */
-@SuppressLint("ViewConstructor") // Programmatic debug scene; never inflated from XML.
+@SuppressLint("ViewConstructor") // Programmatic scene; never inflated from XML.
 internal class WeatherWorldTarget(context: Context, label: String) : View(context) {
     init { isFocusable = true; isFocusableInTouchMode = true; contentDescription = label; importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_YES }
     override fun getAccessibilityClassName(): CharSequence = "android.widget.Button"
 }
 
-@SuppressLint("ViewConstructor") // Programmatic debug scene; never inflated from XML.
+@SuppressLint("ViewConstructor") // Programmatic scene; never inflated from XML.
 internal class WeatherButton(context: Context, val label: String, private val dw: Float, private val primary: Boolean = false, private val dh: Float = 84f) : ReferenceDrawing(context, dw, dh) {
     init { isFocusable = true; isFocusableInTouchMode = true; contentDescription = label }
     override fun getAccessibilityClassName(): CharSequence = "android.widget.Button"
@@ -54,8 +54,8 @@ internal class WeatherButton(context: Context, val label: String, private val dw
     }
 }
 
-@SuppressLint("ViewConstructor") // Programmatic debug scene; never inflated from XML.
-internal class WeatherWorldView(context: Context, private val state: WeatherPreviewState, private val assets: Map<String, Bitmap>) : ReferenceDrawing(context, 1920f, 1080f) {
+@SuppressLint("ViewConstructor") // Programmatic scene; never inflated from XML.
+internal class WeatherWorldView(context: Context, private val state: WeatherExploreState, private val assets: Map<String, Bitmap>) : ReferenceDrawing(context, 1920f, 1080f) {
     var ambientMs = 0L
     private val path = Path()
     private val bounds = RectF()
@@ -91,7 +91,7 @@ internal class WeatherWorldView(context: Context, private val state: WeatherPrev
     }
 
     private fun home(c: Canvas, s: WeatherSnapshot) {
-        Destination.entries.forEachIndexed { i, destination ->
+        ExploreDestination.entries.forEachIndexed { i, destination ->
             val r = WeatherGeometry.home[i]
             val focused = s.focus == "destination:${destination.name}"
             if (focused) {
@@ -99,7 +99,7 @@ internal class WeatherWorldView(context: Context, private val state: WeatherPrev
                 ellipse(c, r.left + 10, r.bottom - 105, r.right - 10, r.bottom - 30, tint(WEATHER_CYAN, 30), WEATHER_CYAN, 4f)
             }
             val y = r.bottom - 4
-            val labelWidth = when (destination) { Destination.WEATHER -> 330f; Destination.HOW -> 310f; else -> 215f }
+            val labelWidth = when (destination) { ExploreDestination.WEATHER -> 330f; ExploreDestination.HOW -> 310f; else -> 215f }
             round(c, r.centerX() - labelWidth / 2, y - 63, labelWidth, 64f, 32f, tint(NAVY, 230), if (focused) WEATHER_CYAN else tint(Color.WHITE, 75), if (focused) 3f else 1f)
             text(c, destination.label, r.centerX(), y - 23, 30f, if (focused) WEATHER_CYAN else CREAM, true, true)
             if (focused) {

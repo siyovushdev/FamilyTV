@@ -95,6 +95,12 @@
             android:screenOrientation="landscape"
             android:exported="true"
             android:label="Игры" />
+        <activity
+            android:name=".explore.ExploreActivity"
+            android:theme="@style/Theme.FamilyTV.Games"
+            android:screenOrientation="landscape"
+            android:exported="false"
+            android:label="Исследовать" />
     </application>
 
 </manifest>

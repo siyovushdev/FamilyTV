@@ -6,6 +6,8 @@ import ru.familytv.adventure.AdventureActivity
 import ru.familytv.content.ContentItem
 import ru.familytv.content.ContentType
 import ru.familytv.creative.CreativeStudioActivity
+import ru.familytv.explore.ExploreDestination
+import ru.familytv.explore.ExploreRoutes
 import ru.familytv.games.GamesDestination
 import ru.familytv.interactive.InteractiveExperienceActivity
 import ru.familytv.player.VideoPlayerActivity
@@ -30,8 +32,12 @@ object ContentNavigator {
             }
             ContentType.SESSION -> Intent(activity, LearningSessionActivity::class.java)
                 .putExtra(LearningSessionActivity.EXTRA_CONTENT_ID, item.id)
-            ContentType.ADVENTURE -> Intent(activity, AdventureActivity::class.java)
-                .putExtra(AdventureActivity.EXTRA_CONTENT_ID, item.id)
+            ContentType.ADVENTURE -> if (ExploreRoutes.opensWeather(item)) {
+                ExploreRoutes.intent(activity, ExploreDestination.WEATHER)
+            } else {
+                Intent(activity, AdventureActivity::class.java)
+                    .putExtra(AdventureActivity.EXTRA_CONTENT_ID, item.id)
+            }
         }
         if (intent == null) {
             Log.w(TAG, "No route for content ${item.id}")

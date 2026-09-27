@@ -1,4 +1,4 @@
-package ru.familytv.explore.stitch
+package ru.familytv.explore
 
 import ru.familytv.adventure.PredictAndTestParams
 import ru.familytv.adventure.PredictOption
@@ -9,9 +9,21 @@ import ru.familytv.discovery.*
 import ru.familytv.interaction.FamilyAction
 
 internal enum class WeatherScreen { HOME, INTRO, PREDICTION, PLACING_ICE, EXPERIMENT, RESULT, ASK, BUILD_CHOOSE, BUILD_PLACED, BUILD_RUNNING, BUILD_RESULT }
-internal enum class Destination(val label: String) {
-    SPACE("Космос"), FOREST("Лес"), WEATHER("Погода"), HOW("Как устроено"), EXPERIMENTS("Опыты");
-    val available get() = this == WEATHER
+/**
+ * Explore Home locations, in world-geometry order. One semantics for D-pad and voice:
+ * [route] is the `FamilyAction.OpenWorld` id, [contentId] the existing catalog experience.
+ */
+enum class ExploreDestination(val label: String, val contentId: String?) {
+    SPACE("Космос", "adv-space-expedition"),
+    FOREST("Лес", "adv-forest-trail"),
+    WEATHER("Погода", ExploreRoutes.CONTENT_ID),
+    HOW("Как устроено", null),
+    EXPERIMENTS("Опыты", null);
+    val available get() = contentId != null
+    val route get() = "${ExploreRoutes.WORLD_ID}/${name.lowercase()}"
+    companion object {
+        fun fromRoute(route: String?): ExploreDestination? = entries.find { it.route == route }
+    }
 }
 internal enum class IcePlace { SUN, SHADE }
 internal enum class Shelter(val label: String) { CANOPY("Навес"), LEAVES("Зонтик из листьев") }
@@ -59,7 +71,7 @@ internal data class WeatherSnapshot(
     val hypothesis: IcePlace? = null,
     val shelter: Shelter? = null,
     val focus: String = "destination:WEATHER",
-    val worldFocus: Destination = Destination.WEATHER,
+    val worldFocus: ExploreDestination = ExploreDestination.WEATHER,
     val placeFocus: IcePlace = IcePlace.SUN,
     val shelterFocus: Shelter = Shelter.CANOPY,
     val paused: Boolean = false,
@@ -118,10 +130,15 @@ internal data class WeatherSnapshot(
 }
 
 /** Explicit, checkpointable clock. Animation duration settings cannot skip observation beats. */
-internal class WeatherPreviewState(initial: WeatherSnapshot = WeatherSnapshot()) {
+internal class WeatherExploreState(initial: WeatherSnapshot = WeatherSnapshot()) {
     var value: WeatherSnapshot = initial
         private set
+    /** An existing catalog experience the host should open; Explore Home keeps its focus underneath. */
+    private var launch: ExploreDestination? = null
     init { if (value.focus !in controls()) value = value.copy(focus = defaultFocus()) }
+    fun takeLaunch(): ExploreDestination? = launch.also { launch = null }
+    /** The host could not find an enabled catalog item for the destination. */
+    fun markUnavailable() { value = value.copy(unavailable = true) }
     fun checkpoint(): WeatherSnapshot = value
     fun predictionSnapshot(): MechanicSnapshot {
         var result = PredictAndTestEngine.initial(WeatherRules.prediction)
@@ -130,7 +147,7 @@ internal class WeatherPreviewState(initial: WeatherSnapshot = WeatherSnapshot())
         return result
     }
     fun controls(): List<String> = listOf("back") + when (value.screen) {
-        WeatherScreen.HOME -> Destination.entries.map { "destination:${it.name}" }
+        WeatherScreen.HOME -> ExploreDestination.entries.map { "destination:${it.name}" }
         WeatherScreen.INTRO -> listOf("start", "repeat")
         WeatherScreen.PREDICTION -> listOf("place:SUN", "place:SHADE", "repeat")
         WeatherScreen.PLACING_ICE -> listOf("repeat")
@@ -157,7 +174,7 @@ internal class WeatherPreviewState(initial: WeatherSnapshot = WeatherSnapshot())
     fun focus(key: String) {
         if (key !in controls()) return
         value = value.copy(focus = key,
-            worldFocus = if (key.startsWith("destination:")) Destination.valueOf(key.substringAfter(':')) else value.worldFocus,
+            worldFocus = if (key.startsWith("destination:")) ExploreDestination.valueOf(key.substringAfter(':')) else value.worldFocus,
             placeFocus = if (key.startsWith("place:")) IcePlace.valueOf(key.substringAfter(':')) else value.placeFocus,
             shelterFocus = if (key.startsWith("shelter:")) Shelter.valueOf(key.substringAfter(':')) else value.shelterFocus,
         )
@@ -189,8 +206,12 @@ internal class WeatherPreviewState(initial: WeatherSnapshot = WeatherSnapshot())
         when {
             key == "back" -> return back()
             key.startsWith("destination:") -> {
-                val destination = Destination.valueOf(key.substringAfter(':'))
-                if (destination.available) enter(WeatherScreen.INTRO) else value = value.copy(unavailable = true)
+                val destination = ExploreDestination.valueOf(key.substringAfter(':'))
+                when {
+                    destination == ExploreDestination.WEATHER -> enter(WeatherScreen.INTRO)
+                    destination.available -> { value = value.copy(unavailable = false); launch = destination }
+                    else -> value = value.copy(unavailable = true)
+                }
             }
             key == "start" || key == "again" -> { value = value.copy(hypothesis = null); enter(WeatherScreen.PREDICTION) }
             key.startsWith("place:") -> choosePlace(IcePlace.valueOf(key.substringAfter(':')))
@@ -222,6 +243,10 @@ internal class WeatherPreviewState(initial: WeatherSnapshot = WeatherSnapshot())
         FamilyAction.Repeat, FamilyAction.Help -> { repeat(); true }
         FamilyAction.Pause -> { pause(); true }
         FamilyAction.Resume, FamilyAction.ContinueCurrent -> { resume(); true }
+        // Voice / semantic routes select the same world object the D-pad would.
+        is FamilyAction.OpenWorld -> ExploreDestination.fromRoute(action.worldId)
+            ?.takeIf { value.screen == WeatherScreen.HOME }
+            ?.let { focus("destination:${it.name}"); activate() } ?: false
         is FamilyAction.Answer -> {
             val transcript = action.transcript.trim().lowercase().replace('ё', 'е')
             when {
@@ -268,7 +293,7 @@ internal class WeatherPreviewState(initial: WeatherSnapshot = WeatherSnapshot())
     }
     fun pause() { value = value.copy(paused = true) }
     fun resume() { value = value.copy(paused = false) }
-    /** False only at the preview root: the host may finish its own debug Activity. */
+    /** False only at the Explore Home root: the host Activity decides where to return. */
     fun back(): Boolean {
         when (value.screen) {
             WeatherScreen.HOME -> return false

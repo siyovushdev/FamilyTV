@@ -1,4 +1,4 @@
-package ru.familytv.explore.stitch
+package ru.familytv.explore
 
 import org.junit.Assert.*
 import org.junit.Test
@@ -11,14 +11,14 @@ import java.io.File
 import java.security.MessageDigest
 import javax.imageio.ImageIO
 
-class WeatherPreviewStateTest {
-    private fun prediction() = WeatherPreviewState().apply { activate("destination:WEATHER"); activate("start") }
+class WeatherExploreStateTest {
+    private fun prediction() = WeatherExploreState().apply { activate("destination:WEATHER"); activate("start") }
     private fun experiment(place: IcePlace = IcePlace.SUN) = prediction().apply { activate("place:$place"); tick(WeatherRules.PLACE_MS) }
     private fun result(place: IcePlace = IcePlace.SUN) = experiment(place).apply { tick(WeatherRules.EXPERIMENT_MS) }
     private fun ask() = result().apply { activate("why") }
     private fun askAt(cause: Cause) = ask().apply { tick(WeatherRules.CAUSE_MS * cause.ordinal) }
     private fun build() = askAt(Cause.DONE).apply { activate("build") }
-    private fun assertNextLocked(state: WeatherPreviewState, cause: Cause) {
+    private fun assertNextLocked(state: WeatherExploreState, cause: Cause) {
         assertEquals(WeatherScreen.ASK, state.value.screen)
         assertEquals(cause, state.value.cause)
         assertFalse(state.value.canBuild)
@@ -29,7 +29,7 @@ class WeatherPreviewStateTest {
         assertFalse(state.activate("build"))
         assertEquals(WeatherScreen.ASK, state.value.screen)
     }
-    private fun assertNextAvailable(state: WeatherPreviewState) {
+    private fun assertNextAvailable(state: WeatherExploreState) {
         assertEquals(WeatherScreen.ASK, state.value.screen)
         assertEquals(Cause.DONE, state.value.cause)
         assertTrue(state.value.canBuild)
@@ -39,15 +39,15 @@ class WeatherPreviewStateTest {
     }
     private fun placed(cover: Shelter = Shelter.CANOPY) = build().apply { activate("shelter:$cover"); tick(WeatherRules.PLACE_MS) }
 
-    @Test fun weatherIsTheOnlyActiveWorldAndEntersTheLab() {
-        assertEquals(listOf(Destination.WEATHER), Destination.entries.filter { it.available })
-        val state = WeatherPreviewState(); state.activate("destination:WEATHER")
+    @Test fun weatherEntersTheLabAndOnlyCatalogWorldsAreActive() {
+        assertEquals(listOf(ExploreDestination.SPACE, ExploreDestination.FOREST, ExploreDestination.WEATHER), ExploreDestination.entries.filter { it.available })
+        val state = WeatherExploreState(); state.activate("destination:WEATHER")
         assertEquals(WeatherScreen.INTRO, state.value.screen)
         assertEquals("start", state.value.focus)
     }
     @Test fun futureLocationsRemainHonestUnavailableWorldTargets() {
-        Destination.entries.filterNot { it.available }.forEach {
-            val state = WeatherPreviewState(); state.focus("destination:$it"); state.activate()
+        ExploreDestination.entries.filterNot { it.available }.forEach {
+            val state = WeatherExploreState(); state.focus("destination:$it"); state.activate()
             assertEquals(WeatherScreen.HOME, state.value.screen)
             assertEquals("destination:$it", state.value.focus)
             assertTrue(state.value.unavailable)
@@ -170,7 +170,7 @@ class WeatherPreviewStateTest {
     @Test fun pauseFreezesMeaningfulStateAndResumeContinuesSameExperiment() {
         val state = experiment(IcePlace.SHADE); state.tick(5000); state.pause()
         val checkpoint = state.checkpoint(); state.tick(60000); assertEquals(checkpoint, state.checkpoint())
-        val restored = WeatherPreviewState(checkpoint); restored.resume(); restored.tick(9000)
+        val restored = WeatherExploreState(checkpoint); restored.resume(); restored.tick(9000)
         assertEquals(WeatherScreen.RESULT, restored.value.screen)
         assertEquals(IcePlace.SHADE, restored.value.hypothesis)
     }
@@ -178,19 +178,19 @@ class WeatherPreviewStateTest {
         val states = listOf(prediction().apply { activate("place:SUN") }, experiment(), ask(), build().apply { activate("shelter:LEAVES") }, placed().apply { activate("check") })
         states.forEach { state ->
             state.tick(650); state.pause()
-            val copy = WeatherPreviewState(state.checkpoint())
+            val copy = WeatherExploreState(state.checkpoint())
             copy.resume(); state.resume(); copy.tick(750); state.tick(750)
             assertEquals(state.checkpoint(), copy.checkpoint())
         }
     }
     @Test fun navigationAlwaysLandsOnAnExistingVisibleControl() {
-        val states = listOf(WeatherPreviewState(), prediction(), experiment(), result(), ask(), build(), placed())
+        val states = listOf(WeatherExploreState(), prediction(), experiment(), result(), ask(), build(), placed())
         states.forEach { state ->
             repeat(20) { Direction.entries.forEach { direction -> state.move(direction); assertTrue(state.controls().contains(state.value.focus)) } }
         }
     }
     @Test fun everyVisibleControlIsReachableIncludingDuringPlacement() {
-        val states = listOf(WeatherPreviewState(), prediction(), prediction().apply { activate("place:SUN") },
+        val states = listOf(WeatherExploreState(), prediction(), prediction().apply { activate("place:SUN") },
             experiment(), result(), ask(), build(), build().apply { activate("shelter:CANOPY") },
             placed(), placed().apply { activate("check") }, placed().apply { activate("check"); tick(10000) })
         states.forEach { initial ->
@@ -201,7 +201,7 @@ class WeatherPreviewStateTest {
                 if (!visited.add(snapshot)) continue
                 reached += snapshot.focus
                 Direction.entries.forEach { direction ->
-                    val next = WeatherPreviewState(snapshot); next.move(direction); queue.add(next.checkpoint())
+                    val next = WeatherExploreState(snapshot); next.move(direction); queue.add(next.checkpoint())
                 }
             }
             assertTrue("${initial.value.screen}: unreachable ${initial.controls() - reached}", reached.containsAll(initial.controls()))
@@ -234,23 +234,6 @@ class WeatherPreviewStateTest {
         state.tick(1800)
         assertTrue(state.semantic(FamilyAction.Answer("проверить")))
     }
-    @Test fun previewBoundaryCannotMutateProductionStoresOrInitializeAi() {
-        val sources = File("src/debug/java/ru/familytv/explore/stitch").walkTopDown().filter { it.extension == "kt" }.joinToString("\n") { it.readText() }
-        for (forbidden in listOf("activityHistory(", "journeyCoordinator(", "adventureProgress(", "TrialEventStore(", "WatchProgressStore(", "startActivity(", "VoiceRuntime.get(", "newPipeline(", "prewarm(", "acquireLease(", "AudioRecord(", "GroundedQwenMatcher(", "VoiceCommandRouter(")) {
-            assertFalse("Forbidden preview boundary: $forbidden", sources.contains(forbidden))
-        }
-        assertTrue(sources.contains("VoiceRuntime.peek()"))
-        assertTrue(sources.contains("NarrationCoordinator("))
-        assertTrue(sources.contains("PredictAndTestEngine.applySelect("))
-        assertTrue(sources.contains("CauseEffectEngine.applyAction("))
-    }
-    @Test fun entryExistsOnlyInDebugAndProductionDoesNotReferenceIt() {
-        val activity = "StitchExploreWeatherPreviewActivity"
-        assertTrue(File("src/debug/AndroidManifest.xml").readText().contains(activity))
-        assertFalse(File("src/main/AndroidManifest.xml").readText().contains(activity))
-        assertFalse(File("src/main/java").walkTopDown().filter { it.extension == "kt" }.any { it.readText().contains(activity) })
-        assertTrue(File("src/debug/assets/explore_weather/provenance.json").isFile)
-    }
 
     // ---- UX polish: one Lumi on the Intro / Prediction background ----
     private fun sha256(file: File) = MessageDigest.getInstance("SHA-256").digest(file.readBytes()).joinToString("") { "%02x".format(it) }
@@ -265,11 +248,11 @@ class WeatherPreviewStateTest {
         return count
     }
     private fun assertIntroArtHasOneLumi() {
-        val provenance = File("src/debug/assets/explore_weather/provenance.json").readText()
-        val entry = Regex(""""asset": "app/src/debug/assets/explore_weather/weather_intro\.webp",\s*"source": "([^"]+)",\s*"sha256": "([0-9a-f]{64})",\s*"sourceSha256": "([0-9a-f]{64})"""").find(provenance)
+        val provenance = File("src/main/assets/explore_weather/provenance.json").readText()
+        val entry = Regex(""""asset": "app/src/main/assets/explore_weather/weather_intro\.webp",\s*"source": "([^"]+)",\s*"sha256": "([0-9a-f]{64})",\s*"sourceSha256": "([0-9a-f]{64})"""").find(provenance)
         assertNotNull("weather_intro provenance entry", entry)
         val (source, assetSha, sourceSha) = entry!!.destructured
-        assertEquals(assetSha, sha256(File("src/debug/assets/explore_weather/weather_intro.webp")))
+        assertEquals(assetSha, sha256(File("src/main/assets/explore_weather/weather_intro.webp")))
         val previous = Regex(""""previousAssetSha256": "([0-9a-f]{64})"""").find(provenance)!!.groupValues[1]
         assertNotEquals("two-robot asset must not ship", previous, assetSha)
         val edited = File("../$source"); assertEquals(sourceSha, sha256(edited))
@@ -289,7 +272,7 @@ class WeatherPreviewStateTest {
         assertEquals("main Lumi pixels changed", 0, mainLumi)
     }
     @Test fun introVisualUsesOneLumi() {
-        val intro = WeatherPreviewState().apply { activate("destination:WEATHER") }
+        val intro = WeatherExploreState().apply { activate("destination:WEATHER") }
         assertEquals(WeatherScreen.INTRO, intro.value.screen)
         assertEquals("weather_intro", intro.value.background)
         assertIntroArtHasOneLumi()
@@ -375,16 +358,16 @@ class WeatherPreviewStateTest {
         assertEquals(Cause.ICE, checkpoint.cause); assertEquals(EXPLANATION_FOCUS, checkpoint.focus)
         assertFalse("paused OK only resumes in the host", state.activate())
         assertNextLocked(state, Cause.ICE)
-        val restored = WeatherPreviewState(checkpoint); restored.resume()
+        val restored = WeatherExploreState(checkpoint); restored.resume()
         assertEquals(EXPLANATION_FOCUS, restored.value.focus)
         assertNextLocked(restored, Cause.ICE)
         // A stale focus from a previous DONE cannot leak into a restored, unfinished explanation.
-        val stale = WeatherPreviewState(checkpoint.copy(focus = "build", paused = false))
+        val stale = WeatherExploreState(checkpoint.copy(focus = "build", paused = false))
         assertEquals(EXPLANATION_FOCUS, stale.value.focus)
         assertNextLocked(stale, Cause.ICE)
         restored.tick(WeatherRules.CAUSE_MS * 2)
         assertNextAvailable(restored)
-        val doneCopy = WeatherPreviewState(restored.checkpoint())
+        val doneCopy = WeatherExploreState(restored.checkpoint())
         assertNextAvailable(doneCopy)
     }
     @Test fun backBehaviorAroundAskIsUnchanged() {

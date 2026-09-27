@@ -1,5 +1,11 @@
 {
   "design": "docs/design/stitch/explore-weather-v1",
+  "productionPromotion": {
+    "from": "app/src/debug/assets/explore_weather/ (commit b792117, approved one-Lumi UX polish)",
+    "to": "app/src/main/assets/explore_weather/",
+    "change": "git mv only; bytes and sha256 values below are unchanged; no new artwork",
+    "evidence": "docs/v1/explore-weather-production/"
+  },
   "originals": {
     "https://lh3.googleusercontent.com/aida/AEtjO1XXs52xrkGAxMPYBqFM2qpTode683B1zOMPrcSrFeGDdI0B89RDDBNJACkqLxchzf6tgAzlVHNcMhxnVyVs96G--wJhvmuXLJnr2bYLFQovaB2rmWYOa5w1fLjD1rtndNgZf7q9sDxOICsCay_J2jUIMsggV8DmBwXlyU5asntpG_SdjyLjAXKAuL7b2VTelXworVx4RzJ3GN48zx22IV2A0a6_jiPxLS7ZFvaU5It9Yph3t_DxwbNvzcA": {
       "file": "docs/design/stitch/explore-weather-v1/android-preview/reference/explore_world.png",
@@ -35,7 +41,7 @@
   },
   "assets": [
     {
-      "asset": "app/src/debug/assets/explore_weather/explore_world.webp",
+      "asset": "app/src/main/assets/explore_weather/explore_world.webp",
       "source": "docs/design/stitch/explore-weather-v1/android-preview/reference/explore_world.png",
       "sha256": "80aa57c3b8e74dade61b8e1667745352d68cb5aa1edf63442c75b6d0a153154e",
       "sourceSha256": "10b764e6eb0cdf35c1a2155e16dff97afbac4f8595d20e238462de13f0f1f711",
@@ -43,7 +49,7 @@
       "conversion": "WebP quality 94; no crop, retouch or rescale"
     },
     {
-      "asset": "app/src/debug/assets/explore_weather/weather_intro.webp",
+      "asset": "app/src/main/assets/explore_weather/weather_intro.webp",
       "source": "docs/design/stitch/explore-weather-v1/ux-polish/reference/weather_intro_one_lumi.png",
       "sha256": "53e049200a6e438553602eb34df77323ad0d37e9c8437a2cb3cf1da60a9713a2",
       "sourceSha256": "0e698688fa28b0b4d5f32b14ee071379bce646af1f8aba84ba11fe836dd2be17",
@@ -70,7 +76,7 @@
       "conversion": "WebP quality 94; no crop, retouch or rescale"
     },
     {
-      "asset": "app/src/debug/assets/explore_weather/weather_comparison.webp",
+      "asset": "app/src/main/assets/explore_weather/weather_comparison.webp",
       "source": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_comparison_clean.png",
       "sha256": "eeba6ead6c18742f12ece476af7bc417089f170f5adb2d65e527fdf2cf8fc8bd",
       "sourceSha256": "467c6708b339af0011ffc4b5b627a94c255970b7ee8cdadcdb2614e32d555cc4",
@@ -83,7 +89,7 @@
       "conversion": "WebP quality 94; no crop, retouch or rescale"
     },
     {
-      "asset": "app/src/debug/assets/explore_weather/weather_build.webp",
+      "asset": "app/src/main/assets/explore_weather/weather_build.webp",
       "source": "docs/design/stitch/explore-weather-v1/android-preview/reference/weather_build_clean.png",
       "sha256": "4dbfbd7e66940fb3fcf09b2f22a48220950d7ed5857da971740efed5e229738d",
       "sourceSha256": "303f242a3df2e31abf0a595c83a149fb6fae41e5a16c972c11af91d14077ffbc",

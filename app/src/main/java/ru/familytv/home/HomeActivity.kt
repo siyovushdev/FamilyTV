@@ -25,6 +25,8 @@ import ru.familytv.content.ContentType
 import ru.familytv.content.PlatformServices
 import ru.familytv.content.V1ContentShelf
 import ru.familytv.trial.TrialEventStore
+import ru.familytv.explore.ExploreDestination
+import ru.familytv.explore.ExploreRoutes
 import ru.familytv.games.GameStyle
 import ru.familytv.interaction.FamilyAction
 import ru.familytv.interaction.FamilyActionHandler
@@ -512,6 +514,22 @@ class HomeActivity : ComponentActivity() {
         }
         cardViews["games"] = games
         row.addView(games, LinearLayout.LayoutParams(-2, dp(48)).apply { marginEnd = dp(12) })
+        val explore = chip("Исследовать") {
+            PlatformServices.actionDispatcher().dispatch(InputSource.REMOTE, FamilyAction.OpenWorld(ExploreRoutes.WORLD_ID))
+        }.apply {
+            tag = "explore"
+            contentDescription = "Исследовать"
+            isFocusableInTouchMode = true
+            setOnFocusChangeListener { view, focused ->
+                if (focused) {
+                    getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "explore").apply()
+                    ensureCardVisible(view)
+                    android.util.Log.i("FamilyHome", "focus=explore AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
+                }
+            }
+        }
+        cardViews["explore"] = explore
+        row.addView(explore, LinearLayout.LayoutParams(-2, dp(48)).apply { marginEnd = dp(12) })
         row.addView(chip("Наши открытия") {
             startActivity(Intent(this, ru.familytv.journey.DiscoveryJournalActivity::class.java))
         }, LinearLayout.LayoutParams(-2, dp(48)).apply { marginEnd = dp(12) })
@@ -915,6 +933,13 @@ class HomeActivity : ComponentActivity() {
                 if (action.worldId == "play") {
                     getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "games").apply()
                     ContentNavigator.gameIntent(this, "play")?.let(::startActivity)
+                    return true
+                }
+                if (ExploreRoutes.handles(action.worldId)) {
+                    val destination = ExploreDestination.fromRoute(action.worldId)
+                    getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "explore").apply()
+                    android.util.Log.i("FamilyHome", "open=explore destination=$destination AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
+                    startActivity(ExploreRoutes.intent(this, destination))
                     return true
                 }
                 focusWorld(action.worldId)

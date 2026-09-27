@@ -2,6 +2,7 @@ package ru.familytv.interaction
 
 import ru.familytv.content.ContentItem
 import ru.familytv.content.ContentType
+import ru.familytv.explore.ExploreDestination
 
 enum class InteractionSurface {
     HOME,
@@ -219,7 +220,7 @@ object VoiceCommandRouter {
             "узнать" to "learn",
             "исследуй" to "explore",
             "исследовать" to "explore",
-            "космос" to "explore",
+            "космос" to ExploreDestination.SPACE.route,
             "решай" to "solve",
             "двигайся" to "move",
             "движение" to "move",
@@ -236,7 +237,7 @@ object VoiceCommandRouter {
             }
         }
         if (normalized.contains("космос") || normalized.contains("космическ")) {
-            return FamilyAction.OpenWorld("explore")
+            return FamilyAction.OpenWorld(ExploreDestination.SPACE.route)
         }
         return null
     }
