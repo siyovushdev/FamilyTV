@@ -1,0 +1,81 @@
+{
+  "create_home": {
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1VV5GgDUW3OmZqg4M82xq8AuVhBw33iAsistQY3dJGFS7NMOCrbZTKZ2ciISo7jin8vunxEkl9FqqN2Fhhnp3Ny-fLbismtX9yPucRd1UJCTMxMETsTuu3Mw14f6cLl-uk2_aEPnBXSkASXVkD6Ps2q6MOe8M9BIAFLvB3UeialFMnxnAQeiX4OvsXh4C3XVSla0wG3Kxji3TqbaUPuvDw_DVObk06kSV1YUusFlZekiDGQONyMH8UdQ9w",
+    "fetchSuffix": "=s0",
+    "designFiles": [
+      "docs/design/stitch/create-story-v1/01_create_home/code.html"
+    ],
+    "size": [
+      1376,
+      768
+    ],
+    "bytes": 220059,
+    "sha256": "03918f90f37e5ca517026959bffcc71a35149e3bc72663f8a34d682ea87d9451"
+  },
+  "choose_hero": {
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1VN_hnQ88XzpSjl2oYEMJAZBCjiXp_sxex7r0YQcHZCU3BqZI5aXaskKzKyGg5Cy6mR_EC3otHEtwt3_ALjGZ2zueHcR3V2URd2x7auOsUNwIdBs4Hyc0594U2BI6en38wOdacNzdWYZnvSpJMxlW9Nc_FGNOkLFOzzTXIavv7yITwd9olfiAGke41Dqn1sgmaAuwLPLtMcPw8mvO4C_kIZqBeE3rO0NEW7w507F4G7BT4UsNnRUQgmnQ",
+    "fetchSuffix": "=s0",
+    "designFiles": [
+      "docs/design/stitch/create-story-v1/02_choose_hero/code.html"
+    ],
+    "size": [
+      1376,
+      768
+    ],
+    "bytes": 191915,
+    "sha256": "1d3c3d3318497bf42ac8728068b3560e0ec6e0cf72c246f92a72136ed65090ea"
+  },
+  "choose_world": {
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1V00L5VLSeXsNFZJ4Lf6Sz8fs_jbSmcy72yqOoE1IiJjLv3URwPWUaMKXjQOtwcZlHnSBVGuH3B64RvYqlr4Oa1zE8TZMbbjenQuUDL9ME3QigR_UQ0sxL4GsBh4opMSFM8dph4d5gonPeBCUOM-PU7e1uyTiurYanxRJ7bisQmbSGtLeZBFuspRaSi3zj6GVIl-i1o0bPdxlTHQuVGj4-RjWverg6FxcJI34Bhn06M644E-SvEYQxB6eM",
+    "fetchSuffix": "=s0",
+    "designFiles": [
+      "docs/design/stitch/create-story-v1/03_choose_world/code.html"
+    ],
+    "size": [
+      1376,
+      768
+    ],
+    "bytes": 222428,
+    "sha256": "86717d2ae00749a75784e13755c4efd3719649bb408604c3eb389ea956038c43"
+  },
+  "forest_door": {
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1XaWKdiVUE62bKZwtjH8gQDhYDIc4u1Sp362cG_0WIbt6j5UpcKRb2VO2QSI4mViNysIA1Ut7_65qPAwgzBCK2aRayE8icj6IfP-BdcJH822uHBM4S_uoJ9c4aWjAWLTbUPwpBVVni_-2fBbtFauB5OdeBqWEVa7aV_g-2HkCNS4p40lnzu8G3PezHOKzeKMOFzFqb2fXNhE8_cuIDLOqK0np4c96_p_OompiSAwapehgDKm96VE-be_iA",
+    "fetchSuffix": "=s0",
+    "designFiles": [
+      "docs/design/stitch/create-story-v1/04_choose_object/code.html",
+      "docs/design/stitch/create-story-v1/05_story_choice/code.html"
+    ],
+    "size": [
+      1376,
+      768
+    ],
+    "bytes": 251034,
+    "sha256": "d1f644bbe1f509fee420e8e31a31da2ed8769d1f26ea3fd2223d575532000d22"
+  },
+  "consequence": {
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1VIpyB5DCh7Vg5FQwzFJKK-bIx6E3cdyvKo1eQYxmH4lgQow0ObrPAz3GHH7MAi9qZzfWNIf2zZIVub99MP7hjYoOnWXDRL4qSUksA6_zuj3WMU9fovcG7wMOMiXasNw1_qx5Mr43k2BuSRFmTdqHtKf38varn3zU0LdoilTl4Ikrs4pr8sAnBCYFvYqJZbp7lkb9O8aIUFw4f_8mH7bRgGqM3R3zrCbqTJB3105aOZtJVkSPcP1-R6Ilo",
+    "fetchSuffix": "=s0",
+    "designFiles": [
+      "docs/design/stitch/create-story-v1/06_consequence/code.html"
+    ],
+    "size": [
+      1376,
+      768
+    ],
+    "bytes": 225934,
+    "sha256": "4293cc6348b27623a8ca4f8d931a3904165c4b34cb14b402549dbddab24b5599"
+  },
+  "ending": {
+    "url": "https://lh3.googleusercontent.com/aida/AEtjO1WVhf_c53wQ7noP3OCgkNhfuzwY_aiPSPDEWh1cEJWPa-3IkNdEeXNG1go0RiYWtO25u2MjTyW18XJXZwq9t6SH8XAzey3WndIenSFgVS0JTLUfn0kL98rwcXp2ciWMkaIWKcsRtDtSYBiB7a4pKW9XTCddMNmDHXxdbHsTZLY7OZYunuFFmUMRJ26KQI78WeLFbuH3MkuLl1KoOQP4LTTwoDfEWzI66ow8bXPUcUWxJJ0wKA88hzD8ag",
+    "fetchSuffix": "=s0",
+    "designFiles": [
+      "docs/design/stitch/create-story-v1/07_ending/code.html"
+    ],
+    "size": [
+      1376,
+      768
+    ],
+    "bytes": 204807,
+    "sha256": "54dd5cdfa3184aadaa8b452a2e8717c758508c42310db388f84f6a592e39b148"
+  }
+}
