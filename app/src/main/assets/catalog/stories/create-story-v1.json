@@ -1,0 +1,72 @@
+{
+  "id": "create-story-v1-preview",
+  "title": "Придумать историю",
+  "retellTemplate": "Жил-был {hero}. Он отправился в {world}. С собой он взял {object}. У старого дуба {hero} решил {choice}. И нашёл {ending}!",
+  "choiceToEnding": {
+    "door": "secret_library"
+  },
+  "steps": [
+    {
+      "id": "hero",
+      "kind": "HERO",
+      "prompt": "Кто будет героем?",
+      "groupHint": "Выберите героя вместе.",
+      "options": [
+        { "id": "tim", "label": "Тим", "voiceAliases": ["тим", "мальчик"] },
+        { "id": "robi", "label": "Роби", "voiceAliases": ["роби", "робот", "робота"] },
+        { "id": "pushistik", "label": "Пушистик", "voiceAliases": ["пушистик", "мишка", "зверёк"] }
+      ]
+    },
+    {
+      "id": "world",
+      "kind": "WORLD",
+      "prompt": "Куда отправимся?",
+      "options": [
+        { "id": "space", "label": "звёздную станцию", "voiceAliases": ["космос", "станция", "станцию"] },
+        { "id": "forest", "label": "волшебный лес", "voiceAliases": ["лес", "в лес"] },
+        { "id": "island", "label": "таинственный остров", "voiceAliases": ["остров", "на остров"] }
+      ]
+    },
+    {
+      "id": "object",
+      "kind": "OBJECT",
+      "prompt": "Что возьмём?",
+      "options": [
+        { "id": "key", "label": "золотой ключ", "voiceAliases": ["ключ", "ключик"] },
+        { "id": "map", "label": "светящуюся карту", "voiceAliases": ["карта", "карту"] },
+        { "id": "lantern", "label": "звёздный фонарик", "voiceAliases": ["фонарик", "фонарь"] }
+      ]
+    },
+    {
+      "id": "choice",
+      "kind": "CHOICE",
+      "prompt": "Что сделаем?",
+      "groupHint": "Решите вместе, что сделает Роби.",
+      "options": [
+        { "id": "door", "label": "открыть дверь ключом", "voiceAliases": ["дверь", "открыть", "открой"] },
+        { "id": "path", "label": "пойти по тропинке", "voiceAliases": ["тропинка", "тропинку", "тропинке"] }
+      ]
+    },
+    {
+      "id": "ending",
+      "kind": "ENDING",
+      "prompt": "Чем всё закончилось?",
+      "options": [
+        { "id": "secret_library", "label": "тайную библиотеку" }
+      ]
+    }
+  ],
+  "preview": {
+    "authored": {
+      "HERO": ["robi"],
+      "WORLD": ["forest"],
+      "OBJECT": ["key"]
+    },
+    "endingTitles": {
+      "secret_library": "Тайна зачарованного дуба"
+    },
+    "consequence": {
+      "door": "Дверь открылась! А там тайная библиотека."
+    }
+  }
+}

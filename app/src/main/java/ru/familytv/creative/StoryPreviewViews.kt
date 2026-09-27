@@ -1,4 +1,4 @@
-package ru.familytv.creative.stitch
+package ru.familytv.creative
 
 import android.annotation.SuppressLint
 import android.content.Context

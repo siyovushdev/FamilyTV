@@ -1,16 +1,10 @@
-package ru.familytv.creative.stitch
+package ru.familytv.creative
 
 import org.json.JSONObject
-import ru.familytv.creative.SavedStory
-import ru.familytv.creative.StoryBuilderRuntime
-import ru.familytv.creative.StoryGrammar
-import ru.familytv.creative.StoryGrammarParser
-import ru.familytv.creative.StoryState
-import ru.familytv.creative.StoryStepKind
 
 /**
- * Adapter from the preview's visual state to the production Story Builder domain.
- * Branching, retell and voice mapping all come from [StoryBuilderRuntime]; nothing is persisted here.
+ * Adapter from the visual story state to the production Story Builder domain.
+ * Branching, retell and voice mapping all come from [StoryBuilderRuntime].
  */
 class StoryPreviewDomain(json: String) {
     val grammar: StoryGrammar = StoryGrammarParser.parse(json)
@@ -50,11 +44,10 @@ class StoryPreviewDomain(json: String) {
 
     fun consequence(action: StoryAction): String = consequences[action.id].orEmpty()
 
-    /** What production would save; the preview only logs it and never touches StoryStore. */
-    fun draft(s: StorySnapshot, now: Long): SavedStory? {
+    fun draft(s: StorySnapshot, now: Long, id: String): SavedStory? {
         val state = storyState(s)
         if (!state.completed) return null
-        return SavedStory(id = "preview", title = title(s), createdAtMs = now, retellText = StoryBuilderRuntime.retell(grammar, state), selections = state.selections)
+        return SavedStory(id = id, title = title(s), createdAtMs = now, retellText = StoryBuilderRuntime.retell(grammar, state), selections = state.selections)
     }
 
     /** Voice-ready: a transcript maps through the production allowlist to the same focus key as the D-pad. */

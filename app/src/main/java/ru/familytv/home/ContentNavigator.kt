@@ -5,7 +5,7 @@ import android.util.Log
 import ru.familytv.adventure.AdventureActivity
 import ru.familytv.content.ContentItem
 import ru.familytv.content.ContentType
-import ru.familytv.creative.CreativeStudioActivity
+import ru.familytv.creative.StoryRoutes
 import ru.familytv.explore.ExploreDestination
 import ru.familytv.explore.ExploreRoutes
 import ru.familytv.games.GamesDestination
@@ -23,8 +23,8 @@ object ContentNavigator {
             )
             ContentType.GAME -> gameIntent(activity, item.route)
             ContentType.INTERACTIVE -> {
-                if (item.route == "creative/story" || item.id == "lumi-story") {
-                    Intent(activity, CreativeStudioActivity::class.java)
+                if (StoryRoutes.opens(item)) {
+                    StoryRoutes.intent(activity)
                 } else {
                     Intent(activity, InteractiveExperienceActivity::class.java)
                         .putExtra(InteractiveExperienceActivity.EXTRA_CONTENT_ID, item.id)

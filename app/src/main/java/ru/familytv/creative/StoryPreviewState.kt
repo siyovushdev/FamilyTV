@@ -1,6 +1,5 @@
-package ru.familytv.creative.stitch
+package ru.familytv.creative
 
-import ru.familytv.creative.StoryStepKind
 import ru.familytv.interaction.FamilyAction
 
 enum class StoryScreen { CREATE_HOME, HERO, WORLD, OBJECT, STORY_CHOICE, CONSEQUENCE, ENDING, REPLAY }
@@ -43,6 +42,8 @@ data class StorySnapshot(
     /** Focus key of a not-yet-authored target the family just picked; drives an honest "soon" line. */
     val soon: String? = null,
     val saved: Boolean = false,
+    /** Production StoryStore id once «В наши истории» has persisted this story. */
+    val savedId: String? = null,
 ) {
     /** The chosen object is travelling to the hero; the scene owns input until it lands. */
     val revealing get() = screen == StoryScreen.OBJECT && item != null
@@ -64,7 +65,7 @@ data class StorySnapshot(
         put("homeFocus", homeFocus.name); put("heroFocus", heroFocus.name); put("worldFocus", worldFocus.name)
         put("itemFocus", itemFocus.name); put("actionFocus", actionFocus.name)
         put("elapsed", elapsedMs.toString()); put("paused", paused.toString()); put("saved", saved.toString())
-        soon?.let { put("soon", it) }
+        soon?.let { put("soon", it) }; savedId?.let { put("savedId", it) }
     }
 
     companion object {
@@ -78,13 +79,14 @@ data class StorySnapshot(
                 homeFocus = read("homeFocus", HomePlace.entries) ?: d.homeFocus, heroFocus = read("heroFocus", StoryHero.entries) ?: d.heroFocus,
                 worldFocus = read("worldFocus", StoryWorld.entries) ?: d.worldFocus, itemFocus = read("itemFocus", StoryObject.entries) ?: d.itemFocus,
                 actionFocus = read("actionFocus", StoryAction.entries) ?: d.actionFocus,
-                elapsedMs = m["elapsed"]?.toLongOrNull() ?: 0, paused = m["paused"] == "true", saved = m["saved"] == "true", soon = m["soon"],
+                elapsedMs = m["elapsed"]?.toLongOrNull() ?: 0, paused = m["paused"] == "true", saved = m["saved"] == "true",
+                soon = m["soon"], savedId = m["savedId"],
             )
         }
     }
 }
 
-/** Create / Story Builder V1 preview state. Pure Kotlin: semantics never depend on View state. */
+/** Create / Story Builder V1 state. Pure Kotlin: semantics never depend on View state. */
 class StoryPreviewState(private val domain: StoryPreviewDomain, initial: StorySnapshot = StorySnapshot()) {
     var value = initial
         private set
@@ -203,7 +205,7 @@ class StoryPreviewState(private val domain: StoryPreviewDomain, initial: StorySn
             key.startsWith("action:") -> { value = s.copy(action = StoryAction.valueOf(name)); enter(StoryScreen.CONSEQUENCE) }
             key == "inside" -> if (s.canContinue) enter(StoryScreen.ENDING) else return false
             key == "replay" -> enter(StoryScreen.REPLAY)
-            key == "save" -> value = s.copy(saved = true)
+            key == "save" -> if (!s.saved) value = s.copy(saved = true)
             key == "new" -> newStory()
             else -> return false
         }
@@ -228,8 +230,11 @@ class StoryPreviewState(private val domain: StoryPreviewDomain, initial: StorySn
 
     fun newStory() { value = StorySnapshot(screen = StoryScreen.HERO, focus = "hero:${StoryHero.ROBI.name}") }
 
+    fun rememberSave(id: String) { value = value.copy(saved = true, savedId = id) }
+
     private fun enter(screen: StoryScreen) {
-        value = value.copy(screen = screen, elapsedMs = 0, soon = null, saved = value.saved && screen in listOf(StoryScreen.ENDING, StoryScreen.REPLAY))
+        val keep = value.saved && screen in listOf(StoryScreen.ENDING, StoryScreen.REPLAY)
+        value = value.copy(screen = screen, elapsedMs = 0, soon = null, saved = keep, savedId = value.savedId.takeIf { keep })
         value = value.copy(focus = defaultFocus())
     }
 

@@ -50,7 +50,9 @@
             android:name=".creative.CreativeStudioActivity"
             android:exported="false"
             android:launchMode="singleTop"
-            android:label="Создавай" />
+            android:theme="@style/Theme.FamilyTV.Games"
+            android:screenOrientation="landscape"
+            android:label="Создавать" />
         <activity
             android:name=".interactive.InteractiveExperienceActivity"
             android:exported="false"

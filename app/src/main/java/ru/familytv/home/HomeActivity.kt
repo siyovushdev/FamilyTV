@@ -25,6 +25,7 @@ import ru.familytv.content.ContentType
 import ru.familytv.content.PlatformServices
 import ru.familytv.content.V1ContentShelf
 import ru.familytv.trial.TrialEventStore
+import ru.familytv.creative.StoryRoutes
 import ru.familytv.explore.ExploreDestination
 import ru.familytv.explore.ExploreRoutes
 import ru.familytv.games.GameStyle
@@ -628,6 +629,11 @@ class HomeActivity : ComponentActivity() {
         getSharedPreferences("familytv_home", MODE_PRIVATE)
             .edit().putString("lastFocusId", item.id).apply()
         PlatformServices.trialEvents(this).record(TrialEventStore.HOME_ITEM_OPEN, item.id)
+        if (StoryRoutes.opens(item)) {
+            android.util.Log.i("FamilyHome", "open=create content=${item.id} AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
+            startActivity(StoryRoutes.intent(this))
+            return
+        }
         if (item.type == ContentType.VIDEO) {
             startActivity(Intent(this, ru.familytv.home.watch.WatchActivity::class.java)
                 .putExtra("screen", "details").putExtra("contentId", item.id))
@@ -933,6 +939,12 @@ class HomeActivity : ComponentActivity() {
                 if (action.worldId == "play") {
                     getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "games").apply()
                     ContentNavigator.gameIntent(this, "play")?.let(::startActivity)
+                    return true
+                }
+                if (action.worldId == StoryRoutes.WORLD_ID) {
+                    getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", StoryRoutes.CONTENT_ID).apply()
+                    android.util.Log.i("FamilyHome", "open=create destination=${StoryRoutes.WORLD_ID} AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
+                    startActivity(StoryRoutes.intent(this))
                     return true
                 }
                 if (ExploreRoutes.handles(action.worldId)) {

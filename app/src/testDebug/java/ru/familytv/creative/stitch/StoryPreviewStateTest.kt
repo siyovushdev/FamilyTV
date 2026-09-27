@@ -2,14 +2,14 @@ package ru.familytv.creative.stitch
 
 import org.junit.Assert.*
 import org.junit.Test
-import ru.familytv.creative.StoryStepKind
+import ru.familytv.creative.*
 import ru.familytv.interaction.FamilyAction
 import ru.familytv.voice.VoiceRuntime
 import java.io.File
 import java.security.MessageDigest
 
 class StoryPreviewStateTest {
-    private val domain = StoryPreviewDomain(File("src/debug/assets/create_story_v1/story.json").readText())
+    private val domain = StoryPreviewDomain(File("src/main/assets/catalog/stories/create-story-v1.json").readText())
     private fun home() = StoryPreviewState(domain)
     private fun hero() = home().apply { select() }
     private fun world() = hero().apply { activate("hero:ROBI") }
@@ -18,23 +18,24 @@ class StoryPreviewStateTest {
     private fun choice() = revealing().apply { tick(StoryRules.KEY_REVEAL_MS) }
     private fun consequence() = choice().apply { activate("action:DOOR") }
     private fun ending() = consequence().apply { tick(StoryRules.CONTINUE_AT_MS); activate("inside") }
-    private fun previewSources() = File("src/debug/java/ru/familytv/creative/stitch").walkTopDown().filter { it.extension == "kt" }.joinToString("\n") { it.readText() }
+    private fun harness() = File("src/debug/java/ru/familytv/creative/stitch/StitchStoryBuilderPreviewActivity.kt").readText()
+    private fun production() = File("src/main/java/ru/familytv/creative/CreativeStudioActivity.kt").readText()
     private val judgment = listOf("неправ", "ошиб", "правильно", "верно", "молодец", "очк", "балл", "звёзд за", "награ")
 
     @Test fun previewNeverMutatesProductionStores() {
-        val sources = previewSources()
-        for (forbidden in listOf("StoryStore(", "ActivityHistoryStore(", "activityHistory(", "journeyCoordinator(", "adventureProgress(", "adventureEvents(",
-            "TrialEventStore(", "trialEvents(", "WatchProgressStore(", "getSharedPreferences(", ".edit()", "startActivity(", "onStoryCreated(", "familySettings")) {
+        val sources = harness()
+        assertTrue(sources.contains(": CreativeStudioActivity()"))
+        assertTrue(sources.contains("override val recordsActivity = false"))
+        for (forbidden in listOf("StoryStore(", "ActivityHistoryStore(", "activityHistory(", "journeyCoordinator(",
+            "TrialEventStore(", "trialEvents(", "onStoryCreated(")) {
             assertFalse("Forbidden preview boundary: $forbidden", sources.contains(forbidden))
         }
-        val services = Regex("""PlatformServices\.(\w+)""").findAll(sources).map { it.groupValues[1] }.toSet()
-        assertEquals(setOf("actionDispatcher", "narrationCoordinator"), services)
-        // "В наши истории" is a preview-state confirmation only; the draft is what production would save.
+        assertTrue(production().contains("if (!recordsActivity)"))
+        assertTrue(production().contains("save_preview_only persisted=false"))
         val s = ending(); s.activate("save")
         assertTrue(s.value.saved)
-        val draft = domain.draft(s.value, 1L)!!
+        val draft = domain.draft(s.value, 1L, "preview")!!
         assertEquals(mapOf("HERO" to "robi", "WORLD" to "forest", "OBJECT" to "key", "CHOICE" to "door", "ENDING" to "secret_library"), draft.selections)
-        assertTrue(sources.contains("save_preview_only persisted=false"))
     }
 
     @Test fun createHomeOpensTheStoryFlowAndFutureCraftsStayHonest() {
@@ -212,20 +213,21 @@ class StoryPreviewStateTest {
     @Test fun noAiInitialization() {
         ending().apply { activate("replay"); tick(StoryRules.REPLAY_BEAT_MS * 6); activate("new") }
         assertNull(VoiceRuntime.peek())
-        val sources = previewSources()
         for (forbidden in listOf("VoiceRuntime.get(", "newPipeline(", "prewarm(", "acquireLease(", "AudioRecord(", "SpeechRecognizer", "GroundedQwenMatcher(", ".gguf", ".onnx", "listening")) {
-            assertFalse("Forbidden AI path: $forbidden", sources.contains(forbidden))
+            assertFalse("Forbidden AI path: $forbidden", (harness() + production()).contains(forbidden))
         }
-        assertTrue(sources.contains("VoiceRuntime.peek()"))
+        assertTrue(production().contains("VoiceRuntime.peek()"))
     }
 
     @Test fun productionHasNoDependencyOnTheDebugPreview() {
         val activity = "StitchStoryBuilderPreviewActivity"
         assertTrue(File("src/debug/AndroidManifest.xml").readText().contains(".creative.stitch.$activity"))
         assertFalse(File("src/main/AndroidManifest.xml").readText().contains(activity))
-        val main = File("src/main/java").walkTopDown().filter { it.extension == "kt" }.toList()
-        assertTrue(main.none { f -> f.readText().let { it.contains(activity) || it.contains("creative.stitch") || it.contains("create_story_v1") } })
-        assertFalse(File("src/main/assets/create_story_v1").exists())
+        val main = File("src/main/java").walkTopDown().filter { it.extension == "kt" }.joinToString("\n") { it.readText() }
+        assertFalse(main.contains(activity))
+        assertFalse(main.contains("creative.stitch"))
+        assertTrue(File("src/main/assets/create_story_v1/create_home.jpg").isFile)
+        assertTrue(File("src/main/assets/catalog/stories/create-story-v1.json").isFile)
     }
 
     @Test fun adapterUsesTheProductionStoryDomain() {
@@ -270,14 +272,15 @@ class StoryPreviewStateTest {
     }
 
     @Test fun packagedArtIsTheUnchangedApprovedStitchArt() {
-        val provenance = File("src/debug/assets/create_story_v1/provenance.json").readText()
-        for (name in StitchStoryBuilderPreviewActivity.ART) {
-            val asset = File("src/debug/assets/create_story_v1/$name.jpg")
+        val provenance = File("src/main/assets/create_story_v1/provenance.json").readText()
+        for (name in StoryRoutes.ART) {
+            val asset = File("src/main/assets/create_story_v1/$name.jpg")
             val sha = sha256(asset)
             assertTrue(name, provenance.contains(sha))
             assertEquals(sha, sha256(File("../docs/design/stitch/create-story-v1/android-preview/reference/$name.jpg")))
+            assertEquals(sha, sha256(File("src/debug/assets/create_story_v1/$name.jpg")))
         }
-        assertTrue(provenance.contains(sha256(File("src/debug/assets/create_story_v1/story.json"))))
+        assertTrue(provenance.contains(sha256(File("src/main/assets/catalog/stories/create-story-v1.json"))))
         for (screen in listOf("01_create_home", "02_choose_hero", "03_choose_world", "04_choose_object", "05_story_choice", "06_consequence", "07_ending")) {
             assertTrue(screen, provenance.contains("create-story-v1/$screen/code.html"))
         }

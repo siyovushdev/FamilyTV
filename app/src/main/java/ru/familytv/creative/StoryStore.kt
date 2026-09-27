@@ -33,6 +33,9 @@ class StoryStore(private val prefs: android.content.SharedPreferences) {
         }.sortedByDescending { it.createdAtMs }
     }
 
+    fun findBySelections(selections: Map<String, String>): SavedStory? =
+        list().firstOrNull { it.selections == selections }
+
     fun save(story: SavedStory) {
         val existing = list().filter { it.id != story.id }.toMutableList()
         existing.add(0, story)
