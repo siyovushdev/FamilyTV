@@ -111,6 +111,8 @@ class TrialEventStore(private val prefs: android.content.SharedPreferences) {
         const val STORY_STARTED = "STORY_STARTED"
         const val STORY_CHOICE = "STORY_CHOICE"
         const val STORY_COMPLETED = "STORY_COMPLETED"
+        const val MOVE_STARTED = "MOVE_STARTED"
+        const val MOVE_COMPLETED = "MOVE_COMPLETED"
         const val REFLECTION_COMPLETED = "REFLECTION_COMPLETED"
         const val ASK_LUMI = "ASK_LUMI"
         const val ASK_LUMI_MATCHED = "ASK_LUMI_MATCHED"

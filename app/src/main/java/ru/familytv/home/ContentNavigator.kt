@@ -8,6 +8,7 @@ import ru.familytv.content.ContentType
 import ru.familytv.creative.StoryRoutes
 import ru.familytv.explore.ExploreDestination
 import ru.familytv.explore.ExploreRoutes
+import ru.familytv.move.MoveRoutes
 import ru.familytv.games.GamesDestination
 import ru.familytv.interactive.InteractiveExperienceActivity
 import ru.familytv.player.VideoPlayerActivity
@@ -25,6 +26,8 @@ object ContentNavigator {
             ContentType.INTERACTIVE -> {
                 if (StoryRoutes.opens(item)) {
                     StoryRoutes.intent(activity)
+                } else if (MoveRoutes.opens(item)) {
+                    MoveRoutes.intent(activity)
                 } else {
                     Intent(activity, InteractiveExperienceActivity::class.java)
                         .putExtra(InteractiveExperienceActivity.EXTRA_CONTENT_ID, item.id)

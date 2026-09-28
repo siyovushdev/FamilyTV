@@ -1,4 +1,4 @@
-package ru.familytv.move.stitch
+package ru.familytv.move
 
 import ru.familytv.interaction.FamilyAction
 
@@ -152,7 +152,7 @@ data class MoveSnapshot(
     }
 }
 
-/** Debug-only Move V1 semantics. Timers live here — never only inside View animation. */
+/** Production Move V1 semantics. Timers live here — never only inside View animation. */
 class MovePreviewState(initial: MoveSnapshot = MoveSnapshot()) {
     var value = initial
         private set

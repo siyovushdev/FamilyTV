@@ -8,6 +8,12 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import ru.familytv.interaction.FamilyAction
 import ru.familytv.interaction.VoiceCommandRouter
+import ru.familytv.move.LumiPose
+import ru.familytv.move.MovePhase
+import ru.familytv.move.MovePreviewState
+import ru.familytv.move.MoveRules
+import ru.familytv.move.MoveScreen
+import ru.familytv.move.MoveSnapshot
 import ru.familytv.voice.VoiceRuntime
 import java.io.File
 
@@ -44,7 +50,8 @@ class MovePreviewStateTest {
         return s
     }
     private fun MovePreviewState.activate(key: String) { focus(key); select() }
-    private fun sources() = File("src/debug/java/ru/familytv/move/stitch").walkTopDown().filter { it.extension == "kt" }.joinToString("\n") { it.readText() }
+    private fun production() = File("src/main/java/ru/familytv/move").walkTopDown().filter { it.extension == "kt" }.joinToString("\n") { it.readText() }
+    private fun harness() = File("src/debug/java/ru/familytv/move/stitch").walkTopDown().filter { it.extension == "kt" }.joinToString("\n") { it.readText() }
     private val judgment = listOf("очк", "балл", "xp", "калори", "повторен", "правильно", "неправ", "засчитан", "распознан", "камера", "camera", "поза верн")
 
     @Test fun moveHomeActiveAdventure() {
@@ -122,8 +129,8 @@ class MovePreviewStateTest {
         val s = after(MoveScreen.FREEZE, MovePhase.COUNTDOWN)
         val text = s.prompt().lowercase()
         for (word in judgment) assertFalse(word, text.contains(word))
-        assertFalse(sources().lowercase().contains("поза засчитана"))
-        assertFalse(sources().lowercase().contains("движение распознано"))
+        assertFalse(production().lowercase().contains("поза засчитана"))
+        assertFalse(production().lowercase().contains("движение распознано"))
     }
 
     @Test fun balanceIsDeterministic() {
@@ -216,15 +223,17 @@ class MovePreviewStateTest {
     }
 
     @Test fun previewNeverMutatesProductionStores() {
-        val src = sources()
+        val src = harness()
         for (forbidden in listOf("StoryStore(", "ActivityHistoryStore(", "activityHistory(", "journeyCoordinator(",
             "TrialEventStore(", "trialEvents(", "onContentOpened(", "onContentCompleted(", "onStoryCreated(")) {
             assertFalse(forbidden, src.contains(forbidden))
         }
+        assertTrue(src.contains("override val recordsActivity = false"))
+        assertTrue(production().contains("if (!recordsActivity) return"))
     }
 
     @Test fun noCameraOrMovementSensing() {
-        val src = sources().lowercase()
+        val src = production().lowercase()
         for (forbidden in listOf("android.hardware.camera", "androidx.camera", "posedetector", "mlkit", "bodyskeleton", "movement detected", "зона 100", "комната безопасна", "camerax")) {
             assertFalse(forbidden, src.contains(forbidden))
         }
@@ -233,7 +242,7 @@ class MovePreviewStateTest {
     @Test fun noAiInitialization() {
         after(MoveScreen.ENDING, MovePhase.ACTIONS)
         assertNull(VoiceRuntime.peek())
-        val src = sources()
+        val src = production()
         for (forbidden in listOf("VoiceRuntime.get(", "newPipeline(", ".prewarm(", "startListening(", "acquireLease(", "AudioRecord(", "SpeechRecognizer", "GroundedQwenMatcher", ".gguf", ".onnx")) {
             assertFalse(forbidden, src.contains(forbidden))
         }
@@ -250,8 +259,9 @@ class MovePreviewStateTest {
         assertFalse(mainKotlin.contains("StitchMovePreviewActivity"))
         assertFalse(mainKotlin.contains("move.stitch"))
         assertFalse(File(main, "AndroidManifest.xml").readText().contains("StitchMove"))
-        assertTrue(File("src/debug/assets/move_v1/move_home.jpg").isFile)
-        assertTrue(File("src/debug/assets/move_v1/provenance.json").readText().contains("sha256"))
+        assertTrue(File(main, "AndroidManifest.xml").readText().contains(".move.MoveActivity"))
+        assertTrue(File("src/main/assets/move_v1/move_home.jpg").isFile)
+        assertTrue(File("src/main/assets/move_v1/provenance.json").readText().contains("sha256"))
         assertTrue(File("src/debug/AndroidManifest.xml").readText().contains("StitchMovePreviewActivity"))
         val restored = MoveSnapshot.decode(after(MoveScreen.FREEZE, MovePhase.FREEZE).value.encode())
         assertEquals(MoveScreen.FREEZE, restored.screen)

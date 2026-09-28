@@ -223,6 +223,7 @@ object VoiceCommandRouter {
             "космос" to ExploreDestination.SPACE.route,
             "решай" to "solve",
             "двигайся" to "move",
+            "двигаться" to "move",
             "движение" to "move",
             "создавай" to "create",
         )

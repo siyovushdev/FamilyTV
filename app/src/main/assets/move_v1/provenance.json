@@ -1,0 +1,126 @@
+{
+  "design": "docs/design/stitch/move-v1",
+  "scope": "production Move V1 / Разбудим звёзды; original Stitch bytes, no AI edit",
+  "policy": "Fetched once from code.html URLs with =s0. No runtime network. screen.png is not used as art.",
+  "assets": [
+    {
+      "asset": "app/src/main/assets/move_v1/move_home.jpg",
+      "reference": "docs/design/stitch/move-v1/android-preview/reference/move_home.jpg",
+      "source": "https://lh3.googleusercontent.com/aida/AEtjO1XgKvw-CfT8ZJ5b60PZTePlTLOUkEtnBaEfWyLtI-EDWV44vrT_-DeIVPy0_JBc33BIB8jO3aTUtFsUOprl-PbDiMIH6yTQ-ystH1WHENaox2F5S8qrwi8XMmjqh2ZKPa8B3wGW7VygjTk9TyuKY8hcg1ubsJrR8j_X3ksREO7M2uYY-j5Ulxar0oAmb-s6BygcA-FrDSnbkvFnJRykFIDmhlq6O7d4r4anchuO7B6wPP4gcPxyle1K8g",
+      "fetch": "https://lh3.googleusercontent.com/aida/AEtjO1XgKvw-CfT8ZJ5b60PZTePlTLOUkEtnBaEfWyLtI-EDWV44vrT_-DeIVPy0_JBc33BIB8jO3aTUtFsUOprl-PbDiMIH6yTQ-ystH1WHENaox2F5S8qrwi8XMmjqh2ZKPa8B3wGW7VygjTk9TyuKY8hcg1ubsJrR8j_X3ksREO7M2uYY-j5Ulxar0oAmb-s6BygcA-FrDSnbkvFnJRykFIDmhlq6O7d4r4anchuO7B6wPP4gcPxyle1K8g=s0",
+      "designFiles": [
+        "docs/design/stitch/move-v1/01_move_home/code.html"
+      ],
+      "usage": "Cosmic Move World Star Map",
+      "size": [
+        1376,
+        768
+      ],
+      "bytes": 216436,
+      "sha256": "1ed74ef6c64bdb8c7819dd634b2c838ea33940412f38054f9a53191ca2bd8fa6",
+      "transformation": "none"
+    },
+    {
+      "asset": "app/src/main/assets/move_v1/ready.jpg",
+      "reference": "docs/design/stitch/move-v1/android-preview/reference/ready.jpg",
+      "source": "https://lh3.googleusercontent.com/aida/AEtjO1WtEgHLSysjMA-13DNadYJKLEXUnsIvoa6sEtuv8_OTOwCwM9s_4Snihadj1o0rnrvVfDChwTdn-QrC9PFBwln-SIsqJpkgiFJxD0ACjAVW55FEs2sgu6yoye067Mn7e01VIEjamcp2xOLEHlBHVY382-6a5NmC2S-WW9XGZQlJYc5T5r39sNJO5QfuQiUPL5kgm6oAl_CsQheccW3zrNuh9qXSio4SU0zS6BwBRMBB_Seni3m1xkKbDZY",
+      "fetch": "https://lh3.googleusercontent.com/aida/AEtjO1WtEgHLSysjMA-13DNadYJKLEXUnsIvoa6sEtuv8_OTOwCwM9s_4Snihadj1o0rnrvVfDChwTdn-QrC9PFBwln-SIsqJpkgiFJxD0ACjAVW55FEs2sgu6yoye067Mn7e01VIEjamcp2xOLEHlBHVY382-6a5NmC2S-WW9XGZQlJYc5T5r39sNJO5QfuQiUPL5kgm6oAl_CsQheccW3zrNuh9qXSio4SU0zS6BwBRMBB_Seni3m1xkKbDZY=s0",
+      "designFiles": [
+        "docs/design/stitch/move-v1/02_ready/code.html"
+      ],
+      "usage": "Cozy children living room with space cleared",
+      "size": [
+        1376,
+        768
+      ],
+      "bytes": 169745,
+      "sha256": "e44f29b87aee3eab9d6e8dc9345421cb8c10416df3e59045bffe7e7062fae8f8",
+      "transformation": "none"
+    },
+    {
+      "asset": "app/src/main/assets/move_v1/reach.jpg",
+      "reference": "docs/design/stitch/move-v1/android-preview/reference/reach.jpg",
+      "source": "https://lh3.googleusercontent.com/aida/AEtjO1Wasxz4MuTn-Jp6oW9IXOsNXljZzpqh8wTT1tn5vfXOiSJua-v07km-GBuSf-0HMk45oFFZGx5vshXU2QifaB4rHsDZHrctoMFdwjlqx2vF6DTeIJiPP5uoiJwYw_zmwRZfAHfYW1G5-7o2yLc6RkK2UumNgD8fehvfsPq7zMf0wenJdD7LftQ-61ncmKiutao2ja0a_00WSaeOTZ1LQZjq7hPELqzPWiC4k7Y3V5c3xsUs21OoncCiatk",
+      "fetch": "https://lh3.googleusercontent.com/aida/AEtjO1Wasxz4MuTn-Jp6oW9IXOsNXljZzpqh8wTT1tn5vfXOiSJua-v07km-GBuSf-0HMk45oFFZGx5vshXU2QifaB4rHsDZHrctoMFdwjlqx2vF6DTeIJiPP5uoiJwYw_zmwRZfAHfYW1G5-7o2yLc6RkK2UumNgD8fehvfsPq7zMf0wenJdD7LftQ-61ncmKiutao2ja0a_00WSaeOTZ1LQZjq7hPELqzPWiC4k7Y3V5c3xsUs21OoncCiatk=s0",
+      "designFiles": [
+        "docs/design/stitch/move-v1/03_reach/code.html"
+      ],
+      "usage": "Lumi stretching high to wake the stars",
+      "size": [
+        1376,
+        768
+      ],
+      "bytes": 152462,
+      "sha256": "327654b39b3e881c87043ce71246f9f11540a7b0e376c3d61e977059bc7b4934",
+      "transformation": "none"
+    },
+    {
+      "asset": "app/src/main/assets/move_v1/comets.jpg",
+      "reference": "docs/design/stitch/move-v1/android-preview/reference/comets.jpg",
+      "source": "https://lh3.googleusercontent.com/aida/AEtjO1VYREHT_BNNivuSNd35TLyUceuxBfS_qazbVFyAzc-y2pXnvsGC6_vlYK17272_NFQHQvYjvEmT8MebCSEuUrJ8tupgqgrCTaK_2hzU_dK-T3MSQRqWq4kXXfmqOdOMcpg4cbhy2spqzwFmA0aRi2BKgnNM-4l2BBF51tFcsTudG5-jGf83RCj7pQvgYZZbzY9taULQVQHi7VtZ7C182_3nw6nRbR7e_OatF0wUJxg8gZVr5w2TkOJMcvs",
+      "fetch": "https://lh3.googleusercontent.com/aida/AEtjO1VYREHT_BNNivuSNd35TLyUceuxBfS_qazbVFyAzc-y2pXnvsGC6_vlYK17272_NFQHQvYjvEmT8MebCSEuUrJ8tupgqgrCTaK_2hzU_dK-T3MSQRqWq4kXXfmqOdOMcpg4cbhy2spqzwFmA0aRi2BKgnNM-4l2BBF51tFcsTudG5-jGf83RCj7pQvgYZZbzY9taULQVQHi7VtZ7C182_3nw6nRbR7e_OatF0wUJxg8gZVr5w2TkOJMcvs=s0",
+      "designFiles": [
+        "docs/design/stitch/move-v1/04_comets/code.html"
+      ],
+      "usage": "Lumi demonstrating side steps around gentle comets",
+      "size": [
+        1376,
+        768
+      ],
+      "bytes": 193294,
+      "sha256": "7bda7e7c83e244a16e4311bc9e5c7d8e85a7fb5596f449c7501e91e8fd1aa60c",
+      "transformation": "none"
+    },
+    {
+      "asset": "app/src/main/assets/move_v1/freeze.jpg",
+      "reference": "docs/design/stitch/move-v1/android-preview/reference/freeze.jpg",
+      "source": "https://lh3.googleusercontent.com/aida/AEtjO1Xo6fyb9SmeUJO0I62YWQrQQC0jKUu8NgL6DQR-vrVXhH_OxZvuualTZsuGm5_J0EaES3zFUux7OowEQFJyRCWtgE49iLEGduMUsQB7QSY4rEpDBcPb7-7FZAisyM_CI-1DZ6543-K4KxYyG5z5A_MFVamqTepEPBSu4YEpL6uegiQ4MraJwsoQym9_GzJJrGFCGR0wYOEVAypkX1NpKK4Gru1-P-fhVXxgU1d4WR92MmNC17ZyQKYz2DE",
+      "fetch": "https://lh3.googleusercontent.com/aida/AEtjO1Xo6fyb9SmeUJO0I62YWQrQQC0jKUu8NgL6DQR-vrVXhH_OxZvuualTZsuGm5_J0EaES3zFUux7OowEQFJyRCWtgE49iLEGduMUsQB7QSY4rEpDBcPb7-7FZAisyM_CI-1DZ6543-K4KxYyG5z5A_MFVamqTepEPBSu4YEpL6uegiQ4MraJwsoQym9_GzJJrGFCGR0wYOEVAypkX1NpKK4Gru1-P-fhVXxgU1d4WR92MmNC17ZyQKYz2DE=s0",
+      "designFiles": [
+        "docs/design/stitch/move-v1/05_freeze/code.html"
+      ],
+      "usage": "Lumi freeze pose in cosmic meadow",
+      "size": [
+        1376,
+        768
+      ],
+      "bytes": 176124,
+      "sha256": "c4a09854420e3335eef5918633b8bb2307c7fcc9a81db795be2fa98723d8ca1e",
+      "transformation": "none"
+    },
+    {
+      "asset": "app/src/main/assets/move_v1/balance.jpg",
+      "reference": "docs/design/stitch/move-v1/android-preview/reference/balance.jpg",
+      "source": "https://lh3.googleusercontent.com/aida/AEtjO1Xjzu75U8QoPVDdjLWIFfrz3NQxBzffdzhzSq0FiEqZHjR0jQ0d4z_gZXgdLRihhgfT7EwV4R5_nke84f1kFJXeo9NUbUEr3U1VrL0S6R7xZISXDSZZsSvqClQPHv-NyJsHw03vEt4g6HimLsjD0cq5qUOUgnwHsRwKfOulEg0fnxVfZrjWtXCujIiUX6Z7nbkguJ0BUXBQKExLj5PrlSoAmOe5LM61zX7pZnaBT70BdCtX1f__bNsCVw",
+      "fetch": "https://lh3.googleusercontent.com/aida/AEtjO1Xjzu75U8QoPVDdjLWIFfrz3NQxBzffdzhzSq0FiEqZHjR0jQ0d4z_gZXgdLRihhgfT7EwV4R5_nke84f1kFJXeo9NUbUEr3U1VrL0S6R7xZISXDSZZsSvqClQPHv-NyJsHw03vEt4g6HimLsjD0cq5qUOUgnwHsRwKfOulEg0fnxVfZrjWtXCujIiUX6Z7nbkguJ0BUXBQKExLj5PrlSoAmOe5LM61zX7pZnaBT70BdCtX1f__bNsCVw=s0",
+      "designFiles": [
+        "docs/design/stitch/move-v1/06_balance/code.html"
+      ],
+      "usage": "Lumi robot balancing on star bridge",
+      "size": [
+        1376,
+        768
+      ],
+      "bytes": 107034,
+      "sha256": "b68299a239939f17254979fa71cf820455e9c9fee1680ca1c382c7ae876d6380",
+      "transformation": "none"
+    },
+    {
+      "asset": "app/src/main/assets/move_v1/ending.jpg",
+      "reference": "docs/design/stitch/move-v1/android-preview/reference/ending.jpg",
+      "source": "https://lh3.googleusercontent.com/aida/AEtjO1VG87mRIiRtaxpMF8YxQRAtxb1Oi92DJX35JCrcKoKB3U-JksU_GHyOz9YAtGFHVvbDeiZiD4PjWMDEx-Iv_cTDOypw_fShyTIRAF5XfCzoPq6Y_ewwxlM2CKfnKls_9PrlOF0sCYXA2UjZPfyFhUW7mZiQ9dh0TOz8BEEtdrZefn4jq1D3sEvrC0lyUhesRxRx9RlxHMRTDsb_JAbEpQYWoVoMtHWDlgP-JUaC-9WsM_5bAi4WTfLb3g",
+      "fetch": "https://lh3.googleusercontent.com/aida/AEtjO1VG87mRIiRtaxpMF8YxQRAtxb1Oi92DJX35JCrcKoKB3U-JksU_GHyOz9YAtGFHVvbDeiZiD4PjWMDEx-Iv_cTDOypw_fShyTIRAF5XfCzoPq6Y_ewwxlM2CKfnKls_9PrlOF0sCYXA2UjZPfyFhUW7mZiQ9dh0TOz8BEEtdrZefn4jq1D3sEvrC0lyUhesRxRx9RlxHMRTDsb_JAbEpQYWoVoMtHWDlgP-JUaC-9WsM_5bAi4WTfLb3g=s0",
+      "designFiles": [
+        "docs/design/stitch/move-v1/07_ending/code.html"
+      ],
+      "usage": "Calm Ending with robot Lumi",
+      "size": [
+        1376,
+        768
+      ],
+      "bytes": 181559,
+      "sha256": "f6a501e35c0a731e076cac6c23a9bbdd42d06dd226ce25c13fc854ae6db0afa9",
+      "transformation": "none"
+    }
+  ]
+}

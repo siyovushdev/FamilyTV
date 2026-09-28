@@ -39,8 +39,8 @@ class WatchCatalogTest {
         val repo = LocalContentRepository(ContentOverrideStore(memoryPrefs()),
             { File(assets, it).inputStream() }, tmp.newFolder())
         val videos = WatchCatalog.eligible(repo, FamilyContentFilter())
-        assertEquals(setOf("video-warm", "move-stretch"), videos.map { it.id }.toSet())
-        assertEquals(setOf("stories", "creativity"), WatchCatalog.groups(videos).keys.map { it.id }.toSet())
+        assertEquals(setOf("video-warm"), videos.map { it.id }.toSet())
+        assertEquals(setOf("stories"), WatchCatalog.groups(videos).keys.map { it.id }.toSet())
         assertTrue(videos.all { it in repo.getEnabledItems() })
     }
 

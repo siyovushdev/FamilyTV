@@ -1,0 +1,9 @@
+{
+  "id": "wake-stars-v1",
+  "title": "Разбудим звёзды",
+  "route": "move/stars",
+  "beats": ["ready", "reach", "comets", "freeze", "balance", "ending"],
+  "sensing": false,
+  "score": false,
+  "note": "Routing grammar for catalog INTERACTIVE. Runtime is MoveActivity, not Interactive Engine."
+}

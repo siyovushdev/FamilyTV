@@ -103,6 +103,12 @@
             android:screenOrientation="landscape"
             android:exported="false"
             android:label="Исследовать" />
+        <activity
+            android:name=".move.MoveActivity"
+            android:theme="@style/Theme.FamilyTV.Games"
+            android:screenOrientation="landscape"
+            android:exported="false"
+            android:label="Двигаться" />
     </application>
 
 </manifest>
