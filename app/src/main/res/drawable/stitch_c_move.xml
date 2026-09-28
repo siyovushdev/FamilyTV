@@ -1,0 +1,11 @@
+<!-- Native vector transcribed from local Variant C code.html. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="120dp" android:height="120dp" android:viewportWidth="120" android:viewportHeight="120">
+  <path android:pathData="M18.0,74.0 A42.0,16.0 0,1 0,102.0,74.0 A42.0,16.0 0,1 0,18.0,74.0 Z" android:fillColor="#F59E0B" android:fillAlpha="1.0" />
+  <path android:pathData="M26.0,72.0 A34.0,11.0 0,1 0,94.0,72.0 A34.0,11.0 0,1 0,26.0,72.0 Z" android:fillColor="#FEF08A" android:fillAlpha="1.0" />
+  <path android:pathData="M26 76L20 96M94 76L100 96M45 84L42 98M75 84L78 98" android:strokeColor="#D97706" android:strokeWidth="4" android:strokeLineCap="round" />
+  <path android:pathData="M44.0,38.0 A6.0,6.0 0,1 0,56.0,38.0 A6.0,6.0 0,1 0,44.0,38.0 Z" android:fillColor="#FDE047" android:fillAlpha="1.0" />
+  <path android:pathData="M54.0,24.0 H58.0 Q58.0,24.0 58.0,24.0 V39.0 Q58.0,39.0 58.0,39.0 H54.0 Q54.0,39.0 54.0,39.0 V24.0 Q54.0,24.0 54.0,24.0 Z" android:fillColor="#FDE047" android:fillAlpha="1.0" />
+  <path android:pathData="M64.0,32.0 A6.0,6.0 0,1 0,76.0,32.0 A6.0,6.0 0,1 0,64.0,32.0 Z" android:fillColor="#FDE047" android:fillAlpha="1.0" />
+  <path android:pathData="M74.0,18.0 H78.0 Q78.0,18.0 78.0,18.0 V33.0 Q78.0,33.0 78.0,33.0 H74.0 Q74.0,33.0 74.0,33.0 V18.0 Q74.0,18.0 74.0,18.0 Z" android:fillColor="#FDE047" android:fillAlpha="1.0" />
+  <path android:pathData="M54,24 L78,18 L78,22 L54,28 Z" android:fillColor="#FDE047" android:fillAlpha="1.0" />
+</vector>

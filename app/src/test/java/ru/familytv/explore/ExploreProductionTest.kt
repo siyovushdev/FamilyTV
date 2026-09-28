@@ -44,7 +44,7 @@ class ExploreProductionTest {
             assertEquals(FamilyAction.OpenWorld(ExploreRoutes.WORLD_ID), routed.action)
         }
         val home = source("home/HomeActivity.kt")
-        assertEquals("exactly one Home entry", 1, Regex("chip\\(\"Исследовать\"\\)").findAll(home).count())
+        assertFalse(home.contains("chip(\"Исследовать\")"))
         assertTrue(home.contains("dispatch(InputSource.REMOTE, FamilyAction.OpenWorld(ExploreRoutes.WORLD_ID))"))
         assertTrue(home.contains("startActivity(ExploreRoutes.intent(this, destination))"))
         val manifest = File(main, "AndroidManifest.xml").readText()

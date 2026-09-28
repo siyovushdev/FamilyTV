@@ -120,8 +120,10 @@ class GamesProductionTest {
         assertTrue(session.substringAfter("override fun onResume()").substringBefore("private fun render()")
             .contains("PlatformServices.actionDispatcher().attach(actionHandler)"))
         val home = File(main, "java/ru/familytv/home/HomeActivity.kt").readText()
-        assertEquals(1, Regex("chip\\(\"Играть\"\\)").findAll(home).count())
+        assertFalse(home.contains("chip(\"Играть\")"))
         assertTrue(home.contains("ContentNavigator.gameIntent(this, \"play\")"))
+        assertTrue(home.contains("FamilyAction.OpenWorld(\"play\")"))
+        assertEquals(listOf("Смотреть", "Играть", "Исследовать", "Создавать", "Двигаться"), ru.familytv.home.HomeActivity.CHILD_WORLDS)
         for (asset in listOf("math_card", "orchard_background", "workshop_background")) {
             assertTrue(File(main, "assets/games_v2/$asset.webp").isFile)
         }

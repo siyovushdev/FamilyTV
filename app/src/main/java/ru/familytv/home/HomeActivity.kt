@@ -1,40 +1,39 @@
 package ru.familytv.home
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.HorizontalScrollView
-import android.widget.LinearLayout
-import android.widget.ScrollView
+import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.familytv.R
+import ru.familytv.adventure.GuideEmotion
 import ru.familytv.content.ContentItem
 import ru.familytv.content.ContentType
 import ru.familytv.content.PlatformServices
-import ru.familytv.content.V1ContentShelf
-import ru.familytv.trial.TrialEventStore
 import ru.familytv.creative.StoryRoutes
 import ru.familytv.explore.ExploreDestination
 import ru.familytv.explore.ExploreRoutes
-import ru.familytv.move.MoveRoutes
-import ru.familytv.games.GameStyle
+import ru.familytv.home.watch.WatchActivity
 import ru.familytv.interaction.FamilyAction
 import ru.familytv.interaction.FamilyActionHandler
 import ru.familytv.interaction.InputSource
 import ru.familytv.interaction.InteractionSurface
-import ru.familytv.interaction.NonReaderSimulation
 import ru.familytv.interaction.PresentationImportance
 import ru.familytv.interaction.PresentationMessage
 import ru.familytv.interaction.PresentationRole
@@ -42,49 +41,45 @@ import ru.familytv.interaction.ReadingSupportMode
 import ru.familytv.interaction.RouteContext
 import ru.familytv.interaction.RouteResult
 import ru.familytv.interaction.VoiceCommandRouter
+import ru.familytv.journey.DiscoveryJournalActivity
+import ru.familytv.journey.JourneyMapActivity
+import ru.familytv.move.MoveRoutes
 import ru.familytv.narration.CommonVoicePack
 import ru.familytv.parent.ParentModeActivity
 import ru.familytv.parent.ScreenTimeReminder
-import ru.familytv.ui.ChildChrome
+import ru.familytv.trial.TrialEventStore
 import ru.familytv.ui.FamilyTvTheme
 import ru.familytv.ui.LumiView
-import ru.familytv.ui.SceneTransitions
-import android.widget.ImageView
-import ru.familytv.R
-import ru.familytv.voice.AiReadiness
-import ru.familytv.voice.MicPermissionAction
-import ru.familytv.voice.MicPermissionGate
-import ru.familytv.voice.VoicePhase
 import ru.familytv.voice.VoiceRuntime
-import ru.familytv.voicelab.VoiceLabActivity
-import android.Manifest
-import android.content.pm.PackageManager
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import kotlinx.coroutines.Job
-import ru.familytv.adventure.GuideEmotion
-import ru.familytv.journey.JourneyEngine
-import ru.familytv.journey.JourneyNarrator
 
 /**
- * Child-facing TV Home 3.0 — world portals, Lumi, hero mission, D-pad first.
+ * Production Home C / Visual Playground / Cosmic Hearth V2.
+ * Five child worlds open the same production destinations as FamilyAction.OpenWorld.
+ * Debug preview subclasses this without changing routes.
  */
-class HomeActivity : ComponentActivity() {
-    private var longPressStartedAt = 0L
-    private lateinit var readinessLabel: TextView
-    private lateinit var detailLabel: TextView
+open class HomeActivity : ComponentActivity() {
+    private lateinit var stage: HomeStage
+    private lateinit var backdrop: HomeBackdrop
+    private lateinit var lumi: LumiView
+    private lateinit var worlds: List<HomeWorldView>
+    private lateinit var voice: HomeControl
+    private lateinit var journal: HomeControl
+    private lateinit var parent: HomeControl
+    private lateinit var watchContinue: HomeControl
+    private lateinit var mission: HomeMissionView
     private lateinit var reminderLabel: TextView
-    private lateinit var sectionsHost: LinearLayout
-    private lateinit var homeScroll: ScrollView
-    private lateinit var lumiView: LumiView
     private val cardViews = linkedMapOf<String, View>()
-    private var lastCatalogGeneration = -1L
-    private var lastWatchSignature = ""
+    private var content: HomeWorldContent? = null
+    private var lastWorld = 0
+    private var requestedFocus = "watch"
+    private var dataJob: Job? = null
+    private var idleAnimator: ObjectAnimator? = null
+    private var hasRestoredFocus = false
+    private var startedAt = 0L
     private var lastReminder: String? = null
+    private var focusedSpeakLabel: String? = null
     private var lastSpokenFocusId: String? = null
     private var lastSpokenAt = 0L
-    private var focusedSpeakLabel: String? = null
-    private var nonReaderSim = false
     private val speakHandler = Handler(Looper.getMainLooper())
     private var pendingSpeak: Runnable? = null
     private val reminderHandler = Handler(Looper.getMainLooper())
@@ -94,179 +89,159 @@ class HomeActivity : ComponentActivity() {
             reminderHandler.postDelayed(this, 30_000L)
         }
     }
-    private var homePipeline: ru.familytv.voice.VoiceAnswerPipeline? = null
-    private var homeVoiceJob: Job? = null
-    private var askedMic = false
     private val homeActionHandler = FamilyActionHandler { _, action -> handleHomeAction(action) }
-    private val micPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        askedMic = true
-        if (granted) startHomeListening()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val t0 = android.os.SystemClock.elapsedRealtime()
+        startedAt = SystemClock.elapsedRealtime()
         super.onCreate(savedInstanceState)
+        lastWorld = savedInstanceState?.getInt("lastWorld", 0)?.coerceIn(0, 4) ?: worldIndex(prefsFocus()) ?: 0
+        requestedFocus = savedInstanceState?.getString("focus") ?: prefsFocus() ?: "watch"
+        hideSystemBars()
         PlatformServices.screenTime(this).onAppForeground()
-        nonReaderSim = NonReaderSimulation.isEnabled(getSharedPreferences(NonReaderSimulation.PREFS, MODE_PRIVATE))
-        fun dp(v: Int) = GameStyle.dp(this, v)
-        val root = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            // TV safe overscan-ish margins
-            setPadding(dp(56), dp(28), dp(56), dp(36))
-            background = GradientDrawable(
-                GradientDrawable.Orientation.TL_BR,
-                intArrayOf(Color.rgb(255, 250, 242), Color.rgb(232, 244, 240), Color.rgb(236, 230, 250)),
-            )
-        }
-
-        val top = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-        }
-        lumiView = LumiView(this).apply {
-            contentDescription = "Луми"
-        }
-        top.addView(lumiView, LinearLayout.LayoutParams(dp(72), dp(72)).apply { marginEnd = dp(12) })
-        lumiView.post {
-            lumiView.setEmotionWithMotion(GuideEmotion.CURIOUS)
-            lumiView.play(LumiView.Motion.APPEAR)
-        }
-        val brandCol = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-        val brand = GameStyle.text(this, "FamilyTV", 28f, true).apply {
-            setTextColor(FamilyTvTheme.teal)
-            isFocusable = true
-            isClickable = true
-            contentDescription = "FamilyTV. Родительский режим — удерживайте OK"
-            setOnClickListener { /* focus only */ }
-            setOnKeyListener { _, keyCode, event ->
-                if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER) {
-                    when (event.action) {
-                        KeyEvent.ACTION_DOWN -> {
-                            if (event.repeatCount == 0) longPressStartedAt = System.currentTimeMillis()
-                            // Parent Mode: hold OK ~2s on brand
-                            if (System.currentTimeMillis() - longPressStartedAt > 2000) {
-                                startActivity(Intent(this@HomeActivity, ParentModeActivity::class.java))
-                                longPressStartedAt = Long.MAX_VALUE
-                            }
-                            true
-                        }
-                        else -> false
-                    }
-                } else false
-            }
-            if (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0) {
-                setOnLongClickListener {
-                    startActivity(Intent(this@HomeActivity, VoiceLabActivity::class.java))
-                    true
-                }
-            }
-        }
-        brandCol.addView(brand)
-        brandCol.addView(
-            GameStyle.text(this, "Миры для семьи", 15f).apply {
-                setTextColor(FamilyTvTheme.muted)
-            },
-        )
-        top.addView(brandCol, LinearLayout.LayoutParams(0, -2, 1f))
-        val parentEntry = GameStyle.button(this, "Родителям") {
-            startActivity(Intent(this, ParentModeActivity::class.java))
-        }.apply {
-            textSize = 14f
-            alpha = 0.85f
-            contentDescription = "Режим родителя. Нужен PIN"
-        }
-        top.addView(parentEntry, LinearLayout.LayoutParams(-2, dp(44)).apply { marginEnd = dp(12) })
-        val voiceEntry = GameStyle.button(this, "🎤") {
-            when (
-                MicPermissionGate.nextAction(
-                    hasPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) ==
-                        PackageManager.PERMISSION_GRANTED,
-                    alreadyAskedThisSession = askedMic,
-                    shouldShowRationale = shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO),
-                )
-            ) {
-                MicPermissionAction.PROCEED -> startHomeListening()
-                MicPermissionAction.EXPLAIN_THEN_REQUEST -> {
-                    askedMic = true
-                    micPermission.launch(Manifest.permission.RECORD_AUDIO)
-                }
-                MicPermissionAction.SHOW_UNAVAILABLE -> {
-                    detailLabel.text = MicPermissionGate.CHILD_MESSAGE
-                }
-            }
-        }.apply {
-            textSize = 16f
-            contentDescription = "Сказать команду. Голос не включается сам"
-        }
-        top.addView(voiceEntry, LinearLayout.LayoutParams(-2, dp(44)).apply { marginEnd = dp(12) })
-        reminderLabel = GameStyle.text(this, "", 16f).apply { setTextColor(Color.rgb(159, 93, 36)) }
-        top.addView(reminderLabel)
-        root.addView(top)
         PlatformServices.actionDispatcher().attach(homeActionHandler)
-
-        root.addView(GameStyle.text(this, "Куда отправимся?", 32f, true).apply {
-            setTextColor(FamilyTvTheme.ink)
-            setPadding(0, dp(8), 0, 0)
-        })
-        root.addView(
-            GameStyle.text(this, "Луми рядом. Выбирай мир пультом или голосом.", 16f).apply {
-                setTextColor(FamilyTvTheme.muted)
-            },
-        )
-        readinessLabel = GameStyle.text(this, "", 15f).apply {
-            setTextColor(GameStyle.muted)
-            setPadding(0, dp(4), 0, 0)
+        stage = HomeStage(this)
+        stage.routeKey = ::routeKey
+        backdrop = HomeBackdrop(this)
+        stage.place(backdrop, 0f, 0f, 1920f, 1080f)
+        stage.place(LumiView(this).apply {
+            emotion = GuideEmotion.CURIOUS
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        }, 76f, 80f, 76f, 80f)
+        reminderLabel = TextView(this).apply {
+            setTextColor(Color.rgb(253, 224, 171))
+            textSize = 16f
+            gravity = Gravity.CENTER_VERTICAL
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }
-        root.addView(readinessLabel)
-        detailLabel = GameStyle.text(this, "", 18f).apply {
-            setTextColor(GameStyle.ink)
-            setPadding(0, dp(6), 0, dp(4))
-            maxLines = 2
+        stage.place(reminderLabel, 164f, 148f, 900f, 36f)
+        voice = HomeControl(this, "«Луми, давай играть!»", R.drawable.stitch_c_mic, 305f).apply {
+            tag = "voice"
+            contentDescription = "Голос. Подсказка. Голос не включается сам"
+            setOnClickListener { showVoiceHint() }
         }
-        root.addView(detailLabel)
-        sectionsHost = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-        root.addView(sectionsHost)
-        rebuildSections(forceReload = false)
-        android.util.Log.i(
-            "FamilyHome",
-            "cold_onCreate_ms=${android.os.SystemClock.elapsedRealtime() - t0} catalogGen=$lastCatalogGeneration",
-        )
-
-        setContentView(ScrollView(this).apply {
-            homeScroll = this
-            isFocusable = false
-            isFocusableInTouchMode = false
-            descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS
-            addView(root)
-        })
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val runtime = VoiceRuntime.peek()
-                if (runtime == null) {
-                    readinessLabel.text = ""
-                    return@repeatOnLifecycle
-                }
-                runtime.readiness.collect { status ->
-                    readinessLabel.text = when (status) {
-                        AiReadiness.AI_INITIALIZING -> "Голосовые игры готовятся…"
-                        AiReadiness.AI_READY -> "Голосовые игры готовы"
-                        AiReadiness.AI_ERROR -> "Голосовые игры пока недоступны"
+        journal = HomeControl(this, "Открытия", R.drawable.ic_world_stories, 200f).apply {
+            tag = "journal"
+            contentDescription = "Наши открытия"
+            setOnClickListener { openJournal() }
+        }
+        parent = HomeControl(this, "Родителям", R.drawable.stitch_c_parent, 209f).apply {
+            tag = "parent"
+            contentDescription = "Режим родителя. Нужен PIN"
+            setOnClickListener { startActivity(Intent(this@HomeActivity, ParentModeActivity::class.java)) }
+        }
+        stage.place(journal, 1088f, 88f, 200f, 64f)
+        stage.place(voice, 1306f, 88f, 305f, 64f)
+        stage.place(parent, 1631f, 88f, 209f, 64f)
+        worlds = HomeWorld.ALL.indices.map { index ->
+            HomeWorldView(this, index).apply {
+                val id = WORLD_FOCUS[index]
+                tag = id
+                onFocused = {
+                    lastWorld = index
+                    backdrop.selectedWorld = index
+                    rememberFocus(id)
+                    if (index == 2) {
+                        getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "explore").apply()
                     }
+                    moveLumi()
+                    lumi.emotion = if (index == 2 || index == 0) GuideEmotion.CURIOUS else GuideEmotion.HAPPY
+                    scheduleWorldSpeak(id, WORLD_SECTION[index], HomeWorld.ALL[index].title)
+                    Log.i(TAG, "focus=$id lastWorld=$lastWorld AI=${aiFlag()}")
+                }
+                setOnClickListener { openWorld(index) }
+                stage.place(this, 40f + 357.5f * index, 275f, 410f, 436f)
+            }
+        }
+        val watch = worlds[0]
+        val games = worlds[1]
+        val explore = worlds[2]
+        cardViews["watch"] = watch
+        cardViews["games"] = games
+        cardViews["explore"] = explore
+        cardViews["create"] = worlds[3]
+        cardViews[StoryRoutes.CONTENT_ID] = worlds[3]
+        cardViews["move"] = worlds[4]
+        cardViews[MoveRoutes.CONTENT_ID] = worlds[4]
+        WORLD_FOCUS.forEachIndexed { i, id -> cardViews[id] = worlds[i] }
+        lumi = LumiView(this).apply {
+            emotion = GuideEmotion.HAPPY
+            contentDescription = "Луми рядом с выбранным островом"
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+            translationZ = 16f
+        }
+        stage.place(lumi, 691f, 182f, 128f, 136f)
+        mission = HomeMissionView(this).apply {
+            tag = "mission"
+            setOnClickListener { openMission() }
+            setOnFocusChangeListener { _, focused -> if (focused) rememberFocus("mission") }
+        }
+        stage.place(mission, 64f, 798f, 1792f, 162f)
+        watchContinue = HomeControl(this, "Досмотреть", R.drawable.stitch_c_watch, 256f).apply {
+            tag = "continue"
+            visibility = View.GONE
+            setOnClickListener {
+                content?.continueVideo?.let { item ->
+                    rememberFocus("watch")
+                    startActivity(Intent(this@HomeActivity, WatchActivity::class.java)
+                        .putExtra("screen", "details").putExtra("contentId", item.id))
                 }
             }
+        }
+        stage.place(watchContinue, 1268f, 847f, 256f, 64f)
+        setContentView(stage)
+        stage.viewTreeObserver.addOnGlobalFocusChangeListener { _, focused ->
+            if (focused != null && hasRestoredFocus) {
+                requestedFocus = focused.tag as? String ?: requestedFocus
+                Log.i(TAG, "focus=$requestedFocus lastWorld=$lastWorld AI=${aiFlag()}")
+            }
+        }
+        stage.post {
+            if (!hasRestoredFocus) {
+                restoreFocus()
+                hasRestoredFocus = true
+            }
+            moveLumi()
+            Log.i(TAG, "scene=${stage.width}x${stage.height} scale=${stage.sceneScale} cold_onCreate_ms=${SystemClock.elapsedRealtime() - startedAt} AI=${aiFlag()}")
         }
     }
 
     override fun onResume() {
         super.onResume()
+        hideSystemBars()
         PlatformServices.actionDispatcher().attach(homeActionHandler)
         PlatformServices.screenTime(this).onAppForeground()
         updateReminder()
         reminderHandler.removeCallbacks(reminderTick)
         reminderHandler.postDelayed(reminderTick, 30_000L)
-        if (::sectionsHost.isInitialized) {
-            rebuildSections(forceReload = false)
+        dataJob?.cancel()
+        dataJob = lifecycleScope.launch {
+            try {
+                val loaded = withContext(Dispatchers.IO) { HomeWorldContent.load(this@HomeActivity) }
+                content = loaded
+                worlds.forEachIndexed { i, v -> v.representative = loaded.labels[i] }
+                mission.data = loaded
+                watchContinue.visibility = if (loaded.continueVideo != null) View.VISIBLE else View.GONE
+                watchContinue.contentDescription = loaded.continueVideo?.let { "Досмотреть: ${it.title}" }
+                if (requestedFocus == "continue") {
+                    if (loaded.continueVideo != null) watchContinue.requestFocus() else mission.requestFocus()
+                }
+                Log.i(TAG, "catalog_bound_ms=${SystemClock.elapsedRealtime() - startedAt} labels=${loaded.labels} journey=${loaded.journeyId} continue=${loaded.continueVideo?.id} emptyMission=${loaded.emptyMission} AI=${aiFlag()}")
+                reportFullyDrawn()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "Catalog unavailable", e)
+                worlds.forEach { it.representative = "Пока нет занятий" }
+            }
+        }
+        stage.post {
+            idleAnimator?.cancel()
+            idleAnimator = ObjectAnimator.ofFloat(lumi, View.TRANSLATION_Y, 0f, -6f * stage.sceneScale).apply {
+                duration = 2400L
+                repeatMode = ValueAnimator.REVERSE
+                repeatCount = ValueAnimator.INFINITE
+                start()
+            }
             restoreFocus()
         }
         consumeHomeInject(intent)
@@ -282,7 +257,7 @@ class HomeActivity : ComponentActivity() {
         val t = intent?.getStringExtra("inject_transcript")?.trim().orEmpty()
         if (t.isBlank()) return
         intent?.removeExtra("inject_transcript")
-        android.util.Log.i("FamilyHome", "inject=$t")
+        Log.i(TAG, "inject=$t")
         val catalog = PlatformServices.contentRepository(this).getEnabledItems()
         when (
             val routed = VoiceCommandRouter.route(
@@ -291,16 +266,132 @@ class HomeActivity : ComponentActivity() {
             )
         ) {
             is RouteResult.Action -> handleHomeAction(routed.action)
-            RouteResult.Unhandled -> {
-                if (::detailLabel.isInitialized) detailLabel.text = "Не расслышал: $t"
-            }
+            RouteResult.Unhandled -> Toast.makeText(this, "Не расслышал: $t", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onPause() {
         reminderHandler.removeCallbacks(reminderTick)
+        idleAnimator?.cancel()
+        lumi.animate().cancel()
+        worlds.forEach { it.settle() }
+        dataJob?.cancel()
         PlatformServices.actionDispatcher().detach(homeActionHandler)
         super.onPause()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt("lastWorld", lastWorld)
+        outState.putString("focus", requestedFocus)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) hideSystemBars()
+    }
+
+    private fun restoreFocus() {
+        val target = cardViews[requestedFocus]
+            ?: cardViews[prefsFocus()]
+            ?: when (requestedFocus) {
+                "voice" -> voice
+                "journal" -> journal
+                "parent" -> parent
+                "mission", "continue" -> mission
+                else -> worlds[lastWorld]
+            }
+        target.requestFocus()
+    }
+
+    private fun prefsFocus(): String? = getSharedPreferences("familytv_home", MODE_PRIVATE).getString("lastFocusId", null)
+
+    private fun rememberFocus(id: String) {
+        requestedFocus = id
+        getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", id).apply()
+    }
+
+    private fun moveLumi() {
+        if (!::lumi.isInitialized) return
+        val edgeOffset = when (lastWorld) { 0 -> 28f; 4 -> -48f; else -> 0f }
+        lumi.animate().translationX(((lastWorld - 1) * 357.5f + edgeOffset) * stage.sceneScale)
+            .setDuration(260L).setInterpolator(DecelerateInterpolator()).start()
+    }
+
+    private fun routeKey(event: KeyEvent): Boolean {
+        if (event.keyCode == KeyEvent.KEYCODE_SEARCH || event.keyCode == KeyEvent.KEYCODE_VOICE_ASSIST) {
+            if (event.action == KeyEvent.ACTION_UP) showVoiceHint()
+            return true
+        }
+        val direction = when (event.keyCode) {
+            KeyEvent.KEYCODE_DPAD_LEFT -> -1
+            KeyEvent.KEYCODE_DPAD_RIGHT -> 1
+            KeyEvent.KEYCODE_DPAD_UP -> -2
+            KeyEvent.KEYCODE_DPAD_DOWN -> 2
+            else -> return false
+        }
+        if (event.action != KeyEvent.ACTION_DOWN) return true
+        val focused = currentFocus
+        val world = worlds.indexOfFirst { it === focused }
+        val target = when {
+            world >= 0 && direction == -1 -> worlds[(world - 1).coerceAtLeast(0)]
+            world >= 0 && direction == 1 -> worlds[(world + 1).coerceAtMost(4)]
+            world >= 0 && direction == -2 -> when {
+                world <= 1 -> voice
+                world == 2 -> journal
+                else -> parent
+            }
+            world >= 0 && direction == 2 -> mission
+            focused === journal && direction == 1 -> voice
+            focused === journal && direction == -1 -> journal
+            focused === voice && direction == -1 -> journal
+            focused === voice && direction == 1 -> parent
+            focused === parent && direction == -1 -> voice
+            (focused === voice || focused === parent || focused === journal) && direction == 2 -> worlds[lastWorld]
+            (focused === mission || focused === watchContinue) && direction == -2 -> worlds[lastWorld]
+            focused === mission && direction == -1 && watchContinue.visibility == View.VISIBLE -> watchContinue
+            focused === watchContinue && direction == 1 -> mission
+            focused == null -> worlds[lastWorld]
+            else -> focused
+        }
+        target?.requestFocus()
+        return true
+    }
+
+    private fun openWorld(index: Int) {
+        when (index) {
+            0 -> PlatformServices.actionDispatcher().dispatch(InputSource.REMOTE, FamilyAction.OpenWorld("watch"))
+            1 -> PlatformServices.actionDispatcher().dispatch(InputSource.REMOTE, FamilyAction.OpenWorld("play"))
+            2 -> PlatformServices.actionDispatcher().dispatch(InputSource.REMOTE, FamilyAction.OpenWorld(ExploreRoutes.WORLD_ID))
+            3 -> PlatformServices.actionDispatcher().dispatch(InputSource.REMOTE, FamilyAction.OpenWorld(StoryRoutes.WORLD_ID))
+            4 -> PlatformServices.actionDispatcher().dispatch(InputSource.REMOTE, FamilyAction.OpenWorld(MoveRoutes.WORLD_ID))
+            else -> return
+        }
+    }
+
+    private fun openMission() {
+        val d = content ?: return
+        rememberFocus("mission")
+        when {
+            d.journeyId != null -> startActivity(Intent(this, JourneyMapActivity::class.java)
+                .putExtra(JourneyMapActivity.EXTRA_JOURNEY_ID, d.journeyId))
+            d.continueVideo != null -> startActivity(Intent(this, WatchActivity::class.java)
+                .putExtra("screen", "details").putExtra("contentId", d.continueVideo.id))
+            d.missionItem != null -> openItem(d.missionItem, preferDetails = true)
+            else -> worlds[lastWorld].requestFocus()
+        }
+    }
+
+    private fun openJournal(stories: Boolean = false) {
+        rememberFocus("journal")
+        startActivity(Intent(this, DiscoveryJournalActivity::class.java).apply {
+            if (stories) putExtra("focus", "stories")
+        })
+    }
+
+    private fun showVoiceHint() {
+        Toast.makeText(this, "Выбери остров стрелками и нажми OK. Голос доступен в занятиях.", Toast.LENGTH_LONG).show()
+        Log.i(TAG, "voice_control_only AI=${aiFlag()} runtimePresent=${VoiceRuntime.peek() != null}")
     }
 
     private fun updateReminder() {
@@ -308,9 +399,7 @@ class HomeActivity : ComponentActivity() {
         when (val r = PlatformServices.screenTime(this).reminder()) {
             is ScreenTimeReminder.Warn -> {
                 reminderLabel.text = r.message
-                if (lastReminder != r.message) {
-                    lastReminder = r.message
-                }
+                lastReminder = r.message
             }
             is ScreenTimeReminder.Rest -> {
                 reminderLabel.text = r.message
@@ -323,396 +412,12 @@ class HomeActivity : ComponentActivity() {
         }
     }
 
-    private fun rebuildSections(forceReload: Boolean = false) {
-        fun dp(v: Int) = GameStyle.dp(this, v)
-        val t0 = android.os.SystemClock.elapsedRealtime()
-        val repo = PlatformServices.contentRepository(this)
-        val progress = PlatformServices.watchProgress(this)
-        val filter = PlatformServices.familySettings(this).contentFilter()
-        val enabled = try {
-            if (forceReload) repo.reload() else repo.getCatalog()
-            val watchSignature = progress.continueWatching().toString() + filter.toString() +
-                ru.familytv.home.watch.WatchCatalog.eligible(repo, filter).map { it.id }.toString()
-            if (!forceReload && repo.catalogGeneration() == lastCatalogGeneration && lastWatchSignature == watchSignature && sectionsHost.childCount > 0) {
-                android.util.Log.i("FamilyHome", "rebuild_skipped gen=$lastCatalogGeneration")
-                return
-            }
-            lastCatalogGeneration = repo.catalogGeneration()
-            lastWatchSignature = watchSignature
-            val showDev = applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0 &&
-                getSharedPreferences("familytv_debug", MODE_PRIVATE).getBoolean("show_dev_shelf", false)
-            repo.getEnabledItems()
-                .filter { passesAgeFilter(it, filter.ageMin, filter.ageMax) }
-                .let { V1ContentShelf.filterForHome(it, showDevShelf = showDev) }
-        } catch (_: Exception) {
-            detailLabel.text = "Это занятие сейчас недоступно."
-            return
-        }
-        sectionsHost.removeAllViews()
-        cardViews.clear()
-        if (enabled.isEmpty()) {
-            sectionsHost.addView(continuityRow())
-            sectionsHost.addView(GameStyle.text(this, "Пока нет доступного контента", 24f, true))
-            return
-        }
-
-        // Hero — active journey resume preferred over generic content card
-        val journeyHero = journeyHeroBanner()
-        if (journeyHero != null) {
-            sectionsHost.addView(journeyHero, LinearLayout.LayoutParams(-1, -2).apply {
-                topMargin = dp(12)
-                bottomMargin = dp(8)
-            })
-        } else {
-            val hero = pickHero(enabled)
-            if (hero != null) {
-                sectionsHost.addView(heroBanner(hero), LinearLayout.LayoutParams(-1, -2).apply {
-                    topMargin = dp(12)
-                    bottomMargin = dp(8)
-                })
-            }
-        }
-
-        // Continuity strip — journal + journeys (keep Home light)
-        sectionsHost.addView(continuityRow(), LinearLayout.LayoutParams(-1, -2).apply {
-            topMargin = dp(10)
-            bottomMargin = dp(4)
-        })
-
-        val continueIds = ru.familytv.home.watch.WatchCatalog.continueWatching(
-            ru.familytv.home.watch.WatchCatalog.eligible(repo, filter), progress,
-        )
-
-        val heroId = PlatformServices.journeyCoordinator(this).resumeTarget()?.contentId
-            ?: pickHero(enabled)?.id
-
-        var added = 0
-        for (section in HomeSections.ALL) {
-            val items = when (section.id) {
-                "continue" -> continueIds
-                "today" -> enabled.filter { "today" in it.homeSections && it.id != heroId }
-                else -> enabled.filter { section.id in it.homeSections && it.id != heroId }
-            }
-            if (items.isEmpty()) continue
-            added++
-            sectionsHost.addView(sectionTitle(section.title, section.id), LinearLayout.LayoutParams(-1, -2).apply {
-                topMargin = dp(18)
-                bottomMargin = dp(10)
-            })
-            sectionsHost.addView(row(items, section.id), LinearLayout.LayoutParams(-1, -2))
-        }
-        if (added == 0 && journeyHero == null && pickHero(enabled) == null) {
-            sectionsHost.addView(GameStyle.text(this, "Нет секций для показа", 20f))
-        }
-        android.util.Log.i(
-            "FamilyHome",
-            "rebuild_ms=${android.os.SystemClock.elapsedRealtime() - t0} items=${enabled.size} gen=$lastCatalogGeneration",
-        )
-    }
-
-    private fun journeyHeroBanner(): View? {
-        fun dp(v: Int) = GameStyle.dp(this, v)
-        val coord = PlatformServices.journeyCoordinator(this)
-        val catalog = PlatformServices.journeyCatalog(this)
-        val active = PlatformServices.journeyProgress(this).listActive().firstOrNull()
-        val journey = active?.let { catalog.get(it.journeyId) }
-            ?: catalog.get("space-grand-expedition")
-            ?: catalog.all().firstOrNull()
-            ?: return null
-        val progress = JourneyEngine.sanitize(journey, PlatformServices.journeyProgress(this).get(journey.id))
-        val cue = JourneyNarrator.resumeCue(journey, progress)
-        val accent = when {
-            journey.id.contains("forest") -> FamilyTvTheme.forestFar
-            else -> FamilyTvTheme.spaceFar
-        }
-        val box = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(dp(28), dp(22), dp(28), dp(22))
-            background = GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT,
-                intArrayOf(accent, Color.rgb(60, 100, 130)),
-            ).also { it.cornerRadius = dp(28).toFloat() }
-            foreground = GameStyle.focusBackground(this@HomeActivity, Color.TRANSPARENT)
-            isFocusable = true
-            isClickable = true
-            contentDescription = cue
-            tag = "hero:journey:${journey.id}"
-            setOnClickListener {
-                startActivity(
-                    Intent(this@HomeActivity, ru.familytv.journey.JourneyMapActivity::class.java)
-                        .putExtra(ru.familytv.journey.JourneyMapActivity.EXTRA_JOURNEY_ID, journey.id),
-                )
-            }
-            setOnKeyListener { _, keyCode, event ->
-                if (event.action == KeyEvent.ACTION_DOWN &&
-                    (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER)
-                ) {
-                    performClick()
-                    true
-                } else false
-            }
-            setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    detailLabel.text = cue
-                    ensureCardVisible(v)
-                }
-                v.scaleX = if (hasFocus) 1.02f else 1f
-                v.scaleY = if (hasFocus) 1.02f else 1f
-            }
-        }
-        val textCol = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-        textCol.addView(GameStyle.text(this, "Путешествие", 14f).apply {
-            setTextColor(Color.rgb(180, 230, 255))
-        })
-        textCol.addView(GameStyle.text(this, journey.title, 26f, true).apply { setTextColor(Color.WHITE) })
-        textCol.addView(GameStyle.text(this, cue, 15f).apply {
-            setTextColor(Color.rgb(210, 220, 230))
-            maxLines = 2
-        })
-        box.addView(textCol, LinearLayout.LayoutParams(0, -2, 1f))
-        val ctaLabel = if (progress.started && !progress.completed) "Продолжить" else "Начать"
-        box.addView(
-            GameStyle.button(this, ctaLabel) {
-                startActivity(
-                    Intent(this@HomeActivity, ru.familytv.journey.JourneyMapActivity::class.java)
-                        .putExtra(ru.familytv.journey.JourneyMapActivity.EXTRA_JOURNEY_ID, journey.id),
-                )
-            },
-            LinearLayout.LayoutParams(-2, dp(52)).apply { marginStart = dp(16) },
-        )
-        cardViews["hero:journey:${journey.id}"] = box
-        SceneTransitions.portalEnter(box)
-        return box
-    }
-
-    private fun continuityRow(): View {
-        fun dp(v: Int) = GameStyle.dp(this, v)
-        val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
-        fun chip(label: String, onClick: () -> Unit): View {
-            return GameStyle.button(this, label, onClick).apply {
-                textSize = 15f
-            }
-        }
-        val watch = chip("Смотреть") {
-            getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "watch").apply()
-            startActivity(Intent(this, ru.familytv.home.watch.WatchActivity::class.java))
-        }.apply { tag = "watch"; contentDescription = "Смотреть видео" }
-        cardViews["watch"] = watch
-        row.addView(watch, LinearLayout.LayoutParams(-2, dp(48)).apply { marginEnd = dp(12) })
-        val games = chip("Играть") {
-            PlatformServices.actionDispatcher().dispatch(InputSource.REMOTE, FamilyAction.OpenWorld("play"))
-        }.apply {
-            tag = "games"
-            contentDescription = "Играть"
-            isFocusableInTouchMode = true
-            setOnFocusChangeListener { view, focused ->
-                if (focused) {
-                    getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "games").apply()
-                    ensureCardVisible(view)
-                    android.util.Log.i("FamilyHome", "focus=games AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
-                }
-            }
-        }
-        cardViews["games"] = games
-        row.addView(games, LinearLayout.LayoutParams(-2, dp(48)).apply { marginEnd = dp(12) })
-        val explore = chip("Исследовать") {
-            PlatformServices.actionDispatcher().dispatch(InputSource.REMOTE, FamilyAction.OpenWorld(ExploreRoutes.WORLD_ID))
-        }.apply {
-            tag = "explore"
-            contentDescription = "Исследовать"
-            isFocusableInTouchMode = true
-            setOnFocusChangeListener { view, focused ->
-                if (focused) {
-                    getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "explore").apply()
-                    ensureCardVisible(view)
-                    android.util.Log.i("FamilyHome", "focus=explore AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
-                }
-            }
-        }
-        cardViews["explore"] = explore
-        row.addView(explore, LinearLayout.LayoutParams(-2, dp(48)).apply { marginEnd = dp(12) })
-        row.addView(chip("Наши открытия") {
-            startActivity(Intent(this, ru.familytv.journey.DiscoveryJournalActivity::class.java))
-        }, LinearLayout.LayoutParams(-2, dp(48)).apply { marginEnd = dp(12) })
-        row.addView(chip("Наши истории") {
-            startActivity(
-                Intent(this, ru.familytv.journey.DiscoveryJournalActivity::class.java)
-                    .putExtra("focus", "stories"),
-            )
-        }, LinearLayout.LayoutParams(-2, dp(48)).apply { marginEnd = dp(12) })
-        row.addView(chip("Карта") {
-            val id = PlatformServices.journeyCoordinator(this).activeJourneyId()
-                ?: "space-grand-expedition"
-            startActivity(
-                Intent(this, ru.familytv.journey.JourneyMapActivity::class.java)
-                    .putExtra(ru.familytv.journey.JourneyMapActivity.EXTRA_JOURNEY_ID, id),
-            )
-        }, LinearLayout.LayoutParams(-2, dp(48)))
-        return row
-    }
-
-    private fun pickHero(enabled: List<ContentItem>): ContentItem? {
-        val preferred = PlatformServices.familySettings(this).heroContentId()
-        preferred?.let { id -> enabled.find { it.id == id } }?.let { return it }
-        return enabled
-            .filter { it.type == ContentType.ADVENTURE && "mission" in it.homeSections }
-            .minByOrNull { it.sortOrder }
-            ?: enabled.firstOrNull { it.type == ContentType.SESSION && "today" in it.homeSections }
-            ?: enabled.firstOrNull { "today" in it.homeSections }
-            ?: enabled.firstOrNull { "mission" in it.homeSections }
-    }
-
-    private fun heroBanner(item: ContentItem): View {
-        fun dp(v: Int) = GameStyle.dp(this, v)
-        val accent = when {
-            item.id.contains("space") -> FamilyTvTheme.spaceFar
-            item.id.contains("forest") -> FamilyTvTheme.forestFar
-            else -> Color.rgb(40, 90, 110)
-        }
-        val box = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(dp(28), dp(22), dp(28), dp(22))
-            background = GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT,
-                intArrayOf(accent, Color.rgb(60, 100, 130)),
-            ).also {
-                it.cornerRadius = dp(28).toFloat()
-            }
-            foreground = GameStyle.focusBackground(this@HomeActivity, Color.TRANSPARENT)
-            isFocusable = true
-            isClickable = true
-            contentDescription = "${item.title}. ${item.description}"
-            tag = "hero:${item.id}"
-            setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    detailLabel.text = item.title + " — " + item.description
-                    getSharedPreferences("familytv_home", MODE_PRIVATE)
-                        .edit().putString("lastFocusId", "hero:${item.id}").apply()
-                    ensureCardVisible(v)
-                    if (::lumiView.isInitialized) lumiView.setEmotionWithMotion(GuideEmotion.CURIOUS)
-                }
-                v.scaleX = if (hasFocus) 1.02f else 1f
-                v.scaleY = if (hasFocus) 1.02f else 1f
-            }
-            setOnClickListener { openItem(item, preferDetails = true) }
-            setOnKeyListener { _, keyCode, event ->
-                if (event.action == KeyEvent.ACTION_DOWN &&
-                    (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER)
-                ) {
-                    openItem(item, preferDetails = true)
-                    true
-                } else false
-            }
-        }
-        val textCol = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-        textCol.addView(GameStyle.text(this, if (item.type == ContentType.ADVENTURE) "Главная миссия" else "Сегодня вместе", 14f).apply {
-            setTextColor(Color.rgb(180, 230, 255))
-        })
-        textCol.addView(GameStyle.text(this, item.title, 28f, true).apply { setTextColor(Color.WHITE) })
-        val mins = item.metadata.estimatedMinutes?.let { "~$it мин" } ?: ""
-        textCol.addView(
-            GameStyle.text(this, listOf(item.description, mins).filter { it.isNotBlank() }.joinToString(" · "), 15f).apply {
-                setTextColor(Color.rgb(210, 220, 230))
-                maxLines = 2
-            },
-        )
-        box.addView(textCol, LinearLayout.LayoutParams(0, -2, 1f))
-        val cta = GameStyle.button(this, "Начать") { openItem(item, preferDetails = true) }
-        box.addView(cta, LinearLayout.LayoutParams(-2, dp(52)).apply { marginStart = dp(16) })
-        cardViews["hero:${item.id}"] = box
-        SceneTransitions.portalEnter(box)
-        return box
-    }
-
-    private fun openItem(item: ContentItem, preferDetails: Boolean) {
-        getSharedPreferences("familytv_home", MODE_PRIVATE)
-            .edit().putString("lastFocusId", item.id).apply()
-        PlatformServices.trialEvents(this).record(TrialEventStore.HOME_ITEM_OPEN, item.id)
-        if (StoryRoutes.opens(item)) {
-            android.util.Log.i("FamilyHome", "open=create content=${item.id} AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
-            startActivity(StoryRoutes.intent(this))
-            return
-        }
-        if (MoveRoutes.opens(item)) {
-            android.util.Log.i("FamilyHome", "open=move content=${item.id} AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
-            startActivity(MoveRoutes.intent(this))
-            return
-        }
-        if (item.type == ContentType.VIDEO) {
-            startActivity(Intent(this, ru.familytv.home.watch.WatchActivity::class.java)
-                .putExtra("screen", "details").putExtra("contentId", item.id))
-            return
-        }
-        val needsDetails = preferDetails ||
-            item.type == ContentType.SESSION ||
-            item.type == ContentType.INTERACTIVE ||
-            item.type == ContentType.ADVENTURE ||
-            (item.type == ContentType.VIDEO && (item.metadata.estimatedMinutes ?: 0) >= 3)
-        if (needsDetails && item.type != ContentType.GAME) {
-            startActivity(
-                Intent(this, ContentDetailsActivity::class.java)
-                    .putExtra(ContentDetailsActivity.EXTRA_CONTENT_ID, item.id),
-            )
-        } else {
-            ContentNavigator.open(this, item)
-        }
-    }
-
-    private fun restoreFocus() {
-        val prefs = getSharedPreferences("familytv_home", MODE_PRIVATE)
-        val lastId = prefs.getString("lastFocusId", null)
-        val target = lastId?.let { cardViews[it] }
-            ?: cardViews["hero:${pickHero(PlatformServices.contentRepository(this).getEnabledItems())?.id}"]
-            ?: cardViews.values.firstOrNull()
-        target?.post {
-            target.requestFocus()
-            ensureCardVisible(target)
-        }
-    }
-
-    private fun ensureCardVisible(view: View) {
-        if (::homeScroll.isInitialized) {
-            val rect = android.graphics.Rect()
-            view.getDrawingRect(rect)
-            homeScroll.offsetDescendantRectToMyCoords(view, rect)
-            // Keep a little overscan padding above the focused card
-            rect.top -= GameStyle.dp(this, 24)
-            rect.bottom += GameStyle.dp(this, 24)
-            homeScroll.requestChildRectangleOnScreen(view, rect, false)
-        }
-        var parent = view.parent
-        while (parent != null) {
-            if (parent is HorizontalScrollView) {
-                val childLeft = view.left
-                val scroll = (childLeft - GameStyle.dp(this, 24)).coerceAtLeast(0)
-                parent.smoothScrollTo(scroll, 0)
-                return
-            }
-            if (parent is View && view.parent is View) {
-                val rowChild = view
-                val row = view.parent as? View
-                if (row != null && row.parent is HorizontalScrollView) {
-                    val hsv = row.parent as HorizontalScrollView
-                    hsv.smoothScrollTo((rowChild.left - GameStyle.dp(this, 24)).coerceAtLeast(0), 0)
-                    return
-                }
-            }
-            parent = (parent as? View)?.parent
-        }
-    }
-
-    private fun sectionTitle(title: String, sectionId: String = ""): View {
-        val id = sectionId.ifBlank {
-            HomeSections.ALL.firstOrNull { it.title == title }?.id.orEmpty()
-        }
-        return ChildChrome.sectionHeader(this, id, title, nonReaderSim)
-    }
-
     private fun scheduleWorldSpeak(focusId: String, sectionId: String, title: String) {
         val mode = PlatformServices.familySettings(this).readingSupportMode()
-        if (mode != ReadingSupportMode.AUDIO_FIRST) return
+        if (mode != ReadingSupportMode.AUDIO_FIRST) {
+            focusedSpeakLabel = title
+            return
+        }
         pendingSpeak?.let { speakHandler.removeCallbacks(it) }
         val key = CommonVoicePack.spokenLabelForWorld(sectionId)
         val spoken = when {
@@ -723,10 +428,10 @@ class HomeActivity : ComponentActivity() {
         val run = Runnable {
             val now = System.currentTimeMillis()
             if (focusId == lastSpokenFocusId && now - lastSpokenAt < 2500) return@Runnable
-            if (now - lastSpokenAt < 700) return@Runnable // debounce fast D-pad
+            if (now - lastSpokenAt < 700) return@Runnable
             lastSpokenFocusId = focusId
             lastSpokenAt = now
-            if (::lumiView.isInitialized) lumiView.setEmotionWithMotion(GuideEmotion.LISTENING)
+            lumi.emotion = GuideEmotion.LISTENING
             val narration = PlatformServices.narrationCoordinator(this)
             val ref = key?.let { "common:$it" }
             narration.present(
@@ -744,166 +449,43 @@ class HomeActivity : ComponentActivity() {
         speakHandler.postDelayed(run, 450)
     }
 
-    private fun row(items: List<ContentItem>, sectionId: String = ""): View {
-        fun dp(v: Int) = GameStyle.dp(this, v)
-        val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
-        items.forEach { item ->
-            row.addView(card(item, sectionId), LinearLayout.LayoutParams(dp(300), dp(196)).apply {
-                marginEnd = dp(16)
-            })
+    private fun openItem(item: ContentItem, preferDetails: Boolean) {
+        getSharedPreferences("familytv_home", MODE_PRIVATE)
+            .edit().putString("lastFocusId", item.id).apply()
+        PlatformServices.trialEvents(this).record(TrialEventStore.HOME_ITEM_OPEN, item.id)
+        if (StoryRoutes.opens(item)) {
+            Log.i(TAG, "open=create content=${item.id} AI=${aiFlag()}")
+            startActivity(StoryRoutes.intent(this))
+            return
         }
-        return HorizontalScrollView(this).apply {
-            isHorizontalScrollBarEnabled = false
-            isFocusable = false
-            isFocusableInTouchMode = false
-            descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS
-            addView(row)
+        if (MoveRoutes.opens(item)) {
+            Log.i(TAG, "open=move content=${item.id} AI=${aiFlag()}")
+            startActivity(MoveRoutes.intent(this))
+            return
         }
-    }
-
-    private fun card(item: ContentItem, sectionId: String = ""): View {
-        fun dp(v: Int) = GameStyle.dp(this, v)
-        val world = FamilyTvTheme.worldForSection(
-            when {
-                sectionId.isNotBlank() -> sectionId
-                "explore" in item.homeSections -> "explore"
-                "solve" in item.homeSections -> "solve"
-                "create" in item.homeSections -> "create"
-                "stories" in item.homeSections -> "stories"
-                "move" in item.homeSections -> "move"
-                else -> when (item.type) {
-                    ContentType.VIDEO -> "stories"
-                    ContentType.GAME -> "solve"
-                    ContentType.INTERACTIVE -> "solve"
-                    ContentType.SESSION -> "today"
-                    ContentType.ADVENTURE -> "explore"
-                }
-            },
-        )
-        val view = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER
-            setPadding(dp(22), dp(22), dp(22), dp(22))
-            background = GameStyle.focusBackground(this@HomeActivity, world.card)
-            isFocusable = true
-            isClickable = true
-            tag = item.id
-            contentDescription = "${item.title}. ${item.description}"
-            setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    val minutes = item.metadata.estimatedMinutes?.let { " · ~$it мин" } ?: ""
-                    detailLabel.text = if (nonReaderSim) item.title else "${item.title} — ${item.description}$minutes"
-                    getSharedPreferences("familytv_home", MODE_PRIVATE)
-                        .edit().putString("lastFocusId", item.id).apply()
-                    ensureCardVisible(v)
-                    scheduleWorldSpeak(item.id, sectionId.ifBlank { world.id }, world.title)
-                }
-                v.scaleX = if (hasFocus) 1.04f else 1f
-                v.scaleY = if (hasFocus) 1.04f else 1f
-            }
-            setOnClickListener { openItem(item, preferDetails = false) }
-            setOnKeyListener { _, keyCode, event ->
-                if (event.action == KeyEvent.ACTION_DOWN &&
-                    (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER)
-                ) {
-                    openItem(item, preferDetails = false)
-                    true
-                } else false
-            }
+        if (item.type == ContentType.VIDEO) {
+            startActivity(Intent(this, WatchActivity::class.java)
+                .putExtra("screen", "details").putExtra("contentId", item.id))
+            return
         }
-        view.addView(
-            ImageView(this).apply {
-                setImageResource(ChildChrome.worldIcon(this@HomeActivity, world.id))
-                contentDescription = world.title
-            },
-            LinearLayout.LayoutParams(GameStyle.dp(this, 56), GameStyle.dp(this, 56)),
-        )
-        if (!nonReaderSim) {
-            view.addView(GameStyle.text(this, typeLabel(item), 14f).apply {
-                setTextColor(world.accent)
-                gravity = Gravity.CENTER
-            })
-        }
-        view.addView(GameStyle.text(this, item.title, if (nonReaderSim) 22f else 24f, true).apply {
-            gravity = Gravity.CENTER
-            setTextColor(FamilyTvTheme.ink)
-            alpha = if (nonReaderSim) 0.4f else 1f
-        })
-        if (!nonReaderSim) {
-            view.addView(GameStyle.text(this, item.description, 14f).apply {
-                setTextColor(FamilyTvTheme.muted)
-                gravity = Gravity.CENTER
-                maxLines = 2
-            })
-        }
-        cardViews[item.id] = view
-        return view
-    }
-
-    private fun typeLabel(item: ContentItem) = when (item.type) {
-        ContentType.VIDEO -> "Видео"
-        ContentType.GAME -> "Игра"
-        ContentType.INTERACTIVE -> "Занятие"
-        ContentType.SESSION -> "Сессия"
-        ContentType.ADVENTURE -> "Приключение"
-    }
-
-    private fun passesAgeFilter(item: ContentItem, ageMin: Int?, ageMax: Int?): Boolean {
-        if (ageMin == null && ageMax == null) return true
-        val itemMin = item.metadata.ageMin
-        val itemMax = item.metadata.ageMax
-        if (itemMin == null && itemMax == null) return true
-        val filterMin = ageMin ?: 0
-        val filterMax = ageMax ?: 99
-        val a = itemMin ?: 0
-        val b = itemMax ?: 99
-        return a <= filterMax && b >= filterMin
-    }
-
-    /** Explicit opt-in listening — does not load VoiceRuntime on cold Home. */
-    private fun startHomeListening() {
-        detailLabel.text = "Слушаю…"
-        try {
-            if (homePipeline == null) {
-                homePipeline = VoiceRuntime.get(this).newPipeline()
-            }
-            homePipeline?.activate()
-            homePipeline?.startListening()
-            if (homeVoiceJob == null) {
-                homeVoiceJob = lifecycleScope.launch {
-                    repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        homePipeline?.state?.collect { voice ->
-                            when (voice.phase) {
-                                VoicePhase.RESULT -> voice.answer?.let { answer ->
-                                    homePipeline?.stopListening()
-                                    val catalog = PlatformServices.contentRepository(this@HomeActivity).getEnabledItems()
-                                    val ctx = RouteContext(
-                                        surface = InteractionSurface.HOME,
-                                        catalog = catalog,
-                                    )
-                                    when (val routed = VoiceCommandRouter.route(ctx, answer.normalizedText.lowercase())) {
-                                        is RouteResult.Action -> handleHomeAction(routed.action)
-                                        RouteResult.Unhandled -> {
-                                            detailLabel.text = "Не расслышал. Скажи «покажи игры» или название."
-                                        }
-                                    }
-                                }
-                                VoicePhase.ERROR -> detailLabel.text = "Голос пока недоступен"
-                                else -> Unit
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (_: Exception) {
-            detailLabel.text = "Голос пока недоступен"
+        val needsDetails = preferDetails ||
+            item.type == ContentType.SESSION ||
+            item.type == ContentType.INTERACTIVE ||
+            item.type == ContentType.ADVENTURE
+        if (needsDetails && item.type != ContentType.GAME) {
+            startActivity(
+                Intent(this, ContentDetailsActivity::class.java)
+                    .putExtra(ContentDetailsActivity.EXTRA_CONTENT_ID, item.id),
+            )
+        } else {
+            ContentNavigator.open(this, item)
         }
     }
 
     private fun handleHomeAction(action: FamilyAction): Boolean {
         when (action) {
             FamilyAction.Home -> {
-                homeScroll.smoothScrollTo(0, 0)
+                worlds[lastWorld].requestFocus()
                 return true
             }
             FamilyAction.Repeat -> {
@@ -919,7 +501,6 @@ class HomeActivity : ComponentActivity() {
                             repeatable = true,
                         ),
                     )
-                    // Re-speak the label after cue via coordinator.repeat path — present label again
                     PlatformServices.narrationCoordinator(this).present(
                         PresentationMessage(
                             text = label,
@@ -938,35 +519,52 @@ class HomeActivity : ComponentActivity() {
                 return true
             }
             FamilyAction.BlockedSensitive -> {
-                detailLabel.text = "Это могут сделать только родители."
+                Toast.makeText(this, "Это могут сделать только родители.", Toast.LENGTH_SHORT).show()
                 return true
             }
             is FamilyAction.OpenWorld -> {
+                if (action.worldId == "watch" || action.worldId == "stories") {
+                    lastWorld = 0
+                    requestedFocus = "watch"
+                    getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "watch").apply()
+                    Log.i(TAG, "open=watch destination=watch AI=${aiFlag()}")
+                    startActivity(Intent(this, WatchActivity::class.java))
+                    return true
+                }
                 if (action.worldId == "play") {
+                    lastWorld = 1
+                    requestedFocus = "games"
                     getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "games").apply()
+                    Log.i(TAG, "open=games destination=play AI=${aiFlag()}")
                     ContentNavigator.gameIntent(this, "play")?.let(::startActivity)
                     return true
                 }
                 if (action.worldId == StoryRoutes.WORLD_ID) {
+                    lastWorld = 3
+                    requestedFocus = StoryRoutes.CONTENT_ID
                     getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", StoryRoutes.CONTENT_ID).apply()
-                    android.util.Log.i("FamilyHome", "open=create destination=${StoryRoutes.WORLD_ID} AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
+                    Log.i(TAG, "open=create destination=${StoryRoutes.WORLD_ID} AI=${aiFlag()}")
                     startActivity(StoryRoutes.intent(this))
                     return true
                 }
                 if (MoveRoutes.handles(action.worldId)) {
+                    lastWorld = 4
+                    requestedFocus = MoveRoutes.CONTENT_ID
                     getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", MoveRoutes.CONTENT_ID).apply()
-                    android.util.Log.i("FamilyHome", "open=move destination=${MoveRoutes.WORLD_ID} AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
+                    Log.i(TAG, "open=move destination=${MoveRoutes.WORLD_ID} AI=${aiFlag()}")
                     startActivity(MoveRoutes.intent(this))
                     return true
                 }
                 if (ExploreRoutes.handles(action.worldId)) {
                     val destination = ExploreDestination.fromRoute(action.worldId)
+                    lastWorld = 2
+                    requestedFocus = "explore"
                     getSharedPreferences("familytv_home", MODE_PRIVATE).edit().putString("lastFocusId", "explore").apply()
-                    android.util.Log.i("FamilyHome", "open=explore destination=$destination AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
+                    Log.i(TAG, "open=explore destination=$destination AI=${aiFlag()}")
                     startActivity(ExploreRoutes.intent(this, destination))
                     return true
                 }
-                focusWorld(action.worldId)
+                worldIndex(action.worldId)?.let { worlds[it].requestFocus() }
                 return true
             }
             is FamilyAction.OpenContent, is FamilyAction.StartAdventure -> {
@@ -996,8 +594,8 @@ class HomeActivity : ComponentActivity() {
                 val target = PlatformServices.journeyCoordinator(this).resumeTarget(action.journeyId)
                 if (target != null) {
                     startActivity(
-                        Intent(this, ru.familytv.journey.JourneyMapActivity::class.java)
-                            .putExtra(ru.familytv.journey.JourneyMapActivity.EXTRA_JOURNEY_ID, target.journey.id),
+                        Intent(this, JourneyMapActivity::class.java)
+                            .putExtra(JourneyMapActivity.EXTRA_JOURNEY_ID, target.journey.id),
                     )
                     return true
                 }
@@ -1008,20 +606,19 @@ class HomeActivity : ComponentActivity() {
                     ?: PlatformServices.journeyCoordinator(this).activeJourneyId()
                     ?: "space-grand-expedition"
                 startActivity(
-                    Intent(this, ru.familytv.journey.JourneyMapActivity::class.java)
-                        .putExtra(ru.familytv.journey.JourneyMapActivity.EXTRA_JOURNEY_ID, id),
+                    Intent(this, JourneyMapActivity::class.java)
+                        .putExtra(JourneyMapActivity.EXTRA_JOURNEY_ID, id),
                 )
                 return true
             }
             FamilyAction.OpenJournal -> {
-                startActivity(Intent(this, ru.familytv.journey.DiscoveryJournalActivity::class.java))
+                openJournal()
                 return true
             }
             is FamilyAction.AskWhatWeDiscovered -> {
-                val journal = PlatformServices.discoveryJournal(this)
-                val text = JourneyNarrator.whatWeDiscovered(journal.list(), action.worldHint)
-                detailLabel.text = text
-                if (::lumiView.isInitialized) lumiView.setEmotionWithMotion(GuideEmotion.HAPPY)
+                val journalStore = PlatformServices.discoveryJournal(this)
+                val text = ru.familytv.journey.JourneyNarrator.whatWeDiscovered(journalStore.list(), action.worldHint)
+                lumi.emotion = GuideEmotion.HAPPY
                 PlatformServices.narrationCoordinator(this).present(
                     PresentationMessage(
                         text = text,
@@ -1037,29 +634,36 @@ class HomeActivity : ComponentActivity() {
         }
     }
 
-    private fun focusWorld(worldId: String) {
-        val section = HomeSections.ALL.firstOrNull { it.id == worldId } ?: return
-        detailLabel.text = "Мир: ${section.title}"
-        // Scroll toward matching section title views
-        for (i in 0 until sectionsHost.childCount) {
-            val child = sectionsHost.getChildAt(i)
-            if (child is TextView && child.text?.toString() == section.title) {
-                homeScroll.smoothScrollTo(0, child.top.coerceAtLeast(0))
-                // Focus first card in following row if present
-                val row = sectionsHost.getChildAt(i + 1)
-                if (row is ViewGroup && row.childCount > 0) {
-                    row.getChildAt(0)?.requestFocus()
-                }
-                return
-            }
-        }
+    private fun worldIndex(id: String?): Int? = when (id) {
+        "watch", "stories", "world:0" -> 0
+        "games", "play", "world:1" -> 1
+        "explore", "world:2" -> 2
+        "create", StoryRoutes.CONTENT_ID, "world:3" -> 3
+        "move", MoveRoutes.CONTENT_ID, "world:4" -> 4
+        else -> id?.removePrefix("world:")?.toIntOrNull()?.takeIf { it in 0..4 }
+    }
+
+    private fun aiFlag() = if (VoiceRuntime.peek() == null) 0 else 1
+
+    @Suppress("DEPRECATION")
+    private fun hideSystemBars() {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+            View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 
     override fun onDestroy() {
         PlatformServices.actionDispatcher().detach(homeActionHandler)
-        homePipeline?.close()
-        homePipeline = null
-        homeVoiceJob = null
+        pendingSpeak?.let { speakHandler.removeCallbacks(it) }
+        reminderHandler.removeCallbacks(reminderTick)
         super.onDestroy()
+    }
+
+    companion object {
+        private const val TAG = "FamilyHome"
+        val WORLD_FOCUS = listOf("watch", "games", "explore", "create", "move")
+        val WORLD_SECTION = listOf("stories", "play", "explore", "create", "move")
+        val CHILD_WORLDS = listOf("Смотреть", "Играть", "Исследовать", "Создавать", "Двигаться")
     }
 }

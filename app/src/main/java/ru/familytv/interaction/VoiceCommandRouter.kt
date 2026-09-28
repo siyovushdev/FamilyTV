@@ -162,8 +162,7 @@ object VoiceCommandRouter {
         if (normalized.contains("что мы узнали") ||
             normalized.contains("что мы сегодня делали") ||
             normalized.contains("что мы нашли") ||
-            normalized.contains("что мы открыли") ||
-            normalized.contains("наши открытия")
+            normalized.contains("что мы открыли")
         ) {
             val world = when {
                 normalized.contains("лесу") || normalized.contains("лес") -> "explore"
@@ -179,7 +178,10 @@ object VoiceCommandRouter {
         ) {
             return FamilyAction.OpenJourneyMap()
         }
-        if (normalized.contains("журнал") || normalized.contains("наши истории")) {
+        if (normalized.contains("журнал") ||
+            normalized.contains("наши истории") ||
+            normalized.contains("наши открытия")
+        ) {
             return FamilyAction.OpenJournal
         }
         if (normalized.contains("куда дальше") ||
@@ -217,6 +219,7 @@ object VoiceCommandRouter {
             "поиграть" to "play",
             "истории" to "stories",
             "история" to "stories",
+            "смотреть" to "watch",
             "узнать" to "learn",
             "исследуй" to "explore",
             "исследовать" to "explore",

@@ -1,29 +1,20 @@
-package ru.familytv.home.stitch
+package ru.familytv.home
 
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
-import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.RadialGradient
-import android.graphics.RectF
 import android.graphics.Shader
-import android.graphics.Typeface
-import android.text.TextPaint
-import android.text.TextUtils
 import android.view.View
-import android.view.ViewGroup
-import android.view.KeyEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.animation.DecelerateInterpolator
-import androidx.core.content.ContextCompat
 import ru.familytv.R
 import kotlin.math.roundToInt
 
-internal typealias StitchStage = ru.familytv.ui.ReferenceStage
-internal typealias StitchDrawing = ru.familytv.ui.ReferenceDrawing
+internal typealias HomeStage = ru.familytv.ui.ReferenceStage
+internal typealias HomeDrawing = ru.familytv.ui.ReferenceDrawing
 
 internal fun color(hex: String): Int = Color.parseColor(hex)
 internal val cyan = color("#58C3E5")
@@ -31,8 +22,8 @@ internal val white = color("#F8FAFC")
 internal val muted = color("#94B8CF")
 private fun alpha(c: Int, a: Int) = (c and 0x00ffffff) or (a.coerceIn(0, 255) shl 24)
 
-internal class StitchBackdrop(context: Context) : StitchDrawing(context, 1920f, 1080f) {
-    var selectedWorld = 1
+internal class HomeBackdrop(context: Context) : HomeDrawing(context, 1920f, 1080f) {
+    var selectedWorld = 0
         set(value) { field = value; invalidate() }
 
     override fun drawScene(c: Canvas) {
@@ -80,24 +71,24 @@ internal class StitchBackdrop(context: Context) : StitchDrawing(context, 1920f, 
         text(c, "OK", 573f, 993f, 12f, color("#071D27"), true, true)
         text(c, "Войти в мир", 604f, 992f, 14f)
         text(c, "НАЗАД", 1630f, 992f, 12f, heavy = true)
-        text(c, "Закрыть preview", 1690f, 992f, 14f, muted)
+        text(c, "Вернуться домой", 1690f, 992f, 14f, muted)
     }
 }
 
-internal data class StitchWorld(val title: String, val subtitle: String, val badge: String, val art: Int, val accent: Int, val panelTop: Int, val panelBottom: Int, val artTop: Int, val artBottom: Int) {
+internal data class HomeWorld(val title: String, val subtitle: String, val badge: String, val art: Int, val accent: Int, val panelTop: Int, val panelBottom: Int, val artTop: Int, val artBottom: Int) {
     companion object {
         val ALL = listOf(
-            StitchWorld("Смотреть", "Кино-дирижабль и сказки", "Мультфильмы & Истории", R.drawable.stitch_c_watch, color("#38BDF8"), color("#1C2454"), color("#121838"), color("#2B2D70"), color("#1E376D")),
-            StitchWorld("Играть", "Крепость весёлых игр", "Логика и Счёт", R.drawable.stitch_c_play, color("#6EE7B7"), color("#1E2D62"), color("#141C47"), color("#0B3037"), color("#05302F")),
-            StitchWorld("Исследовать", "Дом-обсерватория в кроне", "Наука & Погода", R.drawable.stitch_c_explore, color("#5EEAD4"), color("#1C274E"), color("#111933"), color("#102D37"), color("#083043")),
-            StitchWorld("Создавать", "Поляна живых красок", "Краски & Истории", R.drawable.stitch_c_create, color("#F472B6"), color("#2B1E48"), color("#1A122E"), color("#321251"), color("#470D2F")),
-            StitchWorld("Двигаться", "Трамплины и ритм-парк", "Зарядка & Танцы", R.drawable.stitch_c_move, color("#FCD34D"), color("#2E2416"), color("#1B140B"), color("#382515"), color("#403015")),
+            HomeWorld("Смотреть", "Кино-дирижабль и сказки", "Мультфильмы & Истории", R.drawable.stitch_c_watch, color("#38BDF8"), color("#1C2454"), color("#121838"), color("#2B2D70"), color("#1E376D")),
+            HomeWorld("Играть", "Крепость весёлых игр", "Логика и Счёт", R.drawable.stitch_c_play, color("#6EE7B7"), color("#1E2D62"), color("#141C47"), color("#0B3037"), color("#05302F")),
+            HomeWorld("Исследовать", "Дом-обсерватория в кроне", "Наука & Погода", R.drawable.stitch_c_explore, color("#5EEAD4"), color("#1C274E"), color("#111933"), color("#102D37"), color("#083043")),
+            HomeWorld("Создавать", "Поляна живых красок", "Краски & Истории", R.drawable.stitch_c_create, color("#F472B6"), color("#2B1E48"), color("#1A122E"), color("#321251"), color("#470D2F")),
+            HomeWorld("Двигаться", "Трамплины и ритм-парк", "Зарядка & Танцы", R.drawable.stitch_c_move, color("#FCD34D"), color("#2E2416"), color("#1B140B"), color("#382515"), color("#403015")),
         )
     }
 }
 
-internal class StitchWorldView(context: Context, val index: Int) : StitchDrawing(context, 410f, 436f) {
-    private val world = StitchWorld.ALL[index]
+internal class HomeWorldView(context: Context, val index: Int) : HomeDrawing(context, 410f, 436f) {
+    private val world = HomeWorld.ALL[index]
     private var focusAmount = 0f
     private var focusAnimator: ValueAnimator? = null
     var representative = "Открываем остров…"
@@ -176,7 +167,7 @@ internal class StitchWorldView(context: Context, val index: Int) : StitchDrawing
             if (hasFocus()) color("#082C30") else color("#18FFFFFF"), alpha(world.accent, if (hasFocus()) 120 else 45))
         if (hasFocus()) {
             round(c, 70f, badgeTop + 9, 25f, 25f, 7f, alpha(world.accent, 42))
-            text(c, if (index == 1) "12" else "•", 82.5f, badgeTop + 27, 13f, world.accent, true, true)
+            text(c, "•", 82.5f, badgeTop + 27, 13f, world.accent, true, true)
             text(c, representative, 103f, badgeTop + 26, 12f, heavy = true, maxWidth = 197f)
             round(c, 306f, badgeTop + 10, 34f, 23f, 6f, alpha(world.accent, 35))
             text(c, "OK", 323f, badgeTop + 26, 11f, world.accent, true, true)
@@ -186,7 +177,7 @@ internal class StitchWorldView(context: Context, val index: Int) : StitchDrawing
     }
 }
 
-internal class StitchControl(context: Context, private val label: String, private val res: Int, private val designWidth: Float) : StitchDrawing(context, designWidth, 64f) {
+internal class HomeControl(context: Context, private val label: String, private val res: Int, private val designWidth: Float) : HomeDrawing(context, designWidth, 64f) {
     init {
         id = generateViewId(); isFocusable = true; isFocusableInTouchMode = true; isClickable = true
         contentDescription = label
@@ -205,8 +196,8 @@ internal class StitchControl(context: Context, private val label: String, privat
     }
 }
 
-internal class StitchMissionView(context: Context) : StitchDrawing(context, 1792f, 162f) {
-    var data: StitchPreviewContent? = null
+internal class HomeMissionView(context: Context) : HomeDrawing(context, 1792f, 162f) {
+    var data: HomeWorldContent? = null
         set(value) {
             field = value
             contentDescription = value?.let { "${it.missionAction}. ${it.missionTitle}. ${it.missionCaption}" } ?: "Путешествие"

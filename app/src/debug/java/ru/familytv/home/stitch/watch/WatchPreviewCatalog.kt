@@ -3,6 +3,7 @@ package ru.familytv.home.stitch.watch
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import org.json.JSONArray
 import ru.familytv.content.CatalogManifestParser
 import ru.familytv.content.ContentCatalog
@@ -13,7 +14,6 @@ import ru.familytv.content.ContentType
 import ru.familytv.content.PlatformServices
 import ru.familytv.content.ResolvedMedia
 import ru.familytv.content.V1ContentShelf
-import ru.familytv.home.stitch.color
 import ru.familytv.home.watch.WatchCategory
 import ru.familytv.home.watch.WatchCatalogSnapshot
 
@@ -69,7 +69,7 @@ internal class WatchPreviewCatalog private constructor(
                 val o = json.getJSONObject(index)
                 val keywords = o.getJSONArray("keywords")
                 WatchCategory(o.getString("id"), o.getString("title"), o.getString("line1"),
-                    o.getString("line2"), o.getString("art"), color(o.getString("accent")),
+                    o.getString("line2"), o.getString("art"), Color.parseColor(o.getString("accent")),
                     (0 until keywords.length()).map { keywords.getString(it) }.toSet())
             }
             val filter = PlatformServices.familySettings(context).contentFilter()

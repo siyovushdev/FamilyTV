@@ -23,6 +23,8 @@
             android:name=".home.HomeActivity"
             android:exported="true"
             android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.FamilyTV.HomeC"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
