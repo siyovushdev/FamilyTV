@@ -23,7 +23,7 @@ class GamesProductionTest {
     }
 
     @Test fun voiceAnswerCannotSkipWorldActionAndHelpCannotSubmitIt() {
-        val s = GamesState().apply { enter(GameWorld.MATH) }
+        val s = GamesState().apply { enterMath() }
         val answer = FamilyAction.Answer("5")
         assertNull(GamesActions.resolve(s, answer))
         s.beginCombine()
@@ -40,7 +40,7 @@ class GamesProductionTest {
     }
 
     @Test fun nextIsExplicitProgressionNeverAnAliasForSelectedAnswer() {
-        val s = GamesState().apply { enter(GameWorld.MATH); beginCombine(); finishCombine() }
+        val s = GamesState().apply { enterMath(); beginCombine(); finishCombine() }
         assertNull(GamesActions.resolve(s, FamilyAction.Next))
         s.answerMath(4)
         assertNull(GamesActions.resolve(s, FamilyAction.Next))
@@ -71,12 +71,13 @@ class GamesProductionTest {
     @Test fun backRestoresWorldCardAndRoundStartRestoresWorldAction() {
         val s = GamesState()
         for ((world, card) in listOf(GameWorld.MATH to "game:0", GameWorld.COLOR to "game:1")) {
+            if (world == GameWorld.MATH) s.bindMath(CountCombineFixtures.apples())
             s.enter(world)
             s.backToGames()
             assertEquals(card, s.defaultFocus())
             assertEquals(GameWorld.HOME, s.world)
         }
-        s.enter(GameWorld.MATH)
+        s.enterMath()
         assertEquals("world", s.defaultFocus())
         s.beginCombine(); s.finishCombine()
         assertEquals("choice:0", s.defaultFocus())

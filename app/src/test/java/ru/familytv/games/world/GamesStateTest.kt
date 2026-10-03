@@ -7,7 +7,7 @@ import ru.familytv.games.Verdict
 
 class GamesStateTest {
     @Test fun wrongMathPreservesApplesAndExplicitRetry() {
-        val s = GamesState().apply { enter(GameWorld.MATH) }
+        val s = GamesState().apply { enterMath() }
         s.beginCombine(); s.finishCombine()
         val original = s.apples
         assertEquals(Verdict.WRONG, s.answerMath(4))
@@ -40,7 +40,7 @@ class GamesStateTest {
         assertEquals(GameColor.BLUE, s.painted)
     }
     @Test fun appleWorldHasFiniteCalmEndingAndNoAutoAdvance() {
-        val s = GamesState().apply { enter(GameWorld.MATH) }
+        val s = GamesState().apply { enterMath() }
         repeat(3) {
             val q = s.apples
             s.beginCombine(); s.finishCombine()
@@ -52,7 +52,7 @@ class GamesStateTest {
     }
 
     @Test fun numbersAreUnavailableUntilCombineFinishes() {
-        val s = GamesState().apply { enter(GameWorld.MATH) }
+        val s = GamesState().apply { enterMath() }
         assertFalse(s.answersVisible)
         assertFalse(s.help())
         assertNull(s.answerMath(5))
@@ -68,7 +68,7 @@ class GamesStateTest {
     }
 
     @Test fun repeatedHelpDoesNotRevealSelectOrSubmitAnAnswer() {
-        val s = GamesState().apply { enter(GameWorld.MATH); beginCombine(); finishCombine() }
+        val s = GamesState().apply { enterMath(); beginCombine(); finishCombine() }
         s.answerMath(4)
         repeat(2) {
             assertTrue(s.help())
@@ -90,7 +90,7 @@ class GamesStateTest {
     }
 
     @Test fun pauseDuringCombineReturnsToWorldAndPauseDuringHelpKeepsQuestion() {
-        val s = GamesState().apply { enter(GameWorld.MATH); beginCombine() }
+        val s = GamesState().apply { enterMath(); beginCombine() }
         s.stopTransientActions()
         s.finishCombine() // a stale completion cannot unlock answers
         assertFalse(s.answersVisible)
@@ -104,7 +104,7 @@ class GamesStateTest {
     }
 
     @Test fun everyNewMathRoundStartsWithObjectsAndCountsOnlyItsOwnApples() {
-        val s = GamesState().apply { enter(GameWorld.MATH) }
+        val s = GamesState().apply { enterMath() }
         val spoken = listOf(
             "Посчитаем вместе. Один, два, три, четыре, пять.",
             "Посчитаем вместе. Один, два, три.",

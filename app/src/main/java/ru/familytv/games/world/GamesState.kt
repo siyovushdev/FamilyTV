@@ -3,6 +3,7 @@ package ru.familytv.games.world
 import ru.familytv.games.AnswerJudge
 import ru.familytv.games.AppleQuestion
 import ru.familytv.games.ColorQuestion
+import ru.familytv.games.CountCombineDefinition
 import ru.familytv.games.GameColor
 import ru.familytv.games.Verdict
 
@@ -23,7 +24,11 @@ internal class GamesState {
     var painted: GameColor? = null
     var paintChoice = GameColor.BLUE
     var launched = false
-    val rounds = listOf(2 to 3, 1 to 2, 2 to 2)
+    var mathSet: CountCombineDefinition? = null
+        private set
+    val hasMath get() = mathSet != null
+    val mathContentId get() = mathSet?.contentId
+    val rounds get() = math().rounds.map { it.left to it.right }
     val apples: AppleQuestion get() = rounds[mathRound.coerceIn(rounds.indices)].let { (a, b) -> AppleQuestion(mathRound + 1L, a, b) }
     val answers: List<Int> get() = (apples.left + apples.right).let { listOf(it - 1, it, it + 1) }
     val paints = listOf(GameColor.RED, GameColor.BLUE, GameColor.YELLOW)
@@ -46,12 +51,29 @@ internal class GamesState {
     }
     fun stopTransientActions() { combining = false; counting = false }
     fun finishCounting() { counting = false }
+    fun bindMath(definition: CountCombineDefinition) {
+        mathSet = definition
+        mathRound = 0
+        combined = false
+        stopTransientActions()
+        mathFocus = 0
+        mathChoice = null
+        if (world == GameWorld.MATH) feedback = GameFeedback.READY
+    }
+
+    private fun math(): CountCombineDefinition =
+        checkNotNull(mathSet) { "COUNT_COMBINE dataset is not bound" }
+
     fun countingNarration(): String {
-        val words = listOf("Один", "два", "три", "четыре", "пять")
-        return "Посчитаем вместе. ${words.take(apples.left + apples.right).joinToString(", ")}."
+        val set = math()
+        val n = apples.left + apples.right
+        return "${set.lines.countingLead}. ${set.countingWords.take(n).joinToString(", ")}."
     }
 
     fun enter(next: GameWorld) {
+        if (next == GameWorld.MATH && mathSet == null) {
+            throw IllegalStateException("COUNT_COMBINE dataset is not bound")
+        }
         world = next; feedback = GameFeedback.READY; combined = false
         stopTransientActions(); mathFocus = 0; mathChoice = null
         painted = null; paintChoice = GameColor.BLUE; launched = false
@@ -101,11 +123,14 @@ internal class GamesState {
     }
     fun prompt(): String = when (world) {
         GameWorld.HOME -> "Выбирай мир стрелками. Нажми OK, чтобы играть!"
-        GameWorld.MATH -> when (feedback) {
-            GameFeedback.READY -> if (combined) "Сколько яблок получилось вместе?" else "Соединим яблоки из двух корзин!"
-            GameFeedback.HELP -> "Считаем яблоки вместе — по одному."
-            GameFeedback.WRONG -> "Посмотрим ещё раз. Все яблоки остаются с нами."
-            GameFeedback.CORRECT -> "Все яблоки вместе! Корзина собрана."
+        GameWorld.MATH -> {
+            val lines = math().lines
+            when (feedback) {
+                GameFeedback.READY -> if (combined) lines.ask else lines.separate
+                GameFeedback.HELP -> lines.help
+                GameFeedback.WRONG -> lines.wrong
+                GameFeedback.CORRECT -> lines.success
+            }
         }
         GameWorld.COLOR -> when {
             launched -> "Ракета полетела! Синее крыло готово к путешествию."

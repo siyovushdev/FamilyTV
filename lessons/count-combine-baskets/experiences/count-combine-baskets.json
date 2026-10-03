@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "template": "count_combine",
+  "id": "apples-baskets",
+  "contentId": "game-math-baskets",
+  "title": "Ещё яблоки",
+  "subtitle": "Другие корзины",
+  "rounds": [
+    { "id": "b1", "left": 1, "right": 1 },
+    { "id": "b2", "left": 3, "right": 1 },
+    { "id": "b3", "left": 1, "right": 3 }
+  ],
+  "lines": {
+    "separate": "Сложим яблоки в одну корзину!",
+    "ask": "Сколько яблок теперь в корзине?",
+    "help": "Давай посчитаем каждое яблоко.",
+    "wrong": "Яблоки на месте. Посчитаем ещё раз.",
+    "success": "Корзина собрана. Это новый набор.",
+    "countingLead": "Считаем этот набор"
+  },
+  "countingWords": ["Один", "два", "три", "четыре", "пять"]
+}

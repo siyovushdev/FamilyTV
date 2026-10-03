@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "template": "count_combine",
+  "id": "apples-package-c",
+  "contentId": "game-math-package-c",
+  "title": "Пакет яблок",
+  "subtitle": "Набор из пакета",
+  "rounds": [
+    { "id": "c1", "left": 2, "right": 2 },
+    { "id": "c2", "left": 3, "right": 2 },
+    { "id": "c3", "left": 1, "right": 1 }
+  ],
+  "lines": {
+    "separate": "Соберём яблоки из пакета!",
+    "ask": "Сколько яблок в этом пакете?",
+    "help": "Пакет считает каждое яблоко.",
+    "wrong": "Это другой набор. Яблоки на месте.",
+    "success": "Пакетный набор собран.",
+    "countingLead": "Считаем пакет"
+  },
+  "countingWords": ["Один", "два", "три", "четыре", "пять"]
+}

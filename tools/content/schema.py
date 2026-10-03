@@ -408,6 +408,57 @@ def validate_journey_json(data: dict[str, Any], known_content_ids: set[str] | No
     return not errors, errors, warnings
 
 
+def validate_count_combine(data: dict[str, Any]) -> tuple[bool, list[str]]:
+    """Structural checks for a COUNT_COMBINE dataset. Mirrors CountCombineParser."""
+    errors: list[str] = []
+    if not isinstance(data, dict):
+        return False, ["count_combine root must be object"]
+    if data.get("schemaVersion") != 1:
+        errors.append(f"unsupported schemaVersion={data.get('schemaVersion')}")
+    if str(data.get("template", "")).strip() != "count_combine":
+        errors.append("template must be count_combine")
+    if not str(data.get("contentId", "")).strip():
+        errors.append("contentId required")
+    if not str(data.get("title", "")).strip():
+        errors.append("title required")
+    lines = data.get("lines")
+    if not isinstance(lines, dict):
+        errors.append("lines object required")
+    else:
+        for key in ("separate", "ask", "help", "wrong", "success", "countingLead"):
+            if not str(lines.get(key, "")).strip():
+                errors.append(f"lines.{key} required")
+    words = data.get("countingWords")
+    if not isinstance(words, list) or not words or any(not str(w).strip() for w in words):
+        errors.append("countingWords must be a non-empty list of words")
+        words = []
+    rounds = data.get("rounds")
+    if not isinstance(rounds, list) or not rounds:
+        errors.append("rounds must be a non-empty list")
+        rounds = []
+    seen: set[str] = set()
+    for i, round_ in enumerate(rounds):
+        if not isinstance(round_, dict):
+            errors.append(f"rounds[{i}] not object")
+            continue
+        rid = str(round_.get("id", "")).strip()
+        if not rid:
+            errors.append(f"rounds[{i}] missing id")
+        elif rid in seen:
+            errors.append(f"duplicate round id '{rid}'")
+        else:
+            seen.add(rid)
+        left, right = round_.get("left"), round_.get("right")
+        if not isinstance(left, int) or not isinstance(right, int) or isinstance(left, bool) or isinstance(right, bool):
+            errors.append(f"round '{rid or i}' left/right must be integers")
+            continue
+        if left not in range(1, 6) or right not in range(1, 6) or not 2 <= left + right <= 9:
+            errors.append(f"round '{rid or i}' counts {left}+{right} are outside 1..5 and sum 2..9")
+        elif words and left + right > len(words):
+            errors.append(f"round '{rid or i}' sum exceeds countingWords")
+    return not errors, errors
+
+
 def verify_payload(root: Path, manifest: dict[str, Any]) -> tuple[bool, list[str]]:
     errors: list[str] = []
     root = root.resolve()

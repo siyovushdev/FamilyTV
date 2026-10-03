@@ -10,6 +10,7 @@ import ru.familytv.explore.ExploreDestination
 import ru.familytv.explore.ExploreRoutes
 import ru.familytv.move.MoveRoutes
 import ru.familytv.games.GamesDestination
+import ru.familytv.games.world.GamesActivity
 import ru.familytv.interactive.InteractiveExperienceActivity
 import ru.familytv.player.VideoPlayerActivity
 import ru.familytv.session.LearningSessionActivity
@@ -23,7 +24,7 @@ object ContentNavigator {
             ContentType.VIDEO -> Intent(activity, VideoPlayerActivity::class.java).putExtra(
                 VideoPlayerActivity.EXTRA_CONTENT_ID, item.id,
             )
-            ContentType.GAME -> gameIntent(activity, item.route)
+            ContentType.GAME -> gameIntent(activity, item.route, item.id)
             ContentType.INTERACTIVE -> {
                 if (StoryRoutes.opens(item)) {
                     StoryRoutes.intent(activity)
@@ -52,12 +53,16 @@ object ContentNavigator {
         activity.startActivity(intent)
     }
 
-    fun gameIntent(activity: android.app.Activity, route: String?): Intent? {
+    fun gameIntent(activity: android.app.Activity, route: String?, contentId: String? = null): Intent? {
         val destination = GamesDestination.fromRoute(route) ?: run {
             Log.w(TAG, "Unknown game route: $route")
             return null
         }
-        return Intent().setClassName(activity, destination.activityName)
+        val intent = Intent().setClassName(activity, destination.activityName)
+        if (contentId != null && destination == GamesDestination.MATH) {
+            intent.putExtra(GamesActivity.EXTRA_CONTENT_ID, contentId)
+        }
+        return intent
     }
 
 }

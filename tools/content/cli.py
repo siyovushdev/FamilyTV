@@ -19,6 +19,7 @@ from schema import (  # noqa: E402
     guess_media_type,
     sha256_file,
     validate_adventure_json,
+    validate_count_combine,
     validate_manifest,
     verify_payload,
 )
@@ -104,7 +105,11 @@ def cmd_validate(source: Path) -> int:
     for path in (source / "experiences").glob("*.json") if (source / "experiences").is_dir() else []:
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
-            if "steps" not in data:
+            if str(data.get("template", "")).strip() == "count_combine":
+                ok_game, game_errors = validate_count_combine(data)
+                if not ok_game:
+                    errors.extend(f"{path.name}: {e}" for e in game_errors)
+            elif "steps" not in data:
                 errors.append(f"{path.name}: missing steps")
         except Exception as exc:  # noqa: BLE001
             errors.append(f"{path.name}: {exc}")
