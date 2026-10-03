@@ -13,6 +13,7 @@ import ru.familytv.games.GamesDestination
 import ru.familytv.interactive.InteractiveExperienceActivity
 import ru.familytv.player.VideoPlayerActivity
 import ru.familytv.session.LearningSessionActivity
+import ru.familytv.space.SpaceRoutes
 
 object ContentNavigator {
     private const val TAG = "FamilyNav"
@@ -37,6 +38,8 @@ object ContentNavigator {
                 .putExtra(LearningSessionActivity.EXTRA_CONTENT_ID, item.id)
             ContentType.ADVENTURE -> if (ExploreRoutes.opensWeather(item)) {
                 ExploreRoutes.intent(activity, ExploreDestination.WEATHER)
+            } else if (SpaceRoutes.opens(item)) {
+                SpaceRoutes.intent(activity)
             } else {
                 Intent(activity, AdventureActivity::class.java)
                     .putExtra(AdventureActivity.EXTRA_CONTENT_ID, item.id)

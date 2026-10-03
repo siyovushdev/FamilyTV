@@ -46,3 +46,4 @@ publish/
 # Heavy QA/video evidence and exported archives
 /docs/**/recordings/
 /docs/**/*.zip
+/.kotlin/

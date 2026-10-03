@@ -203,6 +203,26 @@ class AdventureRuntime(
         attemptCount * 1_000_000L + consecutiveWrong * 10_000L + consecutiveCorrect * 100L +
             difficulty * 10L + scaffoldLevel.ordinal
 
+    /** Restore in-progress mechanic selection after process death. Does not re-evaluate. */
+    fun restoreMechanic(snapshot: MechanicSnapshot) {
+        if (phase == AdventurePhase.CHALLENGE_ACTIVE || phase == AdventurePhase.FEEDBACK) {
+            mechanic = snapshot
+        }
+    }
+
+    /** D-pad continue for non-challenge scenes. Does not mark a challenge correct. */
+    fun continueScene() {
+        when (val scene = scenesById[sceneId]) {
+            is StoryScene, is MoveScene, is ReflectionScene -> advanceStory()
+            is OffscreenScene -> confirmOffscreen()
+            is DialogueScene -> {
+                val next = scene.next
+                if (next == null) completeAdventure() else enterScene(next)
+            }
+            else -> Unit
+        }
+    }
+
     fun finishFeedback() {
         if (phase != AdventurePhase.FEEDBACK && dialoguePendingNext == null) return
         val wasCorrect = feedbackCorrect == true

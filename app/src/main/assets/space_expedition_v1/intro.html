@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="dark" lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1920, height=1080, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<style>
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("fonts/PlusJakartaSans.ttf") format("truetype");
+  font-weight: 500 800; font-style: normal; font-display: swap;
+}
+html, body { margin: 0; padding: 0; overflow: hidden; width: 1920px; height: 1080px; }
+body { font-family: "Plus Jakarta Sans", sans-serif; background: #080d1e; color: #dde1fa; user-select: none; }
+.svg-icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; fill: currentColor; }
+.stage {
+  position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background: #080d1e; padding: 72px 88px; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.bg { position: absolute; left: -88px; right: -88px; top: -72px; bottom: -72px; z-index: 0; }
+.bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; transform: scale(1.01); }
+.veil-a { position: absolute; inset: 0; background: linear-gradient(to top, #080d1e, rgba(8,13,30,0.40), transparent); }
+.veil-b { position: absolute; inset: 0; background: linear-gradient(to right, rgba(6,10,23,0.80), transparent, rgba(6,10,23,0.70)); }
+.hud, .mid, .foot { position: relative; z-index: 10; }
+.hud { display: flex; align-items: center; justify-content: space-between; }
+.pill {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 24px; border-radius: 9999px;
+  background: rgba(26,31,49,0.70); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  font-size: 24px; font-weight: 600;
+}
+.pill .svg-icon { color: #7bd0ff; font-size: 26px; }
+.guide {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 32px; border-radius: 9999px;
+  background: rgba(24,37,75,0.80); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+  font-size: 26px; line-height: 34px; font-weight: 600; max-width: 1200px;
+}
+.avatar {
+  position: relative; width: 48px; height: 48px; border-radius: 9999px; flex: 0 0 48px;
+  background: rgba(56,217,210,0.16); color: #5ff6ee;
+  display: flex; align-items: center; justify-content: center; font-size: 30px;
+}
+.ping { position: absolute; top: -4px; right: -4px; width: 14px; height: 14px; border-radius: 9999px; background: #5ff6ee; }
+.guide-name { color: #5ff6ee; font-weight: 700; }
+.badge { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 9999px; background: rgba(22,27,44,0.60); color: #7bd0ff; font-size: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.mid { display: flex; align-items: center; justify-content: space-between; margin: auto 0; }
+.left { max-width: 500px; }
+.tag { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 9999px; background: rgba(24,37,75,0.80); color: #ffd9b0; font-size: 16px; font-weight: 700; letter-spacing: 0.06em; }
+h1 { margin: 12px 0 8px; font-size: 44px; line-height: 52px; font-weight: 700; }
+.blurb { font-size: 20px; line-height: 28px; color: #bacac8; max-width: 420px; }
+.engine {
+  width: 620px; border-radius: 16px; padding: 32px;
+  background: rgba(26,31,49,0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+}
+.engine-head { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.ico {
+  width: 64px; height: 64px; border-radius: 12px;
+  background: rgba(56,217,210,0.16); color: #5ff6ee;
+  display: flex; align-items: center; justify-content: center; font-size: 40px;
+  box-shadow: 0 12px 24px rgba(95,246,238,0.20);
+}
+.kicker { font-size: 16px; color: #7bd0ff; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+.engine h2 { margin: 0; font-size: 32px; }
+.slots { display: flex; gap: 16px; margin: 8px 0 20px; }
+.bay {
+  flex: 1; height: 88px; border-radius: 16px;
+  background: rgba(8,13,30,0.70);
+  border: 2px dashed rgba(95,246,238,0.35);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(95,246,238,0.45); font-size: 28px;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+.clue {
+  background: rgba(24,37,75,0.60); border-radius: 12px; padding: 20px;
+  font-size: 24px; line-height: 32px; font-weight: 500;
+}
+.clue em { color: #5ff6ee; font-style: normal; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.twins { margin-top: 16px; display: flex; align-items: center; justify-content: space-between; background: rgba(6,10,23,0.70); border-radius: 12px; padding: 16px; }
+.twins strong { color: #5ff6ee; font-size: 24px; }
+.twins span { display: block; font-size: 16px; color: #bacac8; }
+.foot { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.cta {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 48px; border-radius: 9999px;
+  background: #5ff6ee; color: #003735;
+  font-size: 32px; line-height: 40px; font-weight: 700;
+  box-shadow: 0 0 0 5px #38d9d2, 0 16px 45px rgba(56,217,210,0.5);
+  transform: scale(1.06);
+}
+.ok { padding: 4px 12px; border-radius: 4px; background: rgba(0,55,53,0.15); font-size: 18px; letter-spacing: 0.08em; }
+.remote { display: flex; align-items: center; gap: 12px; padding: 8px 24px; border-radius: 9999px; background: rgba(8,13,30,0.60); color: rgba(186,202,200,0.90); font-size: 18px; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="bg">
+    <img alt="" src="intro_bg.jpg"/>
+    <div class="veil-a"></div>
+    <div class="veil-b"></div>
+  </div>
+  <header class="hud">
+    <div class="pill"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></span>На карту пути</div>
+    <div class="guide">
+      <div class="avatar"><span class="ping"></span><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5z"/></svg></span></div>
+      <div><span class="guide-name">Луми:</span> <span id="guide-line">«Смотри: у корабля пустые места. Двигатель молчит.»</span></div>
+    </div>
+    <div class="badge" id="badge"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2.5s6 5.2 6 11.2c0 3.3-2.7 6-6 6s-6-2.7-6-6C6 7.7 12 2.5 12 2.5z"/></svg></span><span id="badge-label">Северное сияние</span></div>
+  </header>
+  <section class="mid">
+    <div class="left">
+      <div class="tag">★ ИСХОДНОЕ ИСПЫТАНИЕ</div>
+      <h1 id="headline">Двигатель молчит</h1>
+      <p class="blurb" id="blurb">Пустые гнёзда у двигателя. Без энергии корабль не сдвинется.</p>
+    </div>
+    <div class="engine">
+      <div class="engine-head">
+        <div class="ico"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg></span></div>
+        <div>
+          <div class="kicker" id="engine-kicker">Заряд портала</div>
+          <h2 id="engine-title">Энергия для полёта</h2>
+        </div>
+      </div>
+      <div class="slots">
+        <div class="bay">○</div>
+        <div class="bay">○</div>
+        <div class="bay">○</div>
+      </div>
+      <div class="clue" id="clue">Кораблю нужна <em>энергия в пустые места</em>. Смотри на тёмный двигатель — он ждёт искру.</div>
+      <div class="twins">
+        <div>
+          <strong id="twin-title">Пустые места = задача в мире</strong>
+          <span id="twin-sub">Не кнопка «Дальше», а живой корабль перед нами.</span>
+        </div>
+        <div class="ico" style="width:48px;height:48px;font-size:28px;"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span></div>
+      </div>
+    </div>
+  </section>
+  <footer class="foot">
+    <div class="cta"><span class="ok">OK</span><span id="cta">Полетели чинить корабль!</span>
+      <span class="svg-icon" style="font-size:32px;"><svg viewBox="0 0 24 24"><path d="M12 2.5s6 5.2 6 11.2c0 3.3-2.7 6-6 6s-6-2.7-6-6C6 7.7 12 2.5 12 2.5z"/></svg></span>
+    </div>
+    <div class="remote">Пульт можно положить рядом или держать стрелочки ◄ ►</div>
+  </footer>
+</main>
+<script>
+document.documentElement.style.zoom = String(1 / (window.devicePixelRatio || 1));
+window.renderBoard = function (p) {
+  document.getElementById('guide-line').textContent = '«' + (p.guide || '') + '»';
+  document.getElementById('badge-label').textContent = p.ship || 'Северное сияние';
+  document.getElementById('headline').textContent = p.headline || 'Двигатель молчит';
+  document.getElementById('blurb').textContent = p.blurb || '';
+  document.getElementById('clue').innerHTML = p.clue || document.getElementById('clue').innerHTML;
+  document.getElementById('cta').textContent = p.cta || 'Полетели чинить корабль!';
+  if (p.engineTitle) document.getElementById('engine-title').textContent = p.engineTitle;
+};
+window.renderBoard({guide:'Смотри: у корабля пустые места. Двигатель молчит. Нужна энергия!', headline:'Двигатель молчит', blurb:'Пустые гнёзда у двигателя. Без энергии корабль не сдвинется.', cta:'Полетели чинить корабль!'});
+</script>
+</body>
+</html>

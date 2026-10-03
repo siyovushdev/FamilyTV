@@ -16,6 +16,7 @@ import ru.familytv.content.PlatformServices
 import ru.familytv.games.GameStyle
 import ru.familytv.home.ContentNavigator
 import ru.familytv.home.HomeActivity
+import ru.familytv.space.SpaceRoutes
 import ru.familytv.interaction.FamilyAction
 import ru.familytv.interaction.InteractionSurface
 import ru.familytv.interaction.PresentationImportance
@@ -45,11 +46,17 @@ class JourneyMapActivity : ComponentActivity() {
             ?: PlatformServices.journeyCoordinator(this).activeJourneyId()
             ?: "space-grand-expedition"
         coord = PlatformServices.journeyCoordinator(this)
+        if (SpaceRoutes.handlesJourney(journeyId)) {
+            startActivity(SpaceRoutes.intent(this, journeyId))
+            finish()
+            return
+        }
         rebuild()
     }
 
     override fun onResume() {
         super.onResume()
+        if (isFinishing || SpaceRoutes.handlesJourney(journeyId)) return
         rebuild()
     }
 
@@ -224,6 +231,11 @@ class JourneyMapActivity : ComponentActivity() {
         setIntent(intent)
         intent.getStringExtra(EXTRA_JOURNEY_ID)?.trim()?.takeIf { it.isNotBlank() }?.let {
             journeyId = it
+        }
+        if (SpaceRoutes.handlesJourney(journeyId)) {
+            startActivity(SpaceRoutes.intent(this, journeyId))
+            finish()
+            return
         }
         val pair = coord.progressFor(journeyId) ?: return
         consumeDebugExtras(intent, pair.first)

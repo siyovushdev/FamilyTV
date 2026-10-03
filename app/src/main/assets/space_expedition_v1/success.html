@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="dark" lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1920, height=1080, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<style>
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("fonts/PlusJakartaSans.ttf") format("truetype");
+  font-weight: 500 800;
+  font-style: normal;
+  font-display: swap;
+}
+html, body { margin: 0; padding: 0; overflow: hidden; width: 1920px; height: 1080px; }
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background: #080d1e;
+  color: #dde1fa;
+  user-select: none;
+}
+.svg-icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; fill: currentColor; }
+.stage {
+  position: relative;
+  width: 1920px; height: 1080px;
+  overflow: hidden;
+  background: #080d1e;
+  padding: 72px 88px;
+  box-sizing: border-box;
+  display: flex; flex-direction: column;
+}
+.bg {
+  position: absolute;
+  left: -88px; right: -88px; top: -72px; bottom: -72px;
+  z-index: 0; overflow: hidden; pointer-events: none;
+}
+.bg img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  transform: scale(1.05);
+  transition: transform 1s ease-out;
+}
+body[data-beat="TRAVEL"] .bg img { transform: scale(1.12) translateX(-24px); }
+.veil-a {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(6,10,23,0.92), rgba(6,10,23,0.35), rgba(6,10,23,0.20));
+}
+.veil-b {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 20%, rgba(6,10,23,0.55) 100%);
+}
+.glow-top {
+  position: absolute; top: -120px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 350px;
+  background: rgba(95,246,238,0.20);
+  filter: blur(130px); border-radius: 9999px;
+  pointer-events: none;
+}
+.world { position: absolute; inset: -72px -88px; z-index: 8; pointer-events: none; overflow: hidden; }
+.crystal {
+  position: absolute; left: 780px; top: 300px;
+  width: 84px; height: 84px; border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, #fff, #5ff6ee 45%, #00a6e0);
+  box-shadow: 0 0 48px rgba(95,246,238,0.95), 0 0 12px #fff;
+  opacity: 0; transform: translate(0, 40px) scale(0.6);
+}
+body[data-beat="INSTALL"] .crystal,
+body[data-beat="IGNITE"] .crystal,
+body[data-beat="TRAVEL"] .crystal { opacity: 1; }
+body[data-beat="INSTALL"] .crystal { animation: dock 0.55s ease-out forwards; }
+body[data-beat="IGNITE"] .crystal,
+body[data-beat="TRAVEL"] .crystal { left: 920px; top: 360px; transform: scale(0.28); opacity: 0.4; }
+.engines {
+  position: absolute; left: 620px; top: 340px;
+  width: 360px; height: 120px;
+  border-radius: 9999px;
+  background: transparent;
+  opacity: 0;
+}
+body[data-beat="IGNITE"] .engines,
+body[data-beat="TRAVEL"] .engines {
+  opacity: 1;
+  background: radial-gradient(ellipse at 20% center, rgba(251,191,36,0.9), rgba(95,246,238,0.55) 42%, transparent 72%);
+  filter: blur(6px);
+  animation: ignite 0.8s ease-out;
+}
+.ship {
+  position: absolute; left: 560px; top: 250px;
+  width: 280px; height: 120px;
+  display: flex; align-items: center; justify-content: center;
+  color: #5ff6ee;
+  font-size: 110px;
+  filter: drop-shadow(0 0 24px rgba(95,246,238,0.85)) drop-shadow(0 16px 28px rgba(8,13,30,0.9));
+  transform: translateX(0) rotate(-10deg);
+  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+body[data-beat="INSTALL"] .ship { transform: translateX(0) rotate(-10deg); }
+body[data-beat="IGNITE"] .ship { transform: translateX(48px) rotate(-8deg); }
+body[data-beat="TRAVEL"] .ship { transform: translateX(520px) rotate(-14deg) scale(0.88); }
+.hud { position: relative; z-index: 10; width: 100%; display: flex; justify-content: center; padding-top: 8px; }
+.guide {
+  display: inline-flex; align-items: center; gap: 16px;
+  padding: 8px 32px; border-radius: 9999px;
+  background: rgba(24,37,75,0.80);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+}
+.avatar {
+  width: 48px; height: 48px; border-radius: 9999px;
+  background: rgba(95,246,238,0.25);
+  color: #5ff6ee;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; animation: pulse 1.6s ease-in-out infinite;
+}
+.guide-name { font-size: 24px; line-height: 32px; font-weight: 600; color: #5ff6ee; }
+.guide-line { font-size: 24px; line-height: 32px; font-weight: 600; color: #dde1fa; }
+.card-wrap {
+  position: relative; z-index: 10; margin-top: auto; margin-bottom: 16px;
+  width: 100%; display: flex; justify-content: center;
+}
+.card {
+  width: 1180px; border-radius: 24px;
+  background: rgba(26,31,49,0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 48px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+  position: relative; overflow: hidden;
+}
+.card .bloom {
+  position: absolute; top: -96px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 120px; background: rgba(95,246,238,0.25);
+  filter: blur(48px); border-radius: 9999px; pointer-events: none;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 24px; border-radius: 9999px;
+  background: rgba(95,246,238,0.15); color: #5ff6ee;
+  font-size: 16px; line-height: 22px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+h1 {
+  margin: 0 0 8px; font-size: 44px; line-height: 52px; font-weight: 700; color: #dde1fa;
+}
+.sub {
+  margin: 0 0 32px; max-width: 880px;
+  font-size: 24px; line-height: 32px; font-weight: 500; color: #bacac8;
+}
+.cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 16px;
+  padding: 20px 56px; border-radius: 9999px;
+  background: #5ff6ee; color: #003735;
+  font-size: 32px; line-height: 40px; font-weight: 700;
+  box-shadow: 0 0 40px rgba(95,246,238,0.5);
+  transform: scale(1.05);
+}
+.status {
+  margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 32px;
+  font-size: 16px; line-height: 22px; font-weight: 600; color: #bacac8;
+}
+.status .ok { color: #34d399; }
+.status .amber { color: #fbbf24; }
+.status .dot { width: 6px; height: 6px; border-radius: 9999px; background: #3c4948; }
+.okhint {
+  position: absolute; bottom: 8px; right: 16px; z-index: 20;
+  display: flex; align-items: center; gap: 8px; color: rgba(186,202,200,0.80);
+  font-size: 16px; line-height: 22px; font-weight: 600;
+}
+.okbox {
+  width: 28px; height: 28px; border-radius: 9999px;
+  background: #18254b; color: #dde1fa;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+@keyframes dock {
+  from { transform: translate(0, 40px) scale(0.6); opacity: 0; }
+  to { transform: translate(160px, 140px) scale(0.4); opacity: 1; }
+}
+@keyframes ignite {
+  from { opacity: 0; transform: scaleX(0.4); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+</style>
+</head>
+<body data-beat="INSTALL">
+<main class="stage">
+  <div class="bg">
+    <img alt="" src="success_bg.jpg"/>
+    <div class="veil-a"></div>
+    <div class="veil-b"></div>
+    <div class="glow-top"></div>
+  </div>
+  <div class="world">
+    <div class="crystal" id="crystal"></div>
+    <div class="engines" id="engines"></div>
+    <div class="ship" id="ship">
+      <span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2.5s6 5.2 6 11.2c0 3.3-2.7 6-6 6s-6-2.7-6-6C6 7.7 12 2.5 12 2.5zm0 8.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM7 20h10v1.5c0 .8-2.2 1.5-5 1.5s-5-.7-5-1.5V20z"/></svg></span>
+    </div>
+  </div>
+  <div class="hud">
+    <div class="guide">
+      <div class="avatar"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg></span></div>
+      <div style="display:flex;align-items:baseline;gap:8px;">
+        <span class="guide-name">Луми:</span>
+        <span class="guide-line" id="guide-line">«Получилось! Летим дальше.»</span>
+      </div>
+    </div>
+  </div>
+  <div class="card-wrap">
+    <div class="card">
+      <div class="bloom"></div>
+      <div class="badge">
+        <span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.51c.4 0 .62.19.4.66C12.97 17.55 11 21 11 21z"/></svg></span>
+        <span id="kicker">Двигатель заряжен • Путь открыт</span>
+      </div>
+      <h1 id="title">Получилось!</h1>
+      <p class="sub" id="subtitle">Энергия на месте. Двигатель проснулся. Корабль летит дальше по маршруту.</p>
+      <div class="cta"><span id="cta">[ OK ] Вперёд по маршруту!</span>
+        <span class="svg-icon" style="font-size:36px;"><svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></span>
+      </div>
+      <div class="status">
+        <span>Тяга: <span class="ok" id="thrust">заряжается</span></span>
+        <span class="dot"></span>
+        <span class="ok" id="gate">Двигатель просыпается</span>
+        <span class="dot"></span>
+        <span class="amber" id="course"></span>
+      </div>
+    </div>
+  </div>
+  <div class="okhint"><span class="okbox">OK</span><span>Выбрать на пульте</span></div>
+</main>
+<script>
+document.documentElement.style.zoom = String(1 / (window.devicePixelRatio || 1));
+window.renderBoard = function (p) {
+  document.body.dataset.beat = p.beat || 'INSTALL';
+  const q = function (s) { return '«' + s + '»'; };
+  document.getElementById('guide-line').textContent = q(p.guide || 'Получилось! Летим дальше.');
+  document.getElementById('title').textContent = p.title || 'Получилось!';
+  document.getElementById('subtitle').textContent = p.subtitle || '';
+  document.getElementById('cta').textContent = p.cta || '[ OK ] Вперёд по маршруту!';
+  document.getElementById('kicker').textContent = p.kicker || 'Двигатель заряжен • Путь открыт';
+  document.getElementById('course').textContent = p.course || '';
+  const t = p.successMs || 0;
+  document.getElementById('thrust').textContent = t >= 1200 ? '100%' : (t >= 500 ? 'растёт' : 'искра');
+  document.getElementById('gate').textContent = t >= 900 ? 'Корабль в полёте' : (t >= 500 ? 'Двигатель горит' : 'Энергия на месте');
+};
+window.renderBoard({beat:'INSTALL', successMs:1, guide:'Получилось! Летим дальше.', title:'Получилось!', subtitle:'Энергия на месте. Двигатель проснулся. Корабль летит дальше по маршруту.', cta:'[ OK ] Вперёд по маршруту!', kicker:'Двигатель заряжен • Путь открыт', course:''});
+</script>
+</body>
+</html>

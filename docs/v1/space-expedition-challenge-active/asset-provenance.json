@@ -1,0 +1,16 @@
+[
+  {
+    "file": "app/src/main/assets/space_expedition_v1/challenge_active_bg.jpg",
+    "source": "https://lh3.googleusercontent.com/aida-public/AB6AXuDyMQv0bZetzRg5pe98X39IJiMD1SG1MoItiIS6liYdzgC51NToqfyHCdry_kjYTWM6nmfvDwljruJbpV5vjYvU_1lhcO8CO9bLSZQ_drt6ivxkaFjpIquWHpuTp-nvliIA-M9lbrr4vUcM2pAaVja0V51yIiag5lsnjiSKbA6t8FqB-mfDQK49Z511jOcVfRHvONotkuLDIDW-upqvvs_Zjgf6eb3c2EEQxKNSzXHlddN-sUDWV9Rv=w1920-h1080-s",
+    "sha256": "1fe2c70b7829e484fe8887b92f61af17260ac214b1e1efb61806cc7b5ed22e00",
+    "bytes": 213109,
+    "role": "04_challenge_active immersive background from code.html img"
+  },
+  {
+    "file": "app/src/main/assets/space_expedition_v1/fonts/PlusJakartaSans.ttf",
+    "source": "https://github.com/google/fonts/raw/main/ofl/plusjakartasans/PlusJakartaSans%5Bwght%5D.ttf",
+    "sha256": "89b3fb38aa0d275d7a731d0d817a4f1622b316b4d7fbdedcf02ee9099ff68bc8",
+    "bytes": 176288,
+    "role": "Plus Jakarta Sans variable, display-tv / subtitle-tv / caption-tv"
+  }
+]

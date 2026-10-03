@@ -111,6 +111,13 @@
             android:screenOrientation="landscape"
             android:exported="false"
             android:label="Двигаться" />
+        <activity
+            android:name=".space.SpaceExpeditionActivity"
+            android:theme="@style/Theme.FamilyTV.Games"
+            android:screenOrientation="landscape"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:label="Космическая экспедиция" />
     </application>
 
 </manifest>

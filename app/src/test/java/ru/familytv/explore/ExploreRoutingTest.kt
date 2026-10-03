@@ -25,7 +25,7 @@ class ExploreRoutingTest {
         assertEquals(contentId, destination.contentId)
         val item = catalogItem(contentId)
         assertEquals(ContentType.ADVENTURE, item.type); assertEquals(adventureRef, item.adventureRef); assertTrue(item.enabled)
-        assertFalse("existing adventure keeps AdventureActivity", ExploreRoutes.opensWeather(item))
+        assertFalse(ExploreRoutes.opensWeather(item))
         assertTrue(File(main, "assets/catalog/adventures/$adventureRef").isFile)
         val s = select(destination)
         assertEquals(destination, s.takeLaunch()); assertNull("launch is consumed once", s.takeLaunch())
@@ -42,7 +42,13 @@ class ExploreRoutingTest {
         assertTrue(ExploreRoutes.opensWeather(catalogItem(ExploreRoutes.CONTENT_ID)))
     }
 
-    @Test fun spaceOpensExistingSpaceAdventure() = assertOpensExistingAdventure(ExploreDestination.SPACE, "adv-space-expedition", "space-expedition.json")
+    @Test fun spaceOpensExistingSpaceAdventure() {
+        assertOpensExistingAdventure(ExploreDestination.SPACE, "adv-space-expedition", "space-expedition.json")
+        val item = catalogItem("adv-space-expedition")
+        assertTrue(ru.familytv.space.SpaceRoutes.opens(item))
+        assertTrue(source("home/ContentNavigator.kt").contains("SpaceRoutes.opens(item)"))
+        assertTrue(source("space/SpaceExpeditionActivity.kt").contains("class SpaceExpeditionActivity"))
+    }
 
     @Test fun forestOpensExistingForestAdventure() = assertOpensExistingAdventure(ExploreDestination.FOREST, "adv-forest-trail", "forest-trail.json")
 

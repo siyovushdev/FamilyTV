@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="dark" lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1920, height=1080, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<style>
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("fonts/PlusJakartaSans.ttf") format("truetype");
+  font-weight: 500 800; font-style: normal; font-display: swap;
+}
+html, body { margin: 0; padding: 0; overflow: hidden; width: 1920px; height: 1080px; }
+body { font-family: "Plus Jakarta Sans", sans-serif; background: #080d1e; color: #dde1fa; user-select: none; }
+.svg-icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; fill: currentColor; }
+.stage {
+  position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background: #080d1e; padding: 72px 88px; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.bg { position: absolute; left: -88px; right: -88px; top: -72px; bottom: -72px; z-index: 0; pointer-events: none; }
+.bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.veil-a { position: absolute; inset: 0; background: linear-gradient(to top, #080d1e, rgba(8,13,30,0.40), rgba(8,13,30,0.75)); }
+.veil-b { position: absolute; inset: 0; background: linear-gradient(to right, rgba(8,13,30,0.80), transparent, rgba(8,13,30,0.60)); }
+.blob-a { position: absolute; top: -128px; left: 25%; width: 800px; height: 450px; background: rgba(95,246,238,0.10); border-radius: 9999px; filter: blur(140px); }
+.blob-b { position: absolute; bottom: -96px; left: 33%; width: 900px; height: 400px; background: rgba(0,166,224,0.15); border-radius: 9999px; filter: blur(160px); }
+.hud, .breath, .dock { position: relative; z-index: 10; }
+.hud { display: flex; align-items: center; justify-content: space-between; padding-top: 8px; }
+.pill {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 24px; border-radius: 9999px;
+  background: rgba(24,37,75,0.60); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+  font-size: 24px; font-weight: 600;
+}
+.pill .svg-icon { color: #7bd0ff; font-size: 28px; }
+.guide {
+  display: flex; align-items: center; gap: 16px;
+  padding: 8px 32px; border-radius: 9999px;
+  background: rgba(26,31,49,0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.4);
+}
+.avatar {
+  position: relative; width: 48px; height: 48px; border-radius: 9999px;
+  background: rgba(95,246,238,0.20); color: #5ff6ee;
+  display: flex; align-items: center; justify-content: center; font-size: 30px;
+}
+.ping { position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; border-radius: 9999px; background: #5ff6ee; }
+.guide-name { font-size: 24px; font-weight: 700; color: #5ff6ee; }
+.guide-line { font-size: 24px; font-weight: 600; }
+.meter {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 24px; border-radius: 9999px;
+  background: rgba(24,37,75,0.60);
+  font-size: 16px; font-weight: 600; color: #ffd9b0; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.meter .here { font-size: 24px; color: #dde1fa; text-transform: none; letter-spacing: 0; }
+.breath { flex: 1; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.core {
+  display: flex; align-items: center; gap: 16px;
+  padding: 8px 24px; border-radius: 9999px;
+  background: rgba(6,10,23,0.40); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  font-size: 16px; font-weight: 600; color: #bacac8; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.bar { width: 112px; height: 8px; border-radius: 9999px; background: #223260; overflow: hidden; }
+.fill { height: 100%; border-radius: 9999px; background: linear-gradient(to right, #fbbf24, #5ff6ee); }
+.dock { display: flex; flex-direction: column; align-items: center; }
+.card {
+  width: 100%; max-width: 1024px; border-radius: 16px;
+  background: rgba(26,31,49,0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  padding: 48px; box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.eyebrow { display: flex; align-items: center; gap: 12px; color: #5ff6ee; font-size: 16px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 8px; }
+h1 { margin: 0 0 16px; font-size: 44px; line-height: 52px; font-weight: 700; }
+.sub { margin: 0 0 32px; max-width: 840px; font-size: 24px; line-height: 32px; color: #bacac8; }
+.sub .ship { color: #7bd0ff; font-weight: 600; }
+.actions { display: flex; align-items: center; justify-content: center; gap: 32px; width: 100%; }
+.ghost {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 32px; border-radius: 12px;
+  background: rgba(24,37,75,0.70); font-size: 24px; font-weight: 600;
+}
+.ghost .svg-icon { color: #7bd0ff; font-size: 32px; }
+.cta {
+  position: relative;
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  padding: 24px 48px; border-radius: 9999px;
+  background: #5ff6ee; color: #003735;
+  font-size: 32px; line-height: 40px; font-weight: 700;
+  box-shadow: 0 0 50px rgba(95,246,238,0.55);
+  transform: scale(1.05);
+}
+.cta .ok {
+  position: absolute; top: -14px; right: 24px;
+  padding: 2px 12px; border-radius: 9999px;
+  background: #003735; color: #5ff6ee;
+  font-size: 16px; font-weight: 800; letter-spacing: 0.08em;
+}
+.remote {
+  margin-top: 16px; display: flex; align-items: center; gap: 16px;
+  padding: 8px 24px; border-radius: 9999px;
+  background: rgba(8,13,30,0.80); color: #bacac8; font-size: 16px; font-weight: 500;
+}
+.keys { padding: 2px 8px; border-radius: 4px; background: #223260; color: #5ff6ee; font-weight: 700; }
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="bg">
+    <img alt="" src="entry_bg.jpg"/>
+    <div class="veil-a"></div>
+    <div class="veil-b"></div>
+    <div class="blob-a"></div>
+    <div class="blob-b"></div>
+  </div>
+  <header class="hud">
+    <div class="pill"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></span>Домой</div>
+    <div class="guide">
+      <div class="avatar"><span class="ping"></span><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M20 9V7c0-1.1-.9-2-2-2h-3c0-1.66-1.34-3-3-3S9 3.34 9 5H6c-1.1 0-2 .9-2 2v2c-1.66 0-3 1.34-3 3s1.34 3 3 3v4c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-4c1.66 0 3-1.34 3-3s-1.34-3-3-3z"/></svg></span></div>
+      <div><span class="guide-name">Луми:</span> <span class="guide-line" id="guide-line"></span></div>
+    </div>
+    <div class="meter"><span class="svg-icon" style="color:#fbbf24;font-size:26px;"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span><span id="meter-k">Экспедиция</span><span class="here" id="meter-v"></span></div>
+  </header>
+  <div class="breath">
+    <div class="core">
+      <span class="svg-icon" style="color:#fbbf24;font-size:24px;"><svg viewBox="0 0 24 24"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.51c.4 0 .62.19.4.66C12.97 17.55 11 21 11 21z"/></svg></span>
+      <span id="core-line">Корабль ждёт команды</span>
+      <div class="bar"><div class="fill" id="core-fill" style="width:20%"></div></div>
+    </div>
+  </div>
+  <section class="dock">
+    <div class="card">
+      <div class="eyebrow"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5z"/></svg></span>Космическая одиссея для всей семьи<span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9z"/></svg></span></div>
+      <h1 id="title">Большая космическая экспедиция</h1>
+      <p class="sub" id="subtitle">Корабль <span class="ship">«Северное сияние»</span> ждёт. Впереди — сбор звёздной энергии!</p>
+      <div class="actions">
+        <div class="ghost"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg></span>Карта маршрута</div>
+        <div class="cta"><span class="ok">[ OK ]</span>
+          <span class="svg-icon" style="font-size:36px;"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span id="cta">Начать экспедицию</span>
+          <span class="svg-icon" style="font-size:32px;"><svg viewBox="0 0 24 24"><path d="M12 2.5s6 5.2 6 11.2c0 3.3-2.7 6-6 6s-6-2.7-6-6C6 7.7 12 2.5 12 2.5z"/></svg></span>
+        </div>
+        <div class="ghost"><span class="svg-icon" style="color:#ffb95e;"><svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></span>Бортовой журнал</div>
+      </div>
+    </div>
+    <footer class="remote"><span class="keys">OK</span><span>Нажмите центральную кнопку на пульте для продолжения</span><span>·</span><span>Стрелки для выбора</span></footer>
+  </section>
+</main>
+<script>
+document.documentElement.style.zoom = String(1 / (window.devicePixelRatio || 1));
+window.renderBoard = function (p) {
+  document.getElementById('guide-line').textContent = '«' + (p.guide || '') + '»';
+  document.getElementById('title').textContent = p.title || 'Большая космическая экспедиция';
+  document.getElementById('cta').textContent = p.cta || 'Начать экспедицию';
+  document.getElementById('subtitle').innerHTML = p.subtitle || document.getElementById('subtitle').innerHTML;
+  document.getElementById('meter-v').textContent = p.currentLabel || '';
+  const pct = p.requiredTotal ? Math.round(100 * (p.requiredDone || 0) / p.requiredTotal) : 12;
+  document.getElementById('core-fill').style.width = Math.max(12, pct) + '%';
+  document.getElementById('core-line').textContent = p.started ? ('Пройдено ' + (p.requiredDone || 0) + ' из ' + (p.requiredTotal || 0)) : 'Корабль ждёт команды';
+  document.getElementById('meter-k').textContent = p.started ? ('Пройдено ' + (p.requiredDone || 0) + ' из ' + (p.requiredTotal || 0)) : 'Экспедиция';
+};
+window.renderBoard({guide:'Корабль ждёт. Начнём большую космическую экспедицию?', title:'Большая космическая экспедиция', cta:'Начать экспедицию', started:false, requiredDone:0, requiredTotal:5});
+</script>
+</body>
+</html>

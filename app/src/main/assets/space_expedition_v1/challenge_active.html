@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html class="dark" lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1920, height=1080, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<style>
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("fonts/PlusJakartaSans.ttf") format("truetype");
+  font-weight: 500 800;
+  font-style: normal;
+  font-display: swap;
+}
+html, body { margin: 0; padding: 0; overflow: hidden; width: 1920px; height: 1080px; }
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background: #080d1e;
+  color: #dde1fa;
+  user-select: none;
+}
+.svg-icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; fill: currentColor; }
+.stage {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: #080d1e;
+  padding: 72px 88px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.col {
+  position: relative;
+  width: 100%;
+  height: 936px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+.bg {
+  position: absolute;
+  left: -88px; right: -88px; top: -72px; bottom: -72px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.05);
+}
+.bg .veil-a {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(6,10,23,0.80), transparent, rgba(6,10,23,0.90));
+}
+.bg .veil-b {
+  position: absolute; inset: 0;
+  background: rgba(8,13,30,0.30);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+header.hud, .board, footer.hint { position: relative; z-index: 10; }
+header.hud {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 24px;
+  border-radius: 9999px;
+  background: rgba(26,31,49,0.70);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+}
+.pill .label {
+  font-size: 24px; line-height: 32px; font-weight: 600; color: #dde1fa;
+}
+.pdu {
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: #2f3447;
+  font-size: 16px; line-height: 22px; font-weight: 600; color: #bacac8;
+}
+.guide {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 32px;
+  border-radius: 9999px;
+  background: rgba(24,37,75,0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  max-width: 1100px;
+}
+.avatar {
+  position: relative;
+  width: 48px; height: 48px;
+  border-radius: 9999px;
+  background: linear-gradient(to top right, #c084fc, #7bd0ff);
+  box-shadow: 0 8px 20px rgba(192,132,252,0.45);
+  display: flex; align-items: center; justify-content: center;
+  color: #080d1e;
+  font-size: 30px;
+  flex: 0 0 48px;
+}
+.avatar .bounce { animation: bounce 1.2s infinite; display: flex; }
+.guide-name { font-size: 24px; line-height: 32px; font-weight: 700; color: #7bd0ff; }
+.guide-line { font-size: 24px; line-height: 32px; font-weight: 600; color: #dde1fa; }
+.fuel {
+  display: flex; align-items: center; gap: 16px;
+  padding: 8px 24px;
+  border-radius: 9999px;
+  background: rgba(26,31,49,0.70);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+}
+.slot {
+  width: 44px; height: 44px; border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+}
+.slot.full {
+  background: rgba(56,217,210,0.16);
+  box-shadow: 0 8px 20px rgba(95,246,238,0.30);
+  color: #5ff6ee;
+}
+.slot.empty {
+  background: #2f3447;
+  color: rgba(95,246,238,0.40);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+.fuel-copy { display: flex; flex-direction: column; text-align: right; }
+.fuel-kicker {
+  font-size: 16px; line-height: 22px; font-weight: 600;
+  color: #fbbf24; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.fuel-line { font-size: 20px; line-height: 28px; font-weight: 600; color: #dde1fa; }
+.board {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  margin: auto 0;
+  padding: 0 16px;
+}
+.card {
+  position: relative;
+  width: 380px; height: 460px;
+  border-radius: 24px;
+  background: rgba(22,27,44,0.60);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 24px;
+  box-sizing: border-box;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.card .ambient {
+  position: absolute; top: -24px; width: 128px; height: 128px;
+  border-radius: 9999px; background: rgba(123,208,255,0.10);
+  filter: blur(40px); pointer-events: none;
+}
+.row { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+.badge {
+  padding: 4px 16px; border-radius: 9999px;
+  background: rgba(47,52,71,0.80);
+  font-size: 16px; line-height: 22px; font-weight: 600; color: #bacac8;
+}
+.chevron { color: rgba(186,202,200,0.60); font-size: 22px; }
+.sphere {
+  width: 208px; height: 208px; border-radius: 9999px;
+  background: linear-gradient(to bottom, rgba(52,56,75,0.40), rgba(8,13,30,0.80));
+  box-shadow: inset 0 8px 24px rgba(0,0,0,0.35);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.num {
+  font-size: 96px; line-height: 1; font-weight: 700; color: rgba(221,225,250,0.80);
+  text-shadow: 0 4px 12px rgba(0,0,0,0.35);
+}
+.pairs {
+  width: 100%;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: rgba(26,31,49,0.70);
+  padding: 12px 16px;
+  border-radius: 16px;
+  box-sizing: border-box;
+}
+.pairs-label { font-size: 16px; line-height: 22px; font-weight: 600; color: #bacac8; }
+.pair-row { display: flex; align-items: center; gap: 16px; }
+.pair {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 12px;
+  background: rgba(47,52,71,0.60);
+  color: #7bd0ff; font-size: 20px;
+}
+.lone {
+  display: flex; align-items: center;
+  padding: 4px 12px; border-radius: 12px;
+  background: rgba(251,113,133,0.20);
+  color: #fb7185; font-size: 20px;
+}
+.plus { color: rgba(186,202,200,0.40); font-weight: 700; }
+.card.focus {
+  width: 430px; height: 520px;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  transform: scale(1.10);
+  z-index: 20;
+  box-shadow: none;
+}
+.card.focus .aura {
+  position: absolute; inset: -4px; border-radius: 28px;
+  background: linear-gradient(to top right, #5ff6ee, #7bd0ff, #5ff6ee);
+  opacity: 0.90; filter: blur(1px);
+}
+.card.focus .glow {
+  position: absolute; inset: -16px; border-radius: 9999px;
+  background: rgba(56,217,210,0.20); filter: blur(48px); pointer-events: none;
+}
+.inner {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  background: rgba(34,50,96,0.95);
+  border-radius: 22px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+.chosen {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 16px; border-radius: 9999px;
+  background: rgba(95,246,238,0.20);
+  color: #5ff6ee;
+  font-size: 16px; line-height: 22px; font-weight: 700; letter-spacing: 0.08em;
+}
+.spin { animation: spin 4s linear infinite; display: inline-flex; }
+.ok-mark { color: #5ff6ee; font-size: 24px; }
+.sphere-focus {
+  width: 240px; height: 240px; border-radius: 9999px;
+  background: linear-gradient(to bottom, rgba(95,246,238,0.30), #18254b, #060a17);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.55);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.sphere-focus .shine {
+  position: absolute; inset: 8px; border-radius: 9999px;
+  background: linear-gradient(to top right, transparent, rgba(95,246,238,0.10), rgba(255,255,255,0.20));
+  pointer-events: none;
+}
+.sparkle-a {
+  position: absolute; top: 16px; right: 40px; color: #5ff6ee; font-size: 14px;
+  animation: ping 1.2s cubic-bezier(0,0,0.2,1) infinite;
+}
+.sparkle-b {
+  position: absolute; bottom: 24px; left: 32px; color: #7bd0ff; font-size: 16px;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+.num-focus {
+  font-size: 118px; line-height: 1; font-weight: 800; color: #5ff6ee;
+  text-shadow: 0 0 24px rgba(56,217,210,0.80);
+}
+.pairs-focus {
+  width: 100%;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: rgba(26,31,49,0.90);
+  padding: 12px 16px;
+  border-radius: 16px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.35);
+  box-sizing: border-box;
+}
+.pairs-focus .pairs-label { color: #5ff6ee; font-weight: 700; }
+.pair-ok {
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 8px;
+  background: rgba(56,217,210,0.16);
+  color: #5ff6ee; font-size: 18px;
+}
+.go {
+  width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 8px 0;
+  border-radius: 12px;
+  background: #5ff6ee;
+  color: #003735;
+  font-size: 24px; line-height: 32px; font-weight: 700;
+  box-shadow: 0 12px 24px rgba(95,246,238,0.30);
+}
+.go-ok {
+  padding: 2px 8px; border-radius: 4px;
+  background: #003735; color: #5ff6ee;
+  font-size: 16px; line-height: 22px; font-weight: 600;
+}
+footer.hint { width: 100%; display: flex; align-items: center; justify-content: center; }
+.hint-bar {
+  display: flex; align-items: center; gap: 24px;
+  padding: 12px 48px;
+  border-radius: 9999px;
+  background: rgba(24,37,75,0.90);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  font-size: 24px; line-height: 32px; font-weight: 500; color: #dde1fa;
+}
+.keys {
+  padding: 4px 10px; border-radius: 6px;
+  background: #34384b; color: #7bd0ff;
+  font-weight: 700; letter-spacing: 0.16em; font-size: 18px;
+}
+.dot { width: 6px; height: 6px; border-radius: 9999px; background: #3c4948; }
+.ok-key {
+  padding: 4px 12px; border-radius: 6px;
+  background: #5ff6ee; color: #003735;
+  font-weight: 700; font-size: 18px;
+  box-shadow: 0 4px 10px rgba(95,246,238,0.35);
+}
+.pause-dim {
+  position: absolute; inset: -72px -88px;
+  z-index: 40;
+  background: rgba(8,13,30,0.72);
+  display: none;
+  align-items: center; justify-content: center;
+}
+.pause-dim.on { display: flex; }
+.pause-card {
+  width: 800px; height: 280px; border-radius: 36px;
+  background: rgba(24,37,75,0.92);
+  border: 4px solid #38d9d2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.wrong-toast {
+  display: none;
+  position: absolute; left: 50%; bottom: 118px; transform: translateX(-50%);
+  z-index: 25;
+  padding: 12px 28px; border-radius: 9999px;
+  background: rgba(251,191,36,0.18);
+  color: #fbbf24;
+  font-size: 22px; line-height: 28px; font-weight: 600;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+}
+body.is-wrong .wrong-toast { display: flex; align-items: center; gap: 10px; }
+body.is-wrong .guide { box-shadow: 0 0 0 3px rgba(251,191,36,0.55), 0 20px 40px rgba(0,0,0,0.5); }
+body.is-wrong .card.focus { animation: wobble 0.5s ease-in-out; }
+@keyframes wobble {
+  0%, 100% { transform: scale(1.10) rotate(0); }
+  25% { transform: scale(1.10) rotate(-2.2deg) translateX(-10px); }
+  75% { transform: scale(1.10) rotate(2.2deg) translateX(10px); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes ping {
+  75%, 100% { transform: scale(1.8); opacity: 0; }
+}
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="col">
+    <div class="bg">
+      <img alt="" src="challenge_active_bg.jpg"/>
+      <div class="veil-a"></div>
+      <div class="veil-b"></div>
+    </div>
+    <header class="hud">
+      <div class="pill" id="pause-pill">
+        <span class="svg-icon" style="color:#7bd0ff;font-size:28px;">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+        </span>
+        <span class="label">Пауза</span>
+        <span class="pdu">⏯ ПДУ</span>
+      </div>
+      <div class="guide">
+        <div class="avatar"><span class="bounce svg-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
+        </span></div>
+        <div style="display:flex;align-items:baseline;gap:8px;min-width:0;">
+          <span class="guide-name">Луми:</span>
+          <span class="guide-line" id="guide-line"></span>
+        </div>
+      </div>
+      <div class="fuel">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="slot full"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.2 6.8H21l-5.6 4.1 2.1 6.6L12 15.8 6.5 19.5l2.1-6.6L3 8.8h6.8L12 2z"/></svg></span></div>
+          <div class="slot full"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.2 6.8H21l-5.6 4.1 2.1 6.6L12 15.8 6.5 19.5l2.1-6.6L3 8.8h6.8L12 2z"/></svg></span></div>
+          <div class="slot empty"><span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span></div>
+        </div>
+        <div class="fuel-copy">
+          <span class="fuel-kicker">Цель миссии</span>
+          <span class="fuel-line">Осталась 1 звёздочка!</span>
+        </div>
+      </div>
+    </header>
+    <div class="board" id="board"></div>
+    <footer class="hint">
+      <div class="hint-bar">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="keys">◄ ►</span>
+          <span>Выбирай стрелками на пульте</span>
+        </div>
+        <span class="dot"></span>
+        <div style="display:flex;align-items:center;gap:8px;font-weight:600;color:#5ff6ee;">
+          <span class="ok-key">OK</span>
+          <span style="color:#dde1fa;">Запустить в двигатель</span>
+        </div>
+      </div>
+    </footer>
+    <div class="wrong-toast" id="wrong-toast">Почти. Посмотри ещё раз и попробуй другую звезду.</div>
+    <div class="pause-dim" id="pause-dim">
+      <div class="pause-card">
+        <div style="font-size:44px;font-weight:700;color:#dde1fa;">Пауза</div>
+        <div style="margin-top:12px;font-size:22px;color:#bacac8;">Приключение ждёт на том же месте.</div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+document.documentElement.style.zoom = String(1 / (window.devicePixelRatio || 1));
+const STAR = '<span class="svg-icon"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>';
+function pairBox(n, cls) {
+  let s = '';
+  for (let i = 0; i < n; i++) s += STAR;
+  return '<div class="' + cls + '">' + s + '</div>';
+}
+function pairsBlock(n, focused) {
+  const pairs = Math.floor(Math.max(0, n) / 2);
+  const leftover = Math.max(0, n) % 2;
+  if (focused && leftover === 0 && pairs > 0) {
+    let row = '';
+    for (let i = 0; i < Math.min(pairs, 4); i++) row += pairBox(2, 'pair-ok');
+    return '<div class="pairs-focus"><span class="pairs-label">Все звёздочки парами! (Чётное)</span><div class="pair-row" style="gap:8px;">' + row + '</div></div>';
+  }
+  let row = '';
+  for (let i = 0; i < Math.min(pairs, 4); i++) row += pairBox(2, focused ? 'pair-ok' : 'pair');
+  if (leftover) {
+    if (pairs) row += '<span class="plus">+</span>';
+    row += '<div class="lone">' + STAR + '</div>';
+  }
+  const box = focused ? 'pairs-focus' : 'pairs';
+  const labelCls = focused ? 'pairs-label" style="color:#5ff6ee;font-weight:700' : 'pairs-label';
+  return '<div class="' + box + '"><span class="' + labelCls + '">Проверка на пары:</span><div class="pair-row">' + row + '</div></div>';
+}
+function idleCard(opt, side) {
+  const n = parseInt(opt, 10);
+  return '<article class="card">' +
+    '<div class="ambient"></div>' +
+    '<div class="row"><span class="badge">' + side + '</span><span class="chevron svg-icon"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></span></div>' +
+    '<div class="sphere"><span class="num">' + opt + '</span></div>' +
+    pairsBlock(n, false) +
+    '</article>';
+}
+function focusCard(opt) {
+  const n = parseInt(opt, 10);
+  return '<article class="card focus">' +
+    '<div class="aura"></div><div class="glow"></div>' +
+    '<div class="inner">' +
+      '<div class="row"><div class="chosen"><span class="spin svg-icon" style="font-size:16px;"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm1 2.1c3.9.5 7 3.6 7.5 7.5h-2c-.4-2.8-2.7-5.1-5.5-5.5V4.1zM4.1 11C4.6 7.1 7.7 4 11.6 3.5V6c-2.8.4-5.1 2.7-5.5 5.5h-2z"/></svg></span>ВЫБРАНА</div>' +
+      '<span class="ok-mark svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></span></div>' +
+      '<div class="sphere-focus"><div class="shine"></div>' +
+        '<span class="sparkle-a svg-icon">' + STAR + '</span>' +
+        '<span class="sparkle-b svg-icon">' + STAR + '</span>' +
+        '<span class="num-focus">' + opt + '</span></div>' +
+      pairsBlock(n, true) +
+      '<div class="go"><span class="go-ok">OK</span><span>Запустить в двигатель</span></div>' +
+    '</div></article>';
+}
+window.renderBoard = function (payload) {
+  const options = payload.options || [];
+  const focus = payload.focusIndex | 0;
+  const sides = ['Орбита А', '', 'Орбита В'];
+  const board = document.getElementById('board');
+  board.innerHTML = options.map(function (opt, i) {
+    if (i === focus) return focusCard(opt);
+    return idleCard(opt, sides[i] || ('Орбита ' + (i + 1)));
+  }).join('');
+  const g = document.getElementById('guide-line');
+  g.textContent = '«' + (payload.guide || '') + '»';
+  document.getElementById('pause-dim').className = 'pause-dim' + (payload.paused ? ' on' : '');
+  document.body.classList.toggle('is-wrong', !!payload.wrong);
+  const toast = document.getElementById('wrong-toast');
+  if (toast && payload.wrongHint) toast.textContent = payload.wrongHint;
+};
+window.renderBoard({options:['5','6','7'], focusIndex:1, guide:'Выбирай чётные звёздочки, чтобы зарядить корабль!', paused:false, wrong:false});
+</script>
+</body>
+</html>

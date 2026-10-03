@@ -1,0 +1,15 @@
+FamilyTV Space Expedition V1 — SORT_AND_CLASSIFY illustrated plates.
+
+Created 2026-09-30 for production native TV presentation.
+Style: FamilyTV Space visual language (navy, cyan, cream, teal).
+No emoji, no UI chrome, no baked labels.
+
+Files are keyed by authored mechanic ids, not display labels:
+  item_<itemId>.jpg   — current find object
+  world_<categoryId>.jpg — destination world plate
+
+Acceptance case (space-expedition.json classify-surface):
+  whale, tree, cloud, fish / water, land, air
+
+Renderer loads any matching sort/item_* and sort/world_* asset.
+Unknown ids fall back to canvas world/object glyphs.

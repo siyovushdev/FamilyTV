@@ -44,6 +44,7 @@ import ru.familytv.interaction.VoiceCommandRouter
 import ru.familytv.journey.DiscoveryJournalActivity
 import ru.familytv.journey.JourneyMapActivity
 import ru.familytv.move.MoveRoutes
+import ru.familytv.space.SpaceRoutes
 import ru.familytv.narration.CommonVoicePack
 import ru.familytv.parent.ParentModeActivity
 import ru.familytv.parent.ScreenTimeReminder
@@ -373,6 +374,8 @@ open class HomeActivity : ComponentActivity() {
         val d = content ?: return
         rememberFocus("mission")
         when {
+            d.journeyId != null && SpaceRoutes.handlesJourney(d.journeyId) ->
+                startActivity(SpaceRoutes.intent(this, d.journeyId))
             d.journeyId != null -> startActivity(Intent(this, JourneyMapActivity::class.java)
                 .putExtra(JourneyMapActivity.EXTRA_JOURNEY_ID, d.journeyId))
             d.continueVideo != null -> startActivity(Intent(this, WatchActivity::class.java)
@@ -381,6 +384,11 @@ open class HomeActivity : ComponentActivity() {
             else -> worlds[lastWorld].requestFocus()
         }
     }
+
+    private fun openJourneyIntent(journeyId: String): Intent =
+        if (SpaceRoutes.handlesJourney(journeyId)) SpaceRoutes.intent(this, journeyId)
+        else Intent(this, JourneyMapActivity::class.java)
+            .putExtra(JourneyMapActivity.EXTRA_JOURNEY_ID, journeyId)
 
     private fun openJournal(stories: Boolean = false) {
         rememberFocus("journal")
@@ -593,10 +601,7 @@ open class HomeActivity : ComponentActivity() {
             is FamilyAction.ContinueJourney -> {
                 val target = PlatformServices.journeyCoordinator(this).resumeTarget(action.journeyId)
                 if (target != null) {
-                    startActivity(
-                        Intent(this, JourneyMapActivity::class.java)
-                            .putExtra(JourneyMapActivity.EXTRA_JOURNEY_ID, target.journey.id),
-                    )
+                    startActivity(openJourneyIntent(target.journey.id))
                     return true
                 }
                 return false
@@ -604,11 +609,8 @@ open class HomeActivity : ComponentActivity() {
             is FamilyAction.OpenJourneyMap -> {
                 val id = action.journeyId
                     ?: PlatformServices.journeyCoordinator(this).activeJourneyId()
-                    ?: "space-grand-expedition"
-                startActivity(
-                    Intent(this, JourneyMapActivity::class.java)
-                        .putExtra(JourneyMapActivity.EXTRA_JOURNEY_ID, id),
-                )
+                    ?: SpaceRoutes.JOURNEY_ID
+                startActivity(openJourneyIntent(id))
                 return true
             }
             FamilyAction.OpenJournal -> {

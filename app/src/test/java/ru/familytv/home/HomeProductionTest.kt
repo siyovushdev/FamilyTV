@@ -101,7 +101,10 @@ class HomeProductionTest {
         assertFalse(content.contains("15 минут"))
         assertFalse(content.contains("fixture"))
         assertFalse(content.contains("demo mission"))
-        assertTrue(home.contains("d.journeyId != null -> startActivity(Intent(this, JourneyMapActivity::class.java)"))
+        assertTrue(home.contains("d.journeyId != null && SpaceRoutes.handlesJourney(d.journeyId)"))
+        assertTrue(home.contains("SpaceRoutes.intent(this, d.journeyId)"))
+        assertTrue(home.contains("Intent(this, JourneyMapActivity::class.java)"))
+        assertTrue(source("home/ContentNavigator.kt").contains("SpaceRoutes.opens(item)"))
     }
 
     @Test fun emptyMissionStateContainsNoFixtureData() {

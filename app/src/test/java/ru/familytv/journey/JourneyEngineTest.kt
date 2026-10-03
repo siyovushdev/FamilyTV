@@ -2,6 +2,7 @@ package ru.familytv.journey
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -40,6 +41,60 @@ class JourneyEngineTest {
         assertTrue("light-lab" in p.openNodeIds)
         assertTrue("temp-lab" in p.openNodeIds)
         assertFalse(p.completed)
+    }
+
+    @Test
+    fun playableLeafIsTheNodeItself() {
+        val journey = JourneyParser.parse(spaceJson)
+        val p = JourneyEngine.start(journey, JourneyEngine.initialProgress(journey))
+        val views = JourneyEngine.views(journey, p, { true })
+        assertFalse(JourneyEngine.isContainerNode(journey.node("launch")!!))
+        assertTrue(JourneyEngine.isContainerNode(journey.node("moon-hub")!!))
+        assertEquals("launch", JourneyEngine.playableChildNodeId(journey, p, views, "launch"))
+        assertEquals("launch", JourneyEngine.resumeNodeId(journey, p))
+    }
+
+    @Test
+    fun hubWithLockedChildrenHasNoPlayableChild() {
+        val journey = JourneyParser.parse(spaceJson)
+        var p = JourneyEngine.start(journey, JourneyEngine.initialProgress(journey))
+        p = JourneyEngine.completeNode(journey, p, "launch")
+        val views = JourneyEngine.views(journey, p, { true })
+        assertEquals("moon-hub", JourneyEngine.resumeNodeId(journey, p))
+        assertNull(JourneyEngine.playableChildNodeId(journey, p, views, "moon-hub"))
+        assertEquals(NodeAvailability.FUTURE, views.first { it.node.id == "light-lab" }.availability)
+    }
+
+    @Test
+    fun hubResolvesToChosenThenFirstAvailablePlayableChild() {
+        val journey = JourneyParser.parse(spaceJson)
+        var p = JourneyEngine.start(journey, JourneyEngine.initialProgress(journey))
+        p = JourneyEngine.completeNode(journey, p, "launch")
+        p = JourneyEngine.completeNode(journey, p, "moon-hub", branchId = "to-temp")
+        val views = JourneyEngine.views(journey, p, { true })
+        assertEquals("temp-lab", JourneyEngine.playableChildNodeId(journey, p, views, "moon-hub"))
+        p = p.copy(chosenBranches = emptyMap(), lastVisitedNodeId = "moon-hub")
+        val unordered = JourneyEngine.views(journey, p, { true })
+        assertEquals("light-lab", JourneyEngine.playableChildNodeId(journey, p, unordered, "moon-hub"))
+    }
+
+    @Test
+    fun forestLeafResumeIsUnchanged() {
+        val forest = JourneyParser.parse(
+            """
+            {"schemaVersion":1,"id":"forest-secrets","title":"Лес","world":"explore","startNode":"trail","version":1,
+             "nodes":[
+               {"id":"trail","title":"Тропа","contentId":"adv-forest-trail","type":"ADVENTURE","next":"end"},
+               {"id":"end","title":"Конец","contentId":null,"type":"CONCLUSION","completionPolicy":"MANUAL","prerequisites":["trail"]}
+             ]}
+            """.trimIndent(),
+        )
+        val p = JourneyEngine.start(forest, JourneyEngine.initialProgress(forest))
+        val views = JourneyEngine.views(forest, p, { true })
+        assertFalse(JourneyEngine.isContainerNode(forest.node("trail")!!))
+        assertEquals("trail", JourneyEngine.resumeNodeId(forest, p))
+        assertEquals("trail", JourneyEngine.playableChildNodeId(forest, p, views, "trail"))
+        assertNull(JourneyEngine.playableChildNodeId(forest, p, views, "end"))
     }
 
     @Test

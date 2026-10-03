@@ -37,8 +37,17 @@ internal class ReferenceStage(context: Context) : ViewGroup(context) {
         routeKey?.invoke(event) == true || super.dispatchKeyEvent(event)
 
     fun place(view: View, x: Float, y: Float, w: Float, h: Float) {
+        val first = view.parent == null
         placements[view] = RectF(x, y, x + w, y + h)
-        addView(view)
+        if (first) addView(view) else requestLayout()
+    }
+
+    fun clearExcept(keep: View?) {
+        val gone = placements.keys.filter { it !== keep }
+        gone.forEach { view ->
+            placements.remove(view)
+            removeView(view)
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

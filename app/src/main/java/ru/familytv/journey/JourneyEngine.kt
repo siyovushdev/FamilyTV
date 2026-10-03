@@ -197,6 +197,68 @@ object JourneyEngine {
             ?: journey.startNodeId.takeIf { it !in progress.completedNodeIds }
     }
 
+    /** Hub / container with no own package — Continue must not stop here. */
+    fun isContainerNode(node: JourneyNode): Boolean =
+        node.type == JourneyNodeType.HUB ||
+            (node.contentId.isNullOrBlank() && node.branches.isNotEmpty())
+
+    /**
+     * Resolve a hub/container to a playable child that already has content and is AVAILABLE.
+     * Does not complete the hub or invent nodes. Returns null when children are still locked
+     * or the node itself is the playable leaf.
+     */
+    fun playableChildNodeId(
+        journey: Journey,
+        progress: JourneyProgress,
+        views: List<JourneyNodeView>,
+        nodeId: String,
+    ): String? {
+        val node = journey.node(nodeId) ?: return null
+        if (!isContainerNode(node)) {
+            return nodeId.takeIf { hasPlayableContent(views, it) }
+        }
+        val children = containerChildren(journey, node)
+        progress.lastVisitedNodeId
+            ?.takeIf { it in children && it !in progress.completedNodeIds && hasPlayableContent(views, it) }
+            ?.let { return it }
+        progress.chosenBranches[nodeId]?.let { branchId ->
+            node.branches.find { it.id == branchId }?.nextNodeId
+                ?.takeIf { it !in progress.completedNodeIds && hasPlayableContent(views, it) }
+                ?.let { return it }
+        }
+        return node.branches.map { it.nextNodeId }
+            .plus(listOfNotNull(node.next))
+            .distinct()
+            .mapNotNull { id -> views.find { it.node.id == id } }
+            .filter {
+                it.availability == NodeAvailability.AVAILABLE &&
+                    it.node.id !in progress.completedNodeIds &&
+                    !it.resolvedContentId.isNullOrBlank()
+            }
+            .sortedBy { it.node.mapProgress ?: 0f }
+            .firstOrNull()
+            ?.node
+            ?.id
+    }
+
+    private fun hasPlayableContent(views: List<JourneyNodeView>, nodeId: String): Boolean {
+        val view = views.find { it.node.id == nodeId } ?: return false
+        return (view.availability == NodeAvailability.AVAILABLE || view.availability == NodeAvailability.COMPLETED) &&
+            !view.resolvedContentId.isNullOrBlank()
+    }
+
+    private fun containerChildren(journey: Journey, node: JourneyNode): Set<String> {
+        val ids = mutableSetOf<String>()
+        node.branches.forEach { ids += it.nextNodeId }
+        node.next?.let { ids += it }
+        for (other in journey.nodes) {
+            if (node.id in other.prerequisites || node.id in other.prerequisitesAnyOf) {
+                ids += other.id
+            }
+        }
+        return ids
+    }
+
     fun availableNextLabels(journey: Journey, progress: JourneyProgress): List<String> =
         views(journey, progress, { true })
             .filter { it.availability == NodeAvailability.AVAILABLE && it.node.id !in progress.completedNodeIds }
