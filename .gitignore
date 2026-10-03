@@ -47,3 +47,15 @@ publish/
 /docs/**/recordings/
 /docs/**/*.zip
 /.kotlin/
+# Generated QA / acceptance evidence
+/docs/**/logs/
+/docs/v1/**/screenshots/
+/docs/design/stitch/**/android-preview/logs/
+/docs/design/stitch/**/android-preview/screenshots/
+/docs/design/stitch/**/android-preview/source/
+/docs/design/stitch/**/ux-polish/logs/
+/docs/design/stitch/**/ux-polish/screenshots/
+/docs/quality-sprint-*/screenshots/
+/docs/review-*/screenshots/
+/content-packages/*.zip
+/.idea/markdown.xml
