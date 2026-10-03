@@ -459,6 +459,66 @@ def validate_count_combine(data: dict[str, Any]) -> tuple[bool, list[str]]:
     return not errors, errors
 
 
+COLORS = {
+    "red": "красный",
+    "blue": "синий",
+    "yellow": "жёлтый",
+    "green": "зелёный",
+}
+
+
+def validate_attribute_apply(data: dict[str, Any]) -> tuple[bool, list[str]]:
+    """Structural checks for an ATTRIBUTE_APPLY dataset. Mirrors AttributeApplyParser."""
+    errors: list[str] = []
+    if not isinstance(data, dict):
+        return False, ["attribute_apply root must be object"]
+    if data.get("schemaVersion") != 1:
+        errors.append(f"unsupported schemaVersion={data.get('schemaVersion')}")
+    if str(data.get("template", "")).strip() != "attribute_apply":
+        errors.append("template must be attribute_apply")
+    if not str(data.get("contentId", "")).strip():
+        errors.append("contentId required")
+    if not str(data.get("title", "")).strip():
+        errors.append("title required")
+    if not str(data.get("subtitle", "")).strip():
+        errors.append("subtitle required")
+    target = data.get("target")
+    if not isinstance(target, dict) or target.get("object") != "rocket" or target.get("part") != "wing":
+        errors.append("target must be rocket/wing")
+    lines = data.get("lines")
+    if not isinstance(lines, dict):
+        errors.append("lines object required")
+    else:
+        for key in ("prompt", "help", "wrong", "success", "launched", "scene"):
+            if not str(lines.get(key, "")).strip():
+                errors.append(f"lines.{key} required")
+    options = data.get("options")
+    seen: set[str] = set()
+    if not isinstance(options, list) or len(options) != 3:
+        errors.append("options must be the three paint jars")
+        options = []
+    for i, option in enumerate(options):
+        if not isinstance(option, dict):
+            errors.append(f"options[{i}] must be object")
+            continue
+        color_id = str(option.get("id", "")).strip()
+        voice = COLORS.get(color_id)
+        if voice is None:
+            errors.append(f"options[{i}] color '{color_id}' is unknown")
+        elif color_id in seen:
+            errors.append(f"duplicate option '{color_id}'")
+        else:
+            seen.add(color_id)
+        if not str(option.get("label", "")).strip():
+            errors.append(f"options[{i}] label required")
+        if voice is not None and str(option.get("voice", "")).strip() != voice:
+            errors.append(f"options[{i}] voice must be '{voice}'")
+    correct = str(data.get("correct", "")).strip()
+    if correct not in seen:
+        errors.append(f"correct '{correct}' is not one of the options")
+    return not errors, errors
+
+
 def verify_payload(root: Path, manifest: dict[str, Any]) -> tuple[bool, list[str]]:
     errors: list[str] = []
     root = root.resolve()

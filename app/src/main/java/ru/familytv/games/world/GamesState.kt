@@ -2,6 +2,7 @@ package ru.familytv.games.world
 
 import ru.familytv.games.AnswerJudge
 import ru.familytv.games.AppleQuestion
+import ru.familytv.games.AttributeApplyDefinition
 import ru.familytv.games.ColorQuestion
 import ru.familytv.games.CountCombineDefinition
 import ru.familytv.games.GameColor
@@ -26,13 +27,18 @@ internal class GamesState {
     var launched = false
     var mathSet: CountCombineDefinition? = null
         private set
+    var colorSet: AttributeApplyDefinition? = null
+        private set
     val hasMath get() = mathSet != null
+    val hasColor get() = colorSet != null
     val mathContentId get() = mathSet?.contentId
+    val colorContentId get() = colorSet?.contentId
     val rounds get() = math().rounds.map { it.left to it.right }
     val apples: AppleQuestion get() = rounds[mathRound.coerceIn(rounds.indices)].let { (a, b) -> AppleQuestion(mathRound + 1L, a, b) }
     val answers: List<Int> get() = (apples.left + apples.right).let { listOf(it - 1, it, it + 1) }
-    val paints = listOf(GameColor.RED, GameColor.BLUE, GameColor.YELLOW)
-    val rocketQuestion = ColorQuestion(1, GameColor.BLUE, paints)
+    val paints get() = color().paints
+    val correctColor get() = color().correct
+    val hintIndex get() = paints.indexOf(correctColor).coerceAtLeast(0)
     val answersVisible get() = world == GameWorld.MATH && combined
     val canAnswerMath get() = answersVisible && !counting && feedback != GameFeedback.CORRECT
     val canPaint get() = world == GameWorld.COLOR && feedback != GameFeedback.CORRECT && !launched
@@ -64,6 +70,19 @@ internal class GamesState {
     private fun math(): CountCombineDefinition =
         checkNotNull(mathSet) { "COUNT_COMBINE dataset is not bound" }
 
+    private fun color(): AttributeApplyDefinition =
+        checkNotNull(colorSet) { "ATTRIBUTE_APPLY dataset is not bound" }
+
+    fun bindColor(definition: AttributeApplyDefinition) {
+        colorSet = definition
+        painted = null
+        launched = false
+        paintChoice = definition.correct
+        if (world == GameWorld.COLOR) feedback = GameFeedback.READY
+    }
+
+    fun colorLabel(index: Int): String = color().options[index].label
+
     fun countingNarration(): String {
         val set = math()
         val n = apples.left + apples.right
@@ -74,9 +93,13 @@ internal class GamesState {
         if (next == GameWorld.MATH && mathSet == null) {
             throw IllegalStateException("COUNT_COMBINE dataset is not bound")
         }
+        if (next == GameWorld.COLOR && colorSet == null) {
+            throw IllegalStateException("ATTRIBUTE_APPLY dataset is not bound")
+        }
         world = next; feedback = GameFeedback.READY; combined = false
         stopTransientActions(); mathFocus = 0; mathChoice = null
-        painted = null; paintChoice = GameColor.BLUE; launched = false
+        painted = null; launched = false
+        if (next == GameWorld.COLOR) paintChoice = color().correct
         if (next == GameWorld.MATH) mathRound = 0
     }
     fun answerMath(value: Int): Verdict? {
@@ -89,12 +112,13 @@ internal class GamesState {
     fun paint(value: GameColor): Verdict? {
         if (!canPaint) return null
         paintChoice = value; painted = value
-        return AnswerJudge.evaluate(rocketQuestion, value.answer).also {
+        val question = ColorQuestion(1, color().correct, paints)
+        return AnswerJudge.evaluate(question, value.answer).also {
             feedback = if (it == Verdict.CORRECT) GameFeedback.CORRECT else GameFeedback.WRONG
         }
     }
     fun launch(): Boolean {
-        if (world != GameWorld.COLOR || feedback != GameFeedback.CORRECT || painted != GameColor.BLUE || launched) return false
+        if (world != GameWorld.COLOR || feedback != GameFeedback.CORRECT || painted != color().correct || launched) return false
         launched = true
         return true
     }
@@ -132,12 +156,15 @@ internal class GamesState {
                 GameFeedback.CORRECT -> lines.success
             }
         }
-        GameWorld.COLOR -> when {
-            launched -> "Ракета полетела! Синее крыло готово к путешествию."
-            feedback == GameFeedback.WRONG -> "Попробуем синий — как звёздное небо."
-            feedback == GameFeedback.CORRECT -> "Крыло стало синим. Ракета готова к полёту!"
-            feedback == GameFeedback.HELP -> "Синяя краска — для крыла. Посмотри на баночку."
-            else -> "Покрась крыло ракеты в синий цвет!"
+        GameWorld.COLOR -> {
+            val lines = color().lines
+            when {
+                launched -> lines.launched
+                feedback == GameFeedback.WRONG -> lines.wrong
+                feedback == GameFeedback.CORRECT -> lines.success
+                feedback == GameFeedback.HELP -> lines.help
+                else -> lines.prompt
+            }
         }
     }
 }

@@ -22,6 +22,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.familytv.content.PlatformServices
+import ru.familytv.games.AttributeApplyCatalog
+import ru.familytv.games.AttributeApplyDefinition
+import ru.familytv.games.AttributeApplyHub
+import ru.familytv.games.AttributeApplyLoad
 import ru.familytv.games.CountCombineCatalog
 import ru.familytv.games.CountCombineDefinition
 import ru.familytv.games.CountCombineHub
@@ -53,6 +57,7 @@ open class GamesActivity : ComponentActivity() {
     private var loading = true
     private var blocked = false
     private var mathSets: List<CountCombineDefinition> = emptyList()
+    private var colorSets: List<AttributeApplyDefinition> = emptyList()
     private var narration: NarrationCoordinator? = null
     private val dispatcher by lazy { PlatformServices.actionDispatcher() }
     private val handler = FamilyActionHandler { _, action ->
@@ -95,31 +100,52 @@ open class GamesActivity : ComponentActivity() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         val repo = PlatformServices.contentRepository(this)
         mathSets = CountCombineCatalog.playable(repo)
+        colorSets = AttributeApplyCatalog.playable(repo)
         val savedWorld = savedInstanceState?.getString("world")
-        val requestedId = when {
+        val requestedMath = when {
             initialGame == GameKind.MATH -> intent.getStringExtra(EXTRA_CONTENT_ID)?.takeIf { it.isNotBlank() }
                 ?: CountCombineHub.APPLES_CONTENT_ID
             savedWorld == GameWorld.MATH.name -> savedInstanceState?.getString("mathContentId")
             else -> null
         }
-        if (requestedId != null) {
-            when (val loaded = CountCombineCatalog.load(repo, requestedId)) {
+        if (requestedMath != null) {
+            when (val loaded = CountCombineCatalog.load(repo, requestedMath)) {
                 is CountCombineLoad.Ready -> state.bindMath(loaded.definition)
                 is CountCombineLoad.Rejected -> {
                     blocked = initialGame == GameKind.MATH
-                    Log.w("FamilyGames", "count_combine rejected content=$requestedId reason=${loaded.reason}")
+                    Log.w("FamilyGames", "count_combine rejected content=$requestedMath reason=${loaded.reason}")
+                }
+            }
+        }
+        val requestedColor = when {
+            initialGame == GameKind.COLOR -> intent.getStringExtra(EXTRA_CONTENT_ID)?.takeIf { it.isNotBlank() }
+                ?: AttributeApplyHub.ROCKET_CONTENT_ID
+            savedWorld == GameWorld.COLOR.name -> savedInstanceState?.getString("colorContentId")
+            else -> null
+        }
+        if (requestedColor != null) {
+            when (val loaded = AttributeApplyCatalog.load(repo, requestedColor)) {
+                is AttributeApplyLoad.Ready -> state.bindColor(loaded.definition)
+                is AttributeApplyLoad.Rejected -> {
+                    blocked = initialGame == GameKind.COLOR
+                    Log.w("FamilyGames", "attribute_apply rejected content=$requestedColor reason=${loaded.reason}")
                 }
             }
         }
         if (savedInstanceState == null && initialGame != null && !blocked) {
             if (initialGame == GameKind.MATH && state.hasMath) state.enter(GameWorld.MATH)
-            else if (initialGame == GameKind.COLOR) state.enter(GameWorld.COLOR)
+            else if (initialGame == GameKind.COLOR && state.hasColor) state.enter(GameWorld.COLOR)
             focused = state.defaultFocus()
         }
         savedInstanceState?.let {
             val restoredWorld = enumValueOr(it.getString("world"), GameWorld.HOME)
             val mathRestore = restoredWorld == GameWorld.MATH && state.hasMath
-            state.world = if (restoredWorld == GameWorld.MATH && !state.hasMath) GameWorld.HOME else restoredWorld
+            val colorRestore = restoredWorld == GameWorld.COLOR && state.hasColor
+            state.world = when {
+                restoredWorld == GameWorld.MATH && !state.hasMath -> GameWorld.HOME
+                restoredWorld == GameWorld.COLOR && !state.hasColor -> GameWorld.HOME
+                else -> restoredWorld
+            }
             state.feedback = enumValueOr(it.getString("feedback"), GameFeedback.READY)
             state.gameFocus = it.getInt("gameFocus").coerceIn(0, 3)
             if (mathRestore) {
@@ -129,7 +155,7 @@ open class GamesActivity : ComponentActivity() {
                 state.mathFocus = it.getInt("mathFocus", 0).coerceIn(0, 2)
             }
             state.painted = GameColor.entries.find { color -> color.name == it.getString("painted") }
-            state.paintChoice = enumValueOr(it.getString("paintChoice"), GameColor.BLUE)
+            state.paintChoice = enumValueOr(it.getString("paintChoice"), if (colorRestore) state.correctColor else GameColor.BLUE)
             state.launched = it.getBoolean("launched")
             focused = it.getString("focus") ?: state.defaultFocus()
             visit.world = enumValueOr(it.getString("visitWorld"), GameWorld.HOME)
@@ -182,18 +208,24 @@ open class GamesActivity : ComponentActivity() {
         if (state.world == GameWorld.HOME) {
             for (i in 0..3) add("game:$i", GamesHomeCard(this, i, artBitmaps["math_card"]), 84f + i * 441, 253f, 410f, 570f) {
                 if (i == 0) openMath(CountCombineHub.openFromHub(mathSets, "card:0"), "Набор яблок не открылся.")
-                else if (i == 1) {
-                    state.enter(GameWorld.COLOR)
-                    beginVisit()
-                    render("choice:1")
-                } else { chrome.notice = "Этот мир скоро откроется. Поиграем с яблоками или ракетой!"; chrome.invalidate() }
+                else if (i == 1) openColor(AttributeApplyHub.openFromHub(colorSets, "card:1"), "Набор красок не открылся.")
+                else { chrome.notice = "Этот мир скоро откроется. Поиграем с яблоками или ракетой!"; chrome.invalidate() }
             }
-            val extras = CountCombineHub.extras(mathSets)
-            extras.forEachIndexed { index, extra ->
+            val mathExtras = CountCombineHub.extras(mathSets)
+            val colorExtras = AttributeApplyHub.extras(colorSets)
+            val extraCount = mathExtras.size + colorExtras.size
+            mathExtras.forEachIndexed { index, extra ->
                 val key = if (index == 0) "more" else "more:$index"
-                val (x, width) = extraButtonFrame(extras.size, index)
+                val (x, width) = extraButtonFrame(extraCount, index)
                 add(key, GamesButton(this, extra.title, width), x, 868f, width, 64f) {
                     openMath(CountCombineHub.openFromHub(mathSets, key), "Этот набор не открылся.")
+                }
+            }
+            colorExtras.forEachIndexed { index, extra ->
+                val key = if (index == 0) "paint" else "paint:$index"
+                val (x, width) = extraButtonFrame(extraCount, mathExtras.size + index)
+                add(key, GamesButton(this, extra.title, width), x, 868f, width, 64f) {
+                    openColor(AttributeApplyHub.openFromHub(colorSets, key), "Этот набор не открылся.")
                 }
             }
         } else {
@@ -230,6 +262,17 @@ open class GamesActivity : ComponentActivity() {
         beginVisit()
         render("world")
     }
+    private fun openColor(definition: AttributeApplyDefinition?, unavailable: String) {
+        if (definition == null) {
+            chrome.notice = unavailable
+            chrome.invalidate()
+            return
+        }
+        state.bindColor(definition)
+        state.enter(GameWorld.COLOR)
+        beginVisit()
+        render("choice:${state.hintIndex}")
+    }
     /** One extra stays centered. Further extras share the same row, left to right. */
     private fun extraButtonFrame(count: Int, index: Int): Pair<Float, Float> {
         if (count <= 1) return 750f to 420f
@@ -238,6 +281,13 @@ open class GamesActivity : ComponentActivity() {
         val start = (1920f - (count * width + (count - 1) * gap)) / 2f
         return start + index * (width + gap) to width
     }
+    private fun isHomeExtra(key: String) =
+        key == "more" || key.startsWith("more:") || key == "paint" || key.startsWith("paint:")
+
+    private fun homeExtraKeys(): List<String> =
+        controls.keys.filter { it == "more" || it.startsWith("more:") }.toList() +
+            controls.keys.filter { it == "paint" || it.startsWith("paint:") }.toList()
+
     private fun defaultFocus(): String = state.defaultFocus()
     private fun focus(key: String) { controls[key]?.requestFocus() }
 
@@ -309,7 +359,7 @@ open class GamesActivity : ComponentActivity() {
         if (busy || state.world == GameWorld.HOME || state.feedback == GameFeedback.CORRECT) return
         if (!state.help()) return
         val math = state.world == GameWorld.MATH
-        if (math) countApples() else { render("choice:1"); react(LumiReaction.HELP) }
+        if (math) countApples() else { render("choice:${state.hintIndex}"); react(LumiReaction.HELP) }
     }
     private fun countApples() {
         // Help never moves focus to an answer. It stays on Help, including after the count.
@@ -380,7 +430,8 @@ open class GamesActivity : ComponentActivity() {
     private fun beginVisit() {
         if (!recordsActivity || state.world == GameWorld.HOME || visit.world != GameWorld.HOME) return
         if (state.world == GameWorld.MATH && !state.hasMath) return
-        val identity = visitIdentity(state.world, state.mathSet)
+        if (state.world == GameWorld.COLOR && !state.hasColor) return
+        val identity = visitIdentity(state.world, state.mathSet, state.colorSet)
         visit.begin(state.world, System.currentTimeMillis(), identity.contentId, identity.title, identity.topics)
         val contentId = identity.contentId
         PlatformServices.journeyCoordinator(this).onContentOpened(contentId)
@@ -409,23 +460,26 @@ open class GamesActivity : ComponentActivity() {
         val left = key == KeyEvent.KEYCODE_DPAD_LEFT; val right = key == KeyEvent.KEYCODE_DPAD_RIGHT
         val target = when {
             focused == "back" -> if (down) defaultFocus() else "back"
-            state.world == GameWorld.HOME && (focused == "more" || focused.startsWith("more:")) -> {
-                val keys = controls.keys.filter { it == "more" || it.startsWith("more:") }.toList()
+            state.world == GameWorld.HOME && isHomeExtra(focused) -> {
+                val keys = homeExtraKeys()
                 val index = keys.indexOf(focused).coerceAtLeast(0)
+                val colorExtra = focused == "paint" || focused.startsWith("paint:")
                 when {
-                    up -> "game:${state.gameFocus}"
+                    up -> if (colorExtra) "game:1" else "game:${state.gameFocus}"
                     left && index > 0 -> keys[index - 1]
                     right && index < keys.lastIndex -> keys[index + 1]
                     else -> focused
                 }
             }
             state.world == GameWorld.HOME -> when {
+                down && focused == "game:1" && controls.containsKey("paint") -> "paint"
                 down && controls.containsKey("more") -> "more"
+                down && controls.containsKey("paint") -> "paint"
                 up -> "back"
                 else -> "game:${(state.gameFocus + if (left) -1 else if (right) 1 else 0).coerceIn(0, 3)}"
             }
             focused == "world" -> if (up) "back" else if (left) "listen" else "world"
-            focused == "help" -> when { up -> "back"; state.world == GameWorld.MATH -> "choice:${state.mathFocus}"; else -> "choice:1" }
+            focused == "help" -> when { up -> "back"; state.world == GameWorld.MATH -> "choice:${state.mathFocus}"; else -> "choice:${state.hintIndex}" }
             focused == "listen" -> when { controls.containsKey("world") -> "world"; up -> "back"; else -> if (controls.containsKey("next")) "next" else "choice:0" }
             focused == "next" -> if (up) "back" else if (left || down) "listen" else "next"
             focused.startsWith("choice:") -> {
@@ -439,7 +493,7 @@ open class GamesActivity : ComponentActivity() {
     private fun log(event: String) {
         val content = when (state.world) {
             GameWorld.MATH -> state.mathContentId ?: "none"
-            GameWorld.COLOR -> "game-color"
+            GameWorld.COLOR -> state.colorContentId ?: "none"
             GameWorld.HOME -> "none"
         }
         Log.i(if (recordsActivity) "FamilyGames" else "StitchGames", "$event world=${state.world} feedback=${state.feedback} round=${state.mathRound} combined=${state.combined} combining=${state.combining} counting=${state.counting} equation=${if (state.answersVisible) state.equationResult else "hidden"} choices=${controls.count { it.key.startsWith("choice:") && it.value.isFocusable && it.value.isEnabled }} focusKey=$focused mathChoice=${state.mathChoice} painted=${state.painted} launched=${state.launched} content=$content AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
@@ -461,6 +515,7 @@ open class GamesActivity : ComponentActivity() {
         outState.putString("painted", state.painted?.name); outState.putString("paintChoice", state.paintChoice.name)
         outState.putBoolean("launched", state.launched); outState.putString("focus", focused)
         state.mathContentId?.let { outState.putString("mathContentId", it) }
+        state.colorContentId?.let { outState.putString("colorContentId", it) }
         super.onSaveInstanceState(outState)
     }
     override fun onDestroy() {

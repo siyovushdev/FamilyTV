@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "template": "attribute_apply",
+  "id": "rocket-wing-blue",
+  "contentId": "game-color",
+  "title": "Цвета",
+  "subtitle": "Ракета и краски",
+  "target": { "object": "rocket", "part": "wing" },
+  "options": [
+    { "id": "red", "label": "Красный", "voice": "красный" },
+    { "id": "blue", "label": "Синий", "voice": "синий" },
+    { "id": "yellow", "label": "Жёлтый", "voice": "жёлтый" }
+  ],
+  "correct": "blue",
+  "lines": {
+    "prompt": "Покрась крыло ракеты в синий цвет!",
+    "help": "Синяя краска — для крыла. Посмотри на баночку.",
+    "wrong": "Попробуем синий — как звёздное небо.",
+    "success": "Крыло стало синим. Ракета готова к полёту!",
+    "launched": "Ракета полетела! Синее крыло готово к путешествию.",
+    "scene": "Ракета. Покрась правое крыло в синий цвет"
+  }
+}

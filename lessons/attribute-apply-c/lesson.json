@@ -1,0 +1,34 @@
+{
+  "packageId": "attribute-apply-c",
+  "packageVersion": 1,
+  "schemaVersion": 1,
+  "title": "Зелёное крыло",
+  "description": "Пакетный ATTRIBUTE_APPLY, которого нет в bundled catalog",
+  "content": [
+    {
+      "id": "game-color-package-c",
+      "title": "Зелёное крыло",
+      "description": "Пакетный набор: покрась крыло в зелёный",
+      "type": "GAME",
+      "ageRange": "3-7",
+      "categories": ["play"],
+      "tags": ["v1", "voice", "color"],
+      "route": "game/color",
+      "experienceRef": "experiences/attribute-apply-c.json",
+      "enabled": true,
+      "sortOrder": 32,
+      "version": 1,
+      "homeSections": ["solve", "play"],
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 7,
+        "estimatedMinutes": 4,
+        "topics": ["colors"],
+        "skills": ["COLORS"],
+        "interactionModes": ["voice", "game"],
+        "locale": "ru",
+        "contentPurpose": "play"
+      }
+    }
+  ]
+}

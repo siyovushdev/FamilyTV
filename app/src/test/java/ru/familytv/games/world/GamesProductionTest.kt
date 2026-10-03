@@ -52,7 +52,7 @@ class GamesProductionTest {
     }
 
     @Test fun voicePaintUsesSameRealWingAndRequiresSeparateLaunch() {
-        val s = GamesState().apply { enter(GameWorld.COLOR) }
+        val s = GamesState().apply { enterColor() }
         val route = VoiceCommandRouter.route(RouteContext(InteractionSurface.GAME, awaitingAnswer = true), "красный") as RouteResult.Action
         assertEquals(GamesCommand.Paint(GameColor.RED), GamesActions.resolve(s, route.action))
         s.paint(GameColor.RED)
@@ -72,6 +72,7 @@ class GamesProductionTest {
         val s = GamesState()
         for ((world, card) in listOf(GameWorld.MATH to "game:0", GameWorld.COLOR to "game:1")) {
             if (world == GameWorld.MATH) s.bindMath(CountCombineFixtures.apples())
+            if (world == GameWorld.COLOR) s.bindColor(AttributeApplyFixtures.rocket())
             s.enter(world)
             s.backToGames()
             assertEquals(card, s.defaultFocus())

@@ -21,7 +21,7 @@ internal class GamesWorldView(context: Context, private val state: GamesState, p
     init {
         isFocusable = state.world == GameWorld.MATH && !state.combined
         isClickable = isFocusable
-        contentDescription = if (state.world == GameWorld.MATH) "Яблоки: ${state.apples.left} и ${state.apples.right}. OK: соединить в одну корзину" else "Ракета. Покрась правое крыло в синий цвет"
+        contentDescription = if (state.world == GameWorld.MATH) "Яблоки: ${state.apples.left} и ${state.apples.right}. OK: соединить в одну корзину" else state.colorSet?.lines?.scene ?: "Ракета"
         onFocusChangeListener = View.OnFocusChangeListener { _, _ -> invalidate() }
     }
     override fun drawScene(c: Canvas) {
@@ -72,10 +72,10 @@ internal class GamesWorldView(context: Context, private val state: GamesState, p
         }
     }
     private fun workshop(c: Canvas) {
-        val blue = GamesInk.paint(GameColor.BLUE)
+        val hint = GamesInk.paint(state.correctColor)
         if (!state.launched) {
             glow(c, 931f, 232f, if (state.feedback == GameFeedback.HELP) 126f else 89f, color("#4238d9d2"))
-            circle(c, 1014f, 116f, 29f, color("#d4080d1e")); circle(c, 1014f, 116f, 20f, blue)
+            circle(c, 1014f, 116f, 29f, color("#d4080d1e")); circle(c, 1014f, 116f, 20f, hint)
             line(c, 990f, 142f, 937f, 205f, GamesInk.focus, 3f)
         }
         if (launchFraction < 1f) {

@@ -59,7 +59,7 @@ object ContentNavigator {
             return null
         }
         val intent = Intent().setClassName(activity, destination.activityName)
-        if (contentId != null && destination == GamesDestination.MATH) {
+        if (contentId != null && (destination == GamesDestination.MATH || destination == GamesDestination.COLOR)) {
             intent.putExtra(GamesActivity.EXTRA_CONTENT_ID, contentId)
         }
         return intent

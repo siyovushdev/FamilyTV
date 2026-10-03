@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "template": "attribute_apply",
+  "id": "rocket-wing-green",
+  "contentId": "game-color-package-c",
+  "title": "Зелёное крыло",
+  "subtitle": "Набор из пакета",
+  "target": { "object": "rocket", "part": "wing" },
+  "options": [
+    { "id": "blue", "label": "Синий", "voice": "синий" },
+    { "id": "green", "label": "Зелёный", "voice": "зелёный" },
+    { "id": "yellow", "label": "Жёлтый", "voice": "жёлтый" }
+  ],
+  "correct": "green",
+  "lines": {
+    "prompt": "Покрась крыло ракеты в зелёный цвет!",
+    "help": "Зелёная краска — для крыла. Посмотри на баночку.",
+    "wrong": "Это не зелёный. Крыло ждёт свою краску.",
+    "success": "Крыло стало зелёным. Ракета готова к полёту!",
+    "launched": "Ракета полетела! Зелёное крыло готово к путешествию.",
+    "scene": "Ракета. Покрась правое крыло в зелёный цвет"
+  }
+}

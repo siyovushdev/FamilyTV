@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "template": "attribute_apply",
+  "id": "rocket-wing-yellow",
+  "contentId": "game-color-sun",
+  "title": "Жёлтое крыло",
+  "subtitle": "Солнечная краска",
+  "target": { "object": "rocket", "part": "wing" },
+  "options": [
+    { "id": "red", "label": "Красный", "voice": "красный" },
+    { "id": "yellow", "label": "Жёлтый", "voice": "жёлтый" },
+    { "id": "blue", "label": "Синий", "voice": "синий" }
+  ],
+  "correct": "yellow",
+  "lines": {
+    "prompt": "Покрась крыло ракеты в жёлтый цвет!",
+    "help": "Жёлтая краска — для крыла. Посмотри на баночку.",
+    "wrong": "Попробуем жёлтый — как солнечный свет.",
+    "success": "Крыло стало жёлтым. Ракета готова к полёту!",
+    "launched": "Ракета полетела! Жёлтое крыло готово к путешествию.",
+    "scene": "Ракета. Покрась правое крыло в жёлтый цвет"
+  }
+}

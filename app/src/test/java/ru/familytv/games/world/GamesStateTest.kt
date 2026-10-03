@@ -27,7 +27,7 @@ class GamesStateTest {
         assertFalse(s.combined)
     }
     @Test fun wrongPaintChangesTheWingAndCannotLaunch() {
-        val s = GamesState().apply { enter(GameWorld.COLOR) }
+        val s = GamesState().apply { enterColor() }
         assertNull(s.painted)
         assertEquals(Verdict.WRONG, s.paint(GameColor.RED))
         assertEquals(GameColor.RED, s.painted)

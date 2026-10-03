@@ -220,7 +220,7 @@ internal class GamesChoice(context: Context, private val state: GamesState, val 
             for (i in 0 until n) circle(c, 122f - (n - 1) * 10 + i * 20, 127f, 5f, if (isFocused) GamesInk.focus else GamesInk.muted)
         } else {
             jar(c, 63f, 137f, 70f, GamesInk.paint(state.paints[index]))
-            text(c, listOf("Красный", "Синий", "Жёлтый")[index], 155f, 86f, 24f, GamesInk.text, true, true)
+            text(c, state.colorLabel(index), 155f, 86f, 24f, GamesInk.text, true, true)
             if (isFocused) text(c, "OK  Покрасить", 157f, 121f, 17f, GamesInk.focus, centered = true)
         }
         if (isFocused) pill(c, "ВЫБРАНО", 122f, 0f, 14f, color("#041d1c"), GamesInk.focus)

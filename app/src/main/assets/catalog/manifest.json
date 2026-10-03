@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": 4,
+  "catalogVersion": 5,
   "items": [
     {
       "id": "video-sky",
@@ -113,8 +113,34 @@
       "tags": ["v1", "voice", "color"],
       "thumbnail": "thumb_color",
       "route": "game/color",
+      "experienceRef": "attribute-apply-rocket.json",
       "enabled": true,
       "sortOrder": 25,
+      "version": 1,
+      "homeSections": ["solve", "play"],
+      "metadata": {
+        "ageMin": 3,
+        "ageMax": 7,
+        "estimatedMinutes": 4,
+        "topics": ["colors"],
+        "skills": ["COLORS"],
+        "interactionModes": ["voice", "game"],
+        "contentPurpose": "play"
+      }
+    },
+    {
+      "id": "game-color-sun",
+      "title": "Жёлтое крыло",
+      "description": "Покрась крыло ракеты в жёлтый цвет",
+      "type": "GAME",
+      "ageRange": "3-7",
+      "categories": ["play"],
+      "tags": ["v1", "voice", "color"],
+      "thumbnail": "thumb_color",
+      "route": "game/color",
+      "experienceRef": "attribute-apply-sun.json",
+      "enabled": true,
+      "sortOrder": 26,
       "version": 1,
       "homeSections": ["solve", "play"],
       "metadata": {

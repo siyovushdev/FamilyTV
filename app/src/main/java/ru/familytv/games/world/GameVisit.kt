@@ -1,5 +1,6 @@
 package ru.familytv.games.world
 
+import ru.familytv.games.AttributeApplyDefinition
 import ru.familytv.games.CountCombineDefinition
 
 /** Per-visit accounting, not a progress store. Restored across Activity recreation. */
@@ -48,11 +49,19 @@ internal class GameVisit(
 
 internal data class VisitIdentity(val contentId: String, val title: String, val topics: List<String>)
 
-/** Math visits record the bound dataset id. They do not assume the first apples set. */
-internal fun visitIdentity(world: GameWorld, math: CountCombineDefinition?): VisitIdentity {
+/** Visits record the bound dataset id. They do not assume the first apples or blue-wing set. */
+internal fun visitIdentity(
+    world: GameWorld,
+    math: CountCombineDefinition?,
+    color: AttributeApplyDefinition? = null,
+): VisitIdentity {
     if (world == GameWorld.MATH) {
         val set = checkNotNull(math) { "COUNT_COMBINE dataset is not bound" }
         return VisitIdentity(set.contentId, set.title, listOf("math", "counting"))
+    }
+    if (world == GameWorld.COLOR) {
+        val set = checkNotNull(color) { "ATTRIBUTE_APPLY dataset is not bound" }
+        return VisitIdentity(set.contentId, set.title, listOf("colors"))
     }
     return VisitIdentity("game-color", "Цвета", listOf("colors"))
 }
