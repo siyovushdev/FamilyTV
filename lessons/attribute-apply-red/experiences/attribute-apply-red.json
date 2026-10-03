@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "template": "attribute_apply",
+  "id": "rocket-wing-red",
+  "contentId": "game-color-red",
+  "title": "Красное крыло",
+  "subtitle": "Красная краска",
+  "target": { "object": "rocket", "part": "wing" },
+  "options": [
+    { "id": "blue", "label": "Синий", "voice": "синий" },
+    { "id": "red", "label": "Красный", "voice": "красный" },
+    { "id": "yellow", "label": "Жёлтый", "voice": "жёлтый" }
+  ],
+  "correct": "red",
+  "lines": {
+    "prompt": "Покрась крыло ракеты в красный цвет!",
+    "help": "Красная краска — для крыла. Посмотри на баночку.",
+    "wrong": "Это не красный. Крыло ждёт свою краску.",
+    "success": "Крыло стало красным. Ракета готова к полёту!",
+    "launched": "Ракета полетела! Красное крыло готово к путешествию.",
+    "scene": "Ракета. Покрась правое крыло в красный цвет"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "template": "count_combine",
+  "id": "apples-tiny",
+  "contentId": "game-math-tiny",
+  "title": "Мало яблок",
+  "subtitle": "Совсем немного",
+  "rounds": [
+    { "id": "t1", "left": 1, "right": 1 },
+    { "id": "t2", "left": 2, "right": 1 },
+    { "id": "t3", "left": 1, "right": 2 }
+  ],
+  "lines": {
+    "separate": "Яблок совсем мало!",
+    "ask": "Сколько их вместе?",
+    "help": "Считаем каждое яблоко.",
+    "wrong": "Яблоки никуда не делись.",
+    "success": "Вот и всё!",
+    "countingLead": "Считаем вместе"
+  },
+  "countingWords": ["Один", "два", "три", "четыре", "пять"]
+}

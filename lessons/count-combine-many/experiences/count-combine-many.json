@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "template": "count_combine",
+  "id": "apples-many",
+  "contentId": "game-math-many",
+  "title": "Много яблок",
+  "subtitle": "Полные корзины",
+  "rounds": [
+    { "id": "m1", "left": 3, "right": 3 },
+    { "id": "m2", "left": 3, "right": 2 },
+    { "id": "m3", "left": 2, "right": 3 },
+    { "id": "m4", "left": 3, "right": 1 }
+  ],
+  "lines": {
+    "separate": "Корзины почти полные!",
+    "ask": "Сколько яблок в одной куче?",
+    "help": "Считаем все, не спеша.",
+    "wrong": "Они никуда не убежали.",
+    "success": "Какая большая куча!",
+    "countingLead": "Считаем большую кучу"
+  },
+  "countingWords": ["Один", "два", "три", "четыре", "пять", "шесть"]
+}

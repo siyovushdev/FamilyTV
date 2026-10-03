@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "template": "count_combine",
+  "id": "apples-to-five",
+  "contentId": "game-math-to-five",
+  "title": "До пяти",
+  "subtitle": "Четыре и пять",
+  "rounds": [
+    { "id": "f1", "left": 2, "right": 2 },
+    { "id": "f2", "left": 1, "right": 3 },
+    { "id": "f3", "left": 3, "right": 1 },
+    { "id": "f4", "left": 2, "right": 3 },
+    { "id": "f5", "left": 3, "right": 2 }
+  ],
+  "lines": {
+    "separate": "Здесь яблок уже побольше.",
+    "ask": "Сколько их теперь?",
+    "help": "Давай посчитаем спокойно.",
+    "wrong": "Ещё разок. Яблоки ждут.",
+    "success": "Корзина готова!",
+    "countingLead": "Считаем эту кучку"
+  },
+  "countingWords": ["Один", "два", "три", "четыре", "пять"]
+}

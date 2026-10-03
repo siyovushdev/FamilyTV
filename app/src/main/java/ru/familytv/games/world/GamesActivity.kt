@@ -273,12 +273,23 @@ open class GamesActivity : ComponentActivity() {
         beginVisit()
         render("choice:${state.hintIndex}")
     }
-    /** One extra stays centered. Further extras share the same row, left to right. */
+    /**
+     * One extra stays centered. Two keep the original pair.
+     * More extras share the same row and get narrower so every set stays on screen.
+     */
     private fun extraButtonFrame(count: Int, index: Int): Pair<Float, Float> {
         if (count <= 1) return 750f to 420f
-        val width = 400f
-        val gap = 40f
-        val start = (1920f - (count * width + (count - 1) * gap)) / 2f
+        if (count == 2) {
+            val width = 400f
+            val gap = 40f
+            val start = (1920f - (count * width + gap)) / 2f
+            return start + index * (width + gap) to width
+        }
+        val gap = if (count <= 4) 24f else 12f
+        val margin = 48f
+        val width = ((1920f - margin * 2f - (count - 1) * gap) / count).coerceAtMost(400f)
+        val total = count * width + (count - 1) * gap
+        val start = (1920f - total) / 2f
         return start + index * (width + gap) to width
     }
     private fun isHomeExtra(key: String) =
