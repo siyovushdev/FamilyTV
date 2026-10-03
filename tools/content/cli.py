@@ -21,6 +21,7 @@ from schema import (  # noqa: E402
     validate_adventure_json,
     validate_attribute_apply,
     validate_count_combine,
+    validate_weather_explore,
     validate_manifest,
     verify_payload,
 )
@@ -115,6 +116,10 @@ def cmd_validate(source: Path) -> int:
                 ok_game, game_errors = validate_attribute_apply(data)
                 if not ok_game:
                     errors.extend(f"{path.name}: {e}" for e in game_errors)
+            elif template == "weather_explore":
+                ok_weather, weather_errors = validate_weather_explore(data)
+                if not ok_weather:
+                    errors.extend(f"{path.name}: {e}" for e in weather_errors)
             elif "steps" not in data:
                 errors.append(f"{path.name}: missing steps")
         except Exception as exc:  # noqa: BLE001
@@ -132,6 +137,11 @@ def cmd_validate(source: Path) -> int:
             ok_adv, adv_errors = validate_adventure_json(data)
             if not ok_adv:
                 errors.extend(f"{path.name}: {e}" for e in adv_errors)
+            explore = data.get("explore")
+            if isinstance(explore, dict):
+                ok_weather, weather_errors = validate_weather_explore(explore)
+                if not ok_weather:
+                    errors.extend(f"{path.name}: {e}" for e in weather_errors)
         except Exception as exc:  # noqa: BLE001
             errors.append(f"{path.name}: {exc}")
     try:

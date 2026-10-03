@@ -519,6 +519,80 @@ def validate_attribute_apply(data: dict[str, Any]) -> tuple[bool, list[str]]:
     return not errors, errors
 
 
+def validate_weather_explore(data: dict[str, Any]) -> tuple[bool, list[str]]:
+    """Authored Weather experiment. Mirrors WeatherParser. Prediction is never graded."""
+    errors: list[str] = []
+    if not isinstance(data, dict):
+        return False, ["weather explore root must be object"]
+    if data.get("schemaVersion") != 1:
+        errors.append(f"unsupported schemaVersion={data.get('schemaVersion')}")
+    if str(data.get("template", "")).strip() != "weather_explore":
+        errors.append("template must be weather_explore")
+    if not str(data.get("contentId", "")).strip():
+        errors.append("contentId required")
+    if not str(data.get("experimentId", "")).strip():
+        errors.append("experimentId required")
+    if not str(data.get("title", "")).strip():
+        errors.append("title required")
+    if str(data.get("correctPredictionId", "")).strip():
+        errors.append("prediction must not set correctPredictionId")
+    timing = data.get("timing")
+    if not isinstance(timing, dict):
+        errors.append("timing object required")
+    else:
+        for key in ("placeMs", "experimentMs", "causeMs", "buildMs"):
+            value = timing.get(key)
+            if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+                errors.append(f"timing.{key} must be a positive integer")
+    places = data.get("places")
+    if not isinstance(places, list) or [p.get("id") if isinstance(p, dict) else None for p in places] != ["SUN", "SHADE"]:
+        errors.append("places must be SUN then SHADE")
+        places = []
+    for i, place in enumerate(places):
+        if not isinstance(place, dict):
+            continue
+        for key in ("label", "caption", "description"):
+            if not str(place.get(key, "")).strip():
+                errors.append(f"places[{i}].{key} required")
+        voice = place.get("voice")
+        if not isinstance(voice, list) or not voice or any(not str(alias).strip() for alias in voice):
+            errors.append(f"places[{i}].voice required")
+    shelters = data.get("shelters")
+    if not isinstance(shelters, list) or [s.get("id") if isinstance(s, dict) else None for s in shelters] != ["CANOPY", "LEAVES"]:
+        errors.append("shelters must be CANOPY then LEAVES")
+        shelters = []
+    for i, shelter in enumerate(shelters):
+        if not isinstance(shelter, dict):
+            continue
+        for key in ("label", "description"):
+            if not str(shelter.get(key, "")).strip():
+                errors.append(f"shelters[{i}].{key} required")
+        voice = shelter.get("voice")
+        if not isinstance(voice, list) or not voice or any(not str(alias).strip() for alias in voice):
+            errors.append(f"shelters[{i}].voice required")
+    chain = data.get("chain")
+    if not isinstance(chain, list) or len(chain) != 4 or any(not str(label).strip() for label in chain):
+        errors.append("chain must be four labels")
+    lines = data.get("lines")
+    line_keys = (
+        "home", "homeSoon", "intro", "prediction", "placing", "watching", "observation",
+        "askWarm", "askMelt", "buildChoose", "buildPlaced", "buildWatching", "sheltered",
+        "coveredCaption", "sunCaption", "explanation",
+    )
+    if not isinstance(lines, dict):
+        errors.append("lines object required")
+    else:
+        for key in line_keys:
+            if not str(lines.get(key, "")).strip():
+                errors.append(f"lines.{key} required")
+    narration = data.get("narrationRef")
+    if narration is not None:
+        ref = str(narration).strip()
+        if not ref or ref.startswith("/") or ".." in ref:
+            errors.append("narrationRef must be a relative path when set")
+    return not errors, errors
+
+
 def verify_payload(root: Path, manifest: dict[str, Any]) -> tuple[bool, list[str]]:
     errors: list[str] = []
     root = root.resolve()

@@ -39,6 +39,7 @@ object ContentNavigator {
                 .putExtra(LearningSessionActivity.EXTRA_CONTENT_ID, item.id)
             ContentType.ADVENTURE -> if (ExploreRoutes.opensWeather(item)) {
                 ExploreRoutes.intent(activity, ExploreDestination.WEATHER)
+                    .putExtra(ExploreRoutes.EXTRA_CONTENT_ID, item.id)
             } else if (SpaceRoutes.opens(item)) {
                 SpaceRoutes.intent(activity)
             } else {

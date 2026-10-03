@@ -10,6 +10,7 @@ object ExploreRoutes {
     const val WORLD_ID = "explore"
     const val EXTRA_START = "start"
     const val START_WEATHER = "weather"
+    const val EXTRA_CONTENT_ID = "contentId"
     const val CONTENT_ID = "adv-weather-lab"
     const val ADVENTURE_ID = "weather-lab"
     const val EXPERIMENT_ID = "where-melts-faster"
@@ -65,7 +66,7 @@ internal class ExploreVisit(startedAt: Long = 0L, observed: Collection<String> =
         val hypothesis = s.hypothesis
         return when {
             s.screen == WeatherScreen.RESULT && hypothesis != null && tested.add(hypothesis.name.lowercase()) ->
-                listOf(ExploreRecord.Observed(hypothesis.name.lowercase(), WeatherRules.OBSERVATION))
+                listOf(ExploreRecord.Observed(hypothesis.name.lowercase(), s.experiment.lines.observation))
             s.screen == WeatherScreen.BUILD_RESULT && s.shelter != null && !completed -> {
                 completed = true
                 listOf(ExploreRecord.Completed((now - startedAt).coerceAtLeast(0)))

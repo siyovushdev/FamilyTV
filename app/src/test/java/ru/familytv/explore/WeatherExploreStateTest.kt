@@ -12,11 +12,12 @@ import java.security.MessageDigest
 import javax.imageio.ImageIO
 
 class WeatherExploreStateTest {
-    private fun prediction() = WeatherExploreState().apply { activate("destination:WEATHER"); activate("start") }
-    private fun experiment(place: IcePlace = IcePlace.SUN) = prediction().apply { activate("place:$place"); tick(WeatherRules.PLACE_MS) }
-    private fun result(place: IcePlace = IcePlace.SUN) = experiment(place).apply { tick(WeatherRules.EXPERIMENT_MS) }
+    private val ice by lazy { WeatherFixtures.ice() }
+    private fun prediction() = exploreState().apply { activate("destination:WEATHER"); activate("start") }
+    private fun experiment(place: IcePlace = IcePlace.SUN) = prediction().apply { activate("place:$place"); tick(ice.timing.placeMs) }
+    private fun result(place: IcePlace = IcePlace.SUN) = experiment(place).apply { tick(ice.timing.experimentMs) }
     private fun ask() = result().apply { activate("why") }
-    private fun askAt(cause: Cause) = ask().apply { tick(WeatherRules.CAUSE_MS * cause.ordinal) }
+    private fun askAt(cause: Cause) = ask().apply { tick(ice.timing.causeMs * cause.ordinal) }
     private fun build() = askAt(Cause.DONE).apply { activate("build") }
     private fun assertNextLocked(state: WeatherExploreState, cause: Cause) {
         assertEquals(WeatherScreen.ASK, state.value.screen)
@@ -37,17 +38,17 @@ class WeatherExploreStateTest {
         assertFalse(EXPLANATION_FOCUS in state.controls())
         assertEquals("build", state.value.focus)
     }
-    private fun placed(cover: Shelter = Shelter.CANOPY) = build().apply { activate("shelter:$cover"); tick(WeatherRules.PLACE_MS) }
+    private fun placed(cover: Shelter = Shelter.CANOPY) = build().apply { activate("shelter:$cover"); tick(ice.timing.placeMs) }
 
     @Test fun weatherEntersTheLabAndOnlyCatalogWorldsAreActive() {
         assertEquals(listOf(ExploreDestination.SPACE, ExploreDestination.FOREST, ExploreDestination.WEATHER), ExploreDestination.entries.filter { it.available })
-        val state = WeatherExploreState(); state.activate("destination:WEATHER")
+        val state = exploreState(); state.activate("destination:WEATHER")
         assertEquals(WeatherScreen.INTRO, state.value.screen)
         assertEquals("start", state.value.focus)
     }
     @Test fun futureLocationsRemainHonestUnavailableWorldTargets() {
         ExploreDestination.entries.filterNot { it.available }.forEach {
-            val state = WeatherExploreState(); state.focus("destination:$it"); state.activate()
+            val state = exploreState(); state.focus("destination:$it"); state.activate()
             assertEquals(WeatherScreen.HOME, state.value.screen)
             assertEquals("destination:$it", state.value.focus)
             assertTrue(state.value.unavailable)
@@ -57,10 +58,10 @@ class WeatherExploreStateTest {
         IcePlace.entries.forEach { place ->
             val state = prediction(); state.activate("place:$place")
             assertEquals(place, state.value.hypothesis)
-            assertEquals(MechanicVerdict.INCOMPLETE, PredictAndTestEngine.evaluate(state.predictionSnapshot(), WeatherRules.prediction))
-            state.tick(WeatherRules.PLACE_MS); state.tick(WeatherRules.EXPERIMENT_MS)
-            assertEquals(MechanicVerdict.OBSERVED, PredictAndTestEngine.evaluate(state.predictionSnapshot(), WeatherRules.prediction))
-            assertEquals(WeatherRules.OBSERVATION, state.value.prompt())
+            assertEquals(MechanicVerdict.INCOMPLETE, PredictAndTestEngine.evaluate(state.predictionSnapshot(), ice.toPrediction()))
+            state.tick(ice.timing.placeMs); state.tick(ice.timing.experimentMs)
+            assertEquals(MechanicVerdict.OBSERVED, PredictAndTestEngine.evaluate(state.predictionSnapshot(), ice.toPrediction()))
+            assertEquals(ice.lines.observation, state.value.prompt())
         }
     }
     @Test fun chosenHypothesisSurvivesEverySubsequentStage() {
@@ -94,7 +95,7 @@ class WeatherExploreStateTest {
         assertEquals(a.checkpoint(), b.checkpoint())
     }
     @Test fun sunGraduallyShrinksFasterAndMakesMoreWater() {
-        val samples = (0..10).map { WeatherRules.samples(it / 10f) }
+        val samples = (0..10).map { WeatherMotion.samples(it / 10f) }
         samples.zipWithNext().forEach { (before, after) ->
             for (i in 0..1) { assertTrue(after[i].ice < before[i].ice); assertTrue(after[i].water > before[i].water) }
         }
@@ -110,20 +111,20 @@ class WeatherExploreStateTest {
     }
     @Test fun askLumiCauseOrderUsesFiniteReadableBeats() {
         val state = ask(); val seen = mutableListOf(state.value.cause)
-        repeat(4) { state.tick(WeatherRules.CAUSE_MS); seen += state.value.cause }
+        repeat(4) { state.tick(ice.timing.causeMs); seen += state.value.cause }
         assertEquals(listOf(Cause.SUN, Cause.HEAT, Cause.ICE, Cause.WATER, Cause.DONE), seen)
         assertEquals(WeatherScreen.ASK, state.value.screen)
         assertEquals(2, state.value.samples.size)
     }
     @Test fun repeatRestartsExplanationWithoutChangingResultOrHypothesis() {
-        val state = ask(); state.tick(WeatherRules.CAUSE_MS * 3)
+        val state = ask(); state.tick(ice.timing.causeMs * 3)
         val samples = state.value.samples; val hypothesis = state.value.hypothesis
         repeat(3) {
             state.semantic(FamilyAction.Repeat)
             assertEquals(Cause.SUN, state.value.cause)
             assertEquals(samples, state.value.samples)
             assertEquals(hypothesis, state.value.hypothesis)
-            state.tick(WeatherRules.CAUSE_MS * 4)
+            state.tick(ice.timing.causeMs * 4)
         }
     }
     @Test fun buildHasExactlyTwoPhysicalChoices() {
@@ -145,12 +146,12 @@ class WeatherExploreStateTest {
         state.activate("check")
         assertEquals(WeatherScreen.BUILD_RUNNING, state.value.screen)
         assertEquals(0f, state.value.buildFraction)
-        state.tick(WeatherRules.BUILD_MS)
+        state.tick(ice.timing.buildMs)
         assertEquals(WeatherScreen.BUILD_RESULT, state.value.screen)
         assertTrue(state.value.prompt().contains("медленнее"))
     }
     @Test fun eitherShelterProducesTheSameUnscoredDiscovery() {
-        val prompts = Shelter.entries.map { placed(it).apply { activate("check"); tick(WeatherRules.BUILD_MS) }.value.prompt() }
+        val prompts = Shelter.entries.map { placed(it).apply { activate("check"); tick(ice.timing.buildMs) }.value.prompt() }
         assertEquals(1, prompts.toSet().size)
         assertEquals("Под укрытием лёд тает медленнее.", prompts.first())
     }
@@ -170,7 +171,7 @@ class WeatherExploreStateTest {
     @Test fun pauseFreezesMeaningfulStateAndResumeContinuesSameExperiment() {
         val state = experiment(IcePlace.SHADE); state.tick(5000); state.pause()
         val checkpoint = state.checkpoint(); state.tick(60000); assertEquals(checkpoint, state.checkpoint())
-        val restored = WeatherExploreState(checkpoint); restored.resume(); restored.tick(9000)
+        val restored = exploreState(checkpoint); restored.resume(); restored.tick(9000)
         assertEquals(WeatherScreen.RESULT, restored.value.screen)
         assertEquals(IcePlace.SHADE, restored.value.hypothesis)
     }
@@ -178,19 +179,19 @@ class WeatherExploreStateTest {
         val states = listOf(prediction().apply { activate("place:SUN") }, experiment(), ask(), build().apply { activate("shelter:LEAVES") }, placed().apply { activate("check") })
         states.forEach { state ->
             state.tick(650); state.pause()
-            val copy = WeatherExploreState(state.checkpoint())
+            val copy = exploreState(state.checkpoint())
             copy.resume(); state.resume(); copy.tick(750); state.tick(750)
             assertEquals(state.checkpoint(), copy.checkpoint())
         }
     }
     @Test fun navigationAlwaysLandsOnAnExistingVisibleControl() {
-        val states = listOf(WeatherExploreState(), prediction(), experiment(), result(), ask(), build(), placed())
+        val states = listOf(exploreState(), prediction(), experiment(), result(), ask(), build(), placed())
         states.forEach { state ->
             repeat(20) { Direction.entries.forEach { direction -> state.move(direction); assertTrue(state.controls().contains(state.value.focus)) } }
         }
     }
     @Test fun everyVisibleControlIsReachableIncludingDuringPlacement() {
-        val states = listOf(WeatherExploreState(), prediction(), prediction().apply { activate("place:SUN") },
+        val states = listOf(exploreState(), prediction(), prediction().apply { activate("place:SUN") },
             experiment(), result(), ask(), build(), build().apply { activate("shelter:CANOPY") },
             placed(), placed().apply { activate("check") }, placed().apply { activate("check"); tick(10000) })
         states.forEach { initial ->
@@ -201,7 +202,7 @@ class WeatherExploreStateTest {
                 if (!visited.add(snapshot)) continue
                 reached += snapshot.focus
                 Direction.entries.forEach { direction ->
-                    val next = WeatherExploreState(snapshot); next.move(direction); queue.add(next.checkpoint())
+                    val next = exploreState(snapshot); next.move(direction); queue.add(next.checkpoint())
                 }
             }
             assertTrue("${initial.value.screen}: unreachable ${initial.controls() - reached}", reached.containsAll(initial.controls()))
@@ -272,7 +273,7 @@ class WeatherExploreStateTest {
         assertEquals("main Lumi pixels changed", 0, mainLumi)
     }
     @Test fun introVisualUsesOneLumi() {
-        val intro = WeatherExploreState().apply { activate("destination:WEATHER") }
+        val intro = exploreState().apply { activate("destination:WEATHER") }
         assertEquals(WeatherScreen.INTRO, intro.value.screen)
         assertEquals("weather_intro", intro.value.background)
         assertIntroArtHasOneLumi()
@@ -292,12 +293,12 @@ class WeatherExploreStateTest {
         assertEquals(EXPLANATION_FOCUS, state.value.focus)
         assertNextLocked(state, Cause.SUN)
     }
-    @Test fun sunStageKeepsNextUnavailable() = assertNextLocked(askAt(Cause.SUN).apply { tick(WeatherRules.CAUSE_MS - 1) }, Cause.SUN)
+    @Test fun sunStageKeepsNextUnavailable() = assertNextLocked(askAt(Cause.SUN).apply { tick(ice.timing.causeMs - 1) }, Cause.SUN)
     @Test fun heatStageKeepsNextUnavailable() = assertNextLocked(askAt(Cause.HEAT), Cause.HEAT)
     @Test fun iceStageKeepsNextUnavailable() = assertNextLocked(askAt(Cause.ICE), Cause.ICE)
-    @Test fun waterStageKeepsNextUnavailable() = assertNextLocked(askAt(Cause.WATER).apply { tick(WeatherRules.CAUSE_MS - 1) }, Cause.WATER)
+    @Test fun waterStageKeepsNextUnavailable() = assertNextLocked(askAt(Cause.WATER).apply { tick(ice.timing.causeMs - 1) }, Cause.WATER)
     @Test fun doneRevealsNextAsNaturalFocusWithoutAutoTransition() {
-        val state = askAt(Cause.WATER); state.tick(WeatherRules.CAUSE_MS)
+        val state = askAt(Cause.WATER); state.tick(ice.timing.causeMs)
         assertNextAvailable(state)
         state.tick(60000); state.tick(60000)
         assertNextAvailable(state)
@@ -311,7 +312,7 @@ class WeatherExploreStateTest {
             assertEquals(WeatherScreen.ASK, state.value.screen)
             assertEquals("OK on the explanation neither skips nor restarts it", elapsed, state.value.elapsedMs)
             assertFalse(state.value.canBuild)
-            state.tick(WeatherRules.CAUSE_MS)
+            state.tick(ice.timing.causeMs)
         }
         assertNextAvailable(state)
     }
@@ -339,7 +340,7 @@ class WeatherExploreStateTest {
             assertEquals(WeatherScreen.ASK, state.value.screen)
             for (cause in listOf(Cause.SUN, Cause.HEAT, Cause.ICE, Cause.WATER)) {
                 assertEquals(cause, state.value.cause); assertFalse(state.value.canBuild)
-                state.tick(WeatherRules.CAUSE_MS)
+                state.tick(ice.timing.causeMs)
             }
             assertNextAvailable(state)
         }
@@ -349,8 +350,8 @@ class WeatherExploreStateTest {
     @Test fun repeatDuringSequenceRestartsWithoutUnlocking() {
         val state = askAt(Cause.ICE); state.semantic(FamilyAction.Repeat)
         assertNextLocked(state, Cause.SUN)
-        state.tick(WeatherRules.CAUSE_MS * 3); assertNextLocked(state, Cause.WATER)
-        state.tick(WeatherRules.CAUSE_MS); assertNextAvailable(state)
+        state.tick(ice.timing.causeMs * 3); assertNextLocked(state, Cause.WATER)
+        state.tick(ice.timing.causeMs); assertNextAvailable(state)
     }
     @Test fun pauseResumeAndRecreationNeverExposeNextBeforeDone() {
         val state = askAt(Cause.ICE); state.pause(); state.tick(60000)
@@ -358,16 +359,16 @@ class WeatherExploreStateTest {
         assertEquals(Cause.ICE, checkpoint.cause); assertEquals(EXPLANATION_FOCUS, checkpoint.focus)
         assertFalse("paused OK only resumes in the host", state.activate())
         assertNextLocked(state, Cause.ICE)
-        val restored = WeatherExploreState(checkpoint); restored.resume()
+        val restored = exploreState(checkpoint); restored.resume()
         assertEquals(EXPLANATION_FOCUS, restored.value.focus)
         assertNextLocked(restored, Cause.ICE)
         // A stale focus from a previous DONE cannot leak into a restored, unfinished explanation.
-        val stale = WeatherExploreState(checkpoint.copy(focus = "build", paused = false))
+        val stale = exploreState(checkpoint.copy(focus = "build", paused = false))
         assertEquals(EXPLANATION_FOCUS, stale.value.focus)
         assertNextLocked(stale, Cause.ICE)
-        restored.tick(WeatherRules.CAUSE_MS * 2)
+        restored.tick(ice.timing.causeMs * 2)
         assertNextAvailable(restored)
-        val doneCopy = WeatherExploreState(restored.checkpoint())
+        val doneCopy = exploreState(restored.checkpoint())
         assertNextAvailable(doneCopy)
     }
     @Test fun backBehaviorAroundAskIsUnchanged() {
@@ -380,8 +381,8 @@ class WeatherExploreStateTest {
         val result = result(); result.back(); assertEquals(WeatherScreen.INTRO, result.value.screen)
     }
     @Test fun fullGatedFlowKeepsAiUninitialized() {
-        val state = ask(); state.semantic(FamilyAction.Select); state.tick(WeatherRules.CAUSE_MS * 4)
-        state.semantic(FamilyAction.Repeat); state.tick(WeatherRules.CAUSE_MS * 4); state.semantic(FamilyAction.Select)
+        val state = ask(); state.semantic(FamilyAction.Select); state.tick(ice.timing.causeMs * 4)
+        state.semantic(FamilyAction.Repeat); state.tick(ice.timing.causeMs * 4); state.semantic(FamilyAction.Select)
         assertEquals(WeatherScreen.BUILD_CHOOSE, state.value.screen)
         assertNull(VoiceRuntime.peek())
     }

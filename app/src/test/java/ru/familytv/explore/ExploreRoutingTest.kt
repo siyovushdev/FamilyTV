@@ -15,7 +15,7 @@ class ExploreRoutingTest {
         val items = JSONObject(File(main, "assets/catalog/manifest.json").readText()).getJSONArray("items")
         (0 until items.length()).map { items.getJSONObject(it) }.associateBy { it.getString("id") }
     }
-    private fun select(destination: ExploreDestination) = WeatherExploreState().apply { focus("destination:${destination.name}"); semantic(FamilyAction.Select) }
+    private fun select(destination: ExploreDestination) = exploreState().apply { focus("destination:${destination.name}"); semantic(FamilyAction.Select) }
     private fun catalogItem(id: String): ContentItem {
         val json = requireNotNull(catalog[id]) { "catalog item $id" }
         return ContentItem(id, json.getString("title"), type = ContentType.valueOf(json.getString("type")), adventureRef = json.optString("adventureRef"),
@@ -65,12 +65,12 @@ class ExploreRoutingTest {
     }
 
     @Test fun voiceSpaceAndDpadSpaceResolveToTheSameDestination() {
-        val dpad = WeatherExploreState().apply { move(Direction.LEFT); move(Direction.LEFT); semantic(FamilyAction.Select) }
+        val dpad = exploreState().apply { move(Direction.LEFT); move(Direction.LEFT); semantic(FamilyAction.Select) }
         for (phrase in listOf("космос", "покажи космос", "открой космос")) {
             val action = (VoiceCommandRouter.route(RouteContext(InteractionSurface.HOME), phrase) as RouteResult.Action).action as FamilyAction.OpenWorld
             assertEquals(phrase, ExploreDestination.SPACE, ExploreDestination.fromRoute(action.worldId))
             assertTrue(ExploreRoutes.handles(action.worldId))
-            val voice = WeatherExploreState(); assertTrue(voice.semantic(action))
+            val voice = exploreState(); assertTrue(voice.semantic(action))
             assertEquals(dpad.checkpoint(), voice.checkpoint())
             assertEquals(ExploreDestination.SPACE, voice.takeLaunch())
         }
@@ -92,7 +92,7 @@ class ExploreRoutingTest {
             val s = select(destination); s.takeLaunch()
             s.pause(); s.resume() // host Activity pauses under the adventure and resumes on Back
             assertEquals("destination:${destination.name}", s.value.focus)
-            val recreated = WeatherExploreState(s.checkpoint())
+            val recreated = exploreState(s.checkpoint())
             assertEquals("destination:${destination.name}", recreated.value.focus)
             assertEquals(WeatherScreen.HOME, recreated.value.screen)
         }

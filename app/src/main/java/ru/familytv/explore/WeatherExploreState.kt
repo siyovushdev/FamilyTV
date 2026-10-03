@@ -1,11 +1,8 @@
 package ru.familytv.explore
 
-import ru.familytv.adventure.PredictAndTestParams
-import ru.familytv.adventure.PredictOption
 import ru.familytv.adventure.mechanics.MechanicVerdict
 import ru.familytv.adventure.mechanics.MechanicSnapshot
 import ru.familytv.adventure.mechanics.PredictAndTestEngine
-import ru.familytv.discovery.*
 import ru.familytv.interaction.FamilyAction
 
 internal enum class WeatherScreen { HOME, INTRO, PREDICTION, PLACING_ICE, EXPERIMENT, RESULT, ASK, BUILD_CHOOSE, BUILD_PLACED, BUILD_RUNNING, BUILD_RESULT }
@@ -26,7 +23,7 @@ enum class ExploreDestination(val label: String, val contentId: String?) {
     }
 }
 internal enum class IcePlace { SUN, SHADE }
-internal enum class Shelter(val label: String) { CANOPY("Навес"), LEAVES("Зонтик из листьев") }
+internal enum class Shelter { CANOPY, LEAVES }
 internal enum class Cause { SUN, HEAT, ICE, WATER, DONE }
 internal enum class ExperimentBeat { START, MID, END }
 internal enum class LumiMood { IDLE, CURIOSITY, OBSERVATION, EXPLANATION, DISCOVERY }
@@ -34,36 +31,6 @@ internal enum class Direction { LEFT, RIGHT, UP, DOWN }
 internal data class IceSample(val place: IcePlace, val ice: Float, val water: Float)
 /** Non-advancing focus holder on the explanation chain; OK here never skips ahead. */
 internal const val EXPLANATION_FOCUS = "explanation:CHAIN"
-
-/** Authored discovery rules only. No storage, Android, model, scoring or service dependencies. */
-internal object WeatherRules {
-    const val PLACE_MS = 1800L
-    const val EXPERIMENT_MS = 14000L
-    const val CAUSE_MS = 2400L
-    const val BUILD_MS = 10000L
-    const val OBSERVATION = "На солнце лёд растаял быстрее."
-    val prediction = PredictAndTestParams(
-        options = listOf(
-            PredictOption("SUN", "На солнце", listOf("солнце", "на солнышко")),
-            PredictOption("SHADE", "В тень", listOf("тень", "в тени")),
-        ),
-        outcomeByOptionId = IcePlace.entries.associate { it.name to OBSERVATION },
-    )
-    val model = CauseEffectModel(
-        variables = listOf(SimVariable("cover", listOf("NONE", "CANOPY", "LEAVES"), "NONE")),
-        rules = listOf(
-            SimRule("protected", whenAny = mapOf("cover" to listOf("CANOPY", "LEAVES")), effect = SimEffect(observation = "Под укрытием лёд тает медленнее.")),
-            SimRule("sun_and_shade", whenAll = mapOf("cover" to "NONE"), effect = SimEffect(observation = OBSERVATION)),
-        ),
-    )
-    fun observe(cover: Shelter? = null): String = requireNotNull(CauseEffectEngine.applyAction(
-        model, CauseEffectEngine.initial(model), mapOf("cover" to (cover?.name ?: "NONE")),
-    ).lastObservation)
-    fun samples(fraction: Float): List<IceSample> {
-        val f = fraction.coerceIn(0f, 1f)
-        return listOf(IceSample(IcePlace.SUN, 1f - .78f * f, .95f * f), IceSample(IcePlace.SHADE, 1f - .19f * f, .22f * f))
-    }
-}
 
 internal data class WeatherSnapshot(
     val screen: WeatherScreen = WeatherScreen.HOME,
@@ -76,8 +43,9 @@ internal data class WeatherSnapshot(
     val shelterFocus: Shelter = Shelter.CANOPY,
     val paused: Boolean = false,
     val unavailable: Boolean = false,
+    val experiment: WeatherDefinition,
 ) {
-    val cause: Cause get() = Cause.entries[(elapsedMs / WeatherRules.CAUSE_MS).toInt().coerceIn(0, 4)]
+    val cause: Cause get() = Cause.entries[(elapsedMs / experiment.timing.causeMs).toInt().coerceIn(0, 4)]
     val beat: ExperimentBeat get() = when {
         elapsedMs < 4000 -> ExperimentBeat.START
         elapsedMs < 12000 -> ExperimentBeat.MID
@@ -93,8 +61,8 @@ internal data class WeatherSnapshot(
         WeatherScreen.BUILD_RESULT -> 1f
         else -> 0f
     }
-    val samples get() = WeatherRules.samples(experimentFraction)
-    val canCheck get() = screen == WeatherScreen.BUILD_PLACED && shelter != null && elapsedMs >= WeatherRules.PLACE_MS
+    val samples get() = WeatherMotion.samples(experimentFraction)
+    val canCheck get() = screen == WeatherScreen.BUILD_PLACED && shelter != null && elapsedMs >= experiment.timing.placeMs
     /** The next experiment exists only after the whole explanation chain has been shown. */
     val canBuild get() = screen == WeatherScreen.ASK && cause == Cause.DONE
     val isBuild get() = screen in setOf(WeatherScreen.BUILD_CHOOSE, WeatherScreen.BUILD_PLACED, WeatherScreen.BUILD_RUNNING, WeatherScreen.BUILD_RESULT)
@@ -115,22 +83,22 @@ internal data class WeatherSnapshot(
         WeatherScreen.RESULT, WeatherScreen.BUILD_RESULT -> LumiMood.DISCOVERY
     }
     fun prompt(): String = when (screen) {
-        WeatherScreen.HOME -> if (unavailable) "Этот мир скоро откроется. Исследуем погоду!" else "Куда отправимся исследовать?"
-        WeatherScreen.INTRO -> "Как думаешь, где лёд растает быстрее?"
-        WeatherScreen.PREDICTION -> "Куда положим первый кубик льда?"
-        WeatherScreen.PLACING_ICE -> "Положим лёд и посмотрим вместе."
-        WeatherScreen.EXPERIMENT -> "Смотри, как меняется лёд."
-        WeatherScreen.RESULT -> WeatherRules.observe()
-        WeatherScreen.ASK -> if (cause in listOf(Cause.SUN, Cause.HEAT)) "Солнце греет лёд." else "От тепла лёд тает быстрее."
-        WeatherScreen.BUILD_CHOOSE -> "Как спрячем лёд от солнца?"
-        WeatherScreen.BUILD_PLACED -> "Укрытие на месте. Проверим?"
-        WeatherScreen.BUILD_RUNNING -> "Посмотрим, что меняется под укрытием."
-        WeatherScreen.BUILD_RESULT -> WeatherRules.observe(shelter)
+        WeatherScreen.HOME -> if (unavailable) experiment.lines.homeSoon else experiment.lines.home
+        WeatherScreen.INTRO -> experiment.lines.intro
+        WeatherScreen.PREDICTION -> experiment.lines.prediction
+        WeatherScreen.PLACING_ICE -> experiment.lines.placing
+        WeatherScreen.EXPERIMENT -> experiment.lines.watching
+        WeatherScreen.RESULT -> experiment.observe(null)
+        WeatherScreen.ASK -> if (cause in listOf(Cause.SUN, Cause.HEAT)) experiment.lines.askWarm else experiment.lines.askMelt
+        WeatherScreen.BUILD_CHOOSE -> experiment.lines.buildChoose
+        WeatherScreen.BUILD_PLACED -> experiment.lines.buildPlaced
+        WeatherScreen.BUILD_RUNNING -> experiment.lines.buildWatching
+        WeatherScreen.BUILD_RESULT -> experiment.observe(shelter)
     }
 }
 
 /** Explicit, checkpointable clock. Animation duration settings cannot skip observation beats. */
-internal class WeatherExploreState(initial: WeatherSnapshot = WeatherSnapshot()) {
+internal class WeatherExploreState(initial: WeatherSnapshot) {
     var value: WeatherSnapshot = initial
         private set
     /** An existing catalog experience the host should open; Explore Home keeps its focus underneath. */
@@ -141,9 +109,10 @@ internal class WeatherExploreState(initial: WeatherSnapshot = WeatherSnapshot())
     fun markUnavailable() { value = value.copy(unavailable = true) }
     fun checkpoint(): WeatherSnapshot = value
     fun predictionSnapshot(): MechanicSnapshot {
-        var result = PredictAndTestEngine.initial(WeatherRules.prediction)
-        value.hypothesis?.let { result = PredictAndTestEngine.applySelect(result, WeatherRules.prediction, it.name) }
-        if (value.screen in listOf(WeatherScreen.RESULT, WeatherScreen.ASK)) result = PredictAndTestEngine.applySelect(result, WeatherRules.prediction, "__test__")
+        val prediction = value.experiment.toPrediction()
+        var result = PredictAndTestEngine.initial(prediction)
+        value.hypothesis?.let { result = PredictAndTestEngine.applySelect(result, prediction, it.name) }
+        if (value.screen in listOf(WeatherScreen.RESULT, WeatherScreen.ASK)) result = PredictAndTestEngine.applySelect(result, prediction, "__test__")
         return result
     }
     fun controls(): List<String> = listOf("back") + when (value.screen) {
@@ -232,7 +201,7 @@ internal class WeatherExploreState(initial: WeatherSnapshot = WeatherSnapshot())
     }
     private fun choosePlace(place: IcePlace) {
         if (value.screen != WeatherScreen.PREDICTION) return
-        val selected = PredictAndTestEngine.applySelect(predictionSnapshot(), WeatherRules.prediction, place.name)
+        val selected = PredictAndTestEngine.applySelect(predictionSnapshot(), value.experiment.toPrediction(), place.name)
         value = value.copy(hypothesis = IcePlace.valueOf(requireNotNull(selected.chosenOption)), placeFocus = place)
         enter(WeatherScreen.PLACING_ICE)
     }
@@ -251,16 +220,16 @@ internal class WeatherExploreState(initial: WeatherSnapshot = WeatherSnapshot())
             val transcript = action.transcript.trim().lowercase().replace('ё', 'е')
             when {
                 value.screen == WeatherScreen.PREDICTION -> {
-                    val (selected, verdict) = PredictAndTestEngine.applyVoice(predictionSnapshot(), WeatherRules.prediction, transcript)
-                    if (verdict == MechanicVerdict.INCOMPLETE && selected.chosenOption != null && transcript !in WeatherRules.prediction.testPhrases) {
+                    val prediction = value.experiment.toPrediction()
+                    val (selected, verdict) = PredictAndTestEngine.applyVoice(predictionSnapshot(), prediction, transcript)
+                    if (verdict == MechanicVerdict.INCOMPLETE && selected.chosenOption != null && transcript !in prediction.testPhrases) {
                         choosePlace(IcePlace.valueOf(selected.chosenOption)); true
                     } else false
                 }
                 value.canCheck && transcript in listOf("проверить", "проверим") -> activate("check")
-                value.screen == WeatherScreen.BUILD_CHOOSE -> when (transcript) {
-                    "навес" -> activate("shelter:CANOPY")
-                    "зонтик", "из листьев", "зонтик из листьев" -> activate("shelter:LEAVES")
-                    else -> false
+                value.screen == WeatherScreen.BUILD_CHOOSE -> {
+                    val shelter = value.experiment.shelters.find { transcript in it.voice.map { alias -> alias.lowercase().replace('ё', 'е') } }
+                    if (shelter != null) activate("shelter:${shelter.id.name}") else false
                 }
                 else -> false
             }
@@ -277,15 +246,15 @@ internal class WeatherExploreState(initial: WeatherSnapshot = WeatherSnapshot())
         val s = value
         val total = s.elapsedMs + deltaMs.coerceAtMost(60000)
         when (s.screen) {
-            WeatherScreen.PLACING_ICE -> if (total >= WeatherRules.PLACE_MS) enter(WeatherScreen.EXPERIMENT) else value = s.copy(elapsedMs = total)
-            WeatherScreen.EXPERIMENT -> if (total >= WeatherRules.EXPERIMENT_MS) enter(WeatherScreen.RESULT) else value = s.copy(elapsedMs = total)
-            WeatherScreen.BUILD_RUNNING -> if (total >= WeatherRules.BUILD_MS) enter(WeatherScreen.BUILD_RESULT) else value = s.copy(elapsedMs = total)
+            WeatherScreen.PLACING_ICE -> if (total >= s.experiment.timing.placeMs) enter(WeatherScreen.EXPERIMENT) else value = s.copy(elapsedMs = total)
+            WeatherScreen.EXPERIMENT -> if (total >= s.experiment.timing.experimentMs) enter(WeatherScreen.RESULT) else value = s.copy(elapsedMs = total)
+            WeatherScreen.BUILD_RUNNING -> if (total >= s.experiment.timing.buildMs) enter(WeatherScreen.BUILD_RESULT) else value = s.copy(elapsedMs = total)
             WeatherScreen.BUILD_PLACED -> {
-                value = s.copy(elapsedMs = total.coerceAtMost(WeatherRules.PLACE_MS))
+                value = s.copy(elapsedMs = total.coerceAtMost(s.experiment.timing.placeMs))
                 if (value.canCheck) focus("check")
             }
             WeatherScreen.ASK -> {
-                value = s.copy(elapsedMs = total.coerceAtMost(4 * WeatherRules.CAUSE_MS))
+                value = s.copy(elapsedMs = total.coerceAtMost(4 * s.experiment.timing.causeMs))
                 if (value.canBuild) focus("build")
             }
             else -> Unit
@@ -302,7 +271,7 @@ internal class WeatherExploreState(initial: WeatherSnapshot = WeatherSnapshot())
             WeatherScreen.PLACING_ICE, WeatherScreen.EXPERIMENT -> enter(WeatherScreen.PREDICTION)
             WeatherScreen.RESULT -> enter(WeatherScreen.INTRO)
             WeatherScreen.ASK -> enter(WeatherScreen.RESULT)
-            WeatherScreen.BUILD_CHOOSE -> enter(WeatherScreen.ASK, 4 * WeatherRules.CAUSE_MS)
+            WeatherScreen.BUILD_CHOOSE -> enter(WeatherScreen.ASK, 4 * value.experiment.timing.causeMs)
             WeatherScreen.BUILD_PLACED, WeatherScreen.BUILD_RUNNING, WeatherScreen.BUILD_RESULT -> {
                 value = value.copy(shelter = null)
                 enter(WeatherScreen.BUILD_CHOOSE)

@@ -17,6 +17,7 @@ import ru.familytv.parent.ActivityKind
 import ru.familytv.voice.VoiceRuntime
 
 class ExploreProductionTest {
+    private val ice by lazy { WeatherFixtures.ice() }
     private val main = File("src/main").takeIf { it.exists() } ?: File("app/src/main")
     private val debug = File(main.parentFile, "debug")
     private fun source(path: String) = File(main, "java/ru/familytv/$path").readText()
@@ -24,14 +25,14 @@ class ExploreProductionTest {
         File(main, "java/ru/familytv/explore").walkTopDown().filter { it.extension == "kt" }.joinToString("\n") { it.readText() }
     }
 
-    private fun weather() = WeatherExploreState().apply { activate("destination:WEATHER") }
+    private fun weather() = exploreState().apply { activate("destination:WEATHER") }
     private fun result(place: IcePlace = IcePlace.SUN) = weather().apply {
-        activate("start"); activate("place:$place"); tick(WeatherRules.PLACE_MS); tick(WeatherRules.EXPERIMENT_MS)
+        activate("start"); activate("place:$place"); tick(ice.timing.placeMs); tick(ice.timing.experimentMs)
     }
     private fun ask() = result().apply { activate("why") }
-    private fun askDone() = ask().apply { tick(WeatherRules.CAUSE_MS * 4) }
-    private fun placed(cover: Shelter = Shelter.CANOPY) = askDone().apply { activate("build"); activate("shelter:$cover"); tick(WeatherRules.PLACE_MS) }
-    private fun buildResult() = placed().apply { activate("check"); tick(WeatherRules.BUILD_MS) }
+    private fun askDone() = ask().apply { tick(ice.timing.causeMs * 4) }
+    private fun placed(cover: Shelter = Shelter.CANOPY) = askDone().apply { activate("build"); activate("shelter:$cover"); tick(ice.timing.placeMs) }
+    private fun buildResult() = placed().apply { activate("check"); tick(ice.timing.buildMs) }
     private fun assertBuildLocked(s: WeatherExploreState) {
         assertFalse(s.value.canBuild); assertFalse("build" in s.controls()); assertNotEquals("build", s.value.focus)
         assertFalse(s.activate("build")); assertEquals(WeatherScreen.ASK, s.value.screen)
@@ -62,7 +63,7 @@ class ExploreProductionTest {
     @Test fun weatherIsTheAvailableLocation() {
         assertEquals(5, ExploreDestination.entries.size)
         assertEquals(listOf(ExploreDestination.SPACE, ExploreDestination.FOREST, ExploreDestination.WEATHER), ExploreDestination.entries.filter { it.available })
-        val s = WeatherExploreState()
+        val s = exploreState()
         assertEquals("destination:WEATHER", s.value.focus)
         assertTrue(s.activate())
         assertEquals(WeatherScreen.INTRO, s.value.screen)
@@ -72,7 +73,7 @@ class ExploreProductionTest {
     // 3
     @Test fun futureDestinationsNeverCreateContentOrProgress() {
         for (d in ExploreDestination.entries.filterNot { it.available }) {
-            val s = WeatherExploreState(); val visit = ExploreVisit()
+            val s = exploreState(); val visit = ExploreVisit()
             s.focus("destination:${d.name}"); s.activate()
             assertEquals(WeatherScreen.HOME, s.value.screen)
             assertTrue(s.value.unavailable)
@@ -87,14 +88,14 @@ class ExploreProductionTest {
 
     // 4
     @Test fun hypothesesAreNeverJudgedCorrectOrWrong() {
-        assertNull(WeatherRules.prediction.correctPredictionId)
+        assertNull(ice.toPrediction().correctPredictionId)
         for (place in IcePlace.entries) {
             val s = weather().apply { activate("start"); activate("place:$place") }
-            val verdicts = mutableListOf(PredictAndTestEngine.evaluate(s.predictionSnapshot(), WeatherRules.prediction))
-            s.tick(WeatherRules.PLACE_MS); s.tick(WeatherRules.EXPERIMENT_MS)
-            verdicts += PredictAndTestEngine.evaluate(s.predictionSnapshot(), WeatherRules.prediction)
+            val verdicts = mutableListOf(PredictAndTestEngine.evaluate(s.predictionSnapshot(), ice.toPrediction()))
+            s.tick(ice.timing.placeMs); s.tick(ice.timing.experimentMs)
+            verdicts += PredictAndTestEngine.evaluate(s.predictionSnapshot(), ice.toPrediction())
             assertEquals(listOf(MechanicVerdict.INCOMPLETE, MechanicVerdict.OBSERVED), verdicts)
-            assertEquals(WeatherRules.OBSERVATION, s.value.prompt())
+            assertEquals(ice.lines.observation, s.value.prompt())
         }
         for (word in listOf("Правильно", "Неправильно", "Верно", "Неверно", "Ошибка", "CORRECT", "WRONG", "score", "mastery")) {
             assertFalse(word, exploreSources.contains(word))
@@ -104,17 +105,17 @@ class ExploreProductionTest {
     // 5
     @Test fun predictionIsPreservedThroughTheWholeLoop() {
         val s = result(IcePlace.SHADE)
-        s.activate("why"); s.tick(WeatherRules.CAUSE_MS * 4); s.activate("build"); s.activate("shelter:LEAVES"); s.tick(WeatherRules.PLACE_MS)
-        s.activate("check"); s.tick(WeatherRules.BUILD_MS)
+        s.activate("why"); s.tick(ice.timing.causeMs * 4); s.activate("build"); s.activate("shelter:LEAVES"); s.tick(ice.timing.placeMs)
+        s.activate("check"); s.tick(ice.timing.buildMs)
         assertEquals(WeatherScreen.BUILD_RESULT, s.value.screen)
-        assertEquals(IcePlace.SHADE, WeatherExploreState(s.checkpoint()).value.hypothesis)
+        assertEquals(IcePlace.SHADE, exploreState(s.checkpoint()).value.hypothesis)
     }
 
     // 6
     @Test fun experimentIsDeterministic() {
         val a = weather().apply { activate("start"); activate("place:SUN") }
         val b = weather().apply { activate("start"); activate("place:SUN") }
-        repeat(136) { a.tick(50) }; b.tick(WeatherRules.PLACE_MS); b.tick(2000); b.tick(3000)
+        repeat(136) { a.tick(50) }; b.tick(ice.timing.placeMs); b.tick(2000); b.tick(3000)
         assertEquals(WeatherScreen.EXPERIMENT, a.value.screen); assertEquals(5000L, a.value.elapsedMs)
         assertEquals(a.checkpoint(), b.checkpoint())
         assertEquals(result(IcePlace.SUN).value.samples, result(IcePlace.SHADE).value.samples)
@@ -123,7 +124,7 @@ class ExploreProductionTest {
     // 7
     @Test fun sunMeltsFasterThanShade() {
         for (f in listOf(.25f, .5f, 1f)) {
-            val (sun, shade) = WeatherRules.samples(f)
+            val (sun, shade) = WeatherMotion.samples(f)
             assertEquals(IcePlace.SUN, sun.place)
             assertTrue(sun.ice < shade.ice); assertTrue(sun.water > shade.water)
         }
@@ -134,17 +135,17 @@ class ExploreProductionTest {
         val s = result(IcePlace.SUN)
         assertEquals(WeatherScreen.RESULT, s.value.screen)
         assertEquals("why", s.value.focus)
-        assertEquals(WeatherRules.OBSERVATION, s.value.prompt())
+        assertEquals(ice.lines.observation, s.value.prompt())
         val visit = ExploreVisit(); visit.begin(1000)
-        assertEquals(listOf(ExploreRecord.Observed("sun", WeatherRules.OBSERVATION)), visit.observe(s.value, 2000))
+        assertEquals(listOf(ExploreRecord.Observed("sun", ice.lines.observation)), visit.observe(s.value, 2000))
         assertTrue(visit.observe(s.value, 3000).isEmpty())
-        assertEquals(listOf(ExploreRecord.Observed("shade", WeatherRules.OBSERVATION)), visit.observe(result(IcePlace.SHADE).value, 4000))
+        assertEquals(listOf(ExploreRecord.Observed("shade", ice.lines.observation)), visit.observe(result(IcePlace.SHADE).value, 4000))
     }
 
     // 9
     @Test fun askLumiRunsSunHeatIceWaterDone() {
         val s = ask(); val seen = mutableListOf(s.value.cause)
-        repeat(4) { s.tick(WeatherRules.CAUSE_MS); seen += s.value.cause }
+        repeat(4) { s.tick(ice.timing.causeMs); seen += s.value.cause }
         assertEquals(listOf(Cause.SUN, Cause.HEAT, Cause.ICE, Cause.WATER, Cause.DONE), seen)
     }
 
@@ -155,7 +156,7 @@ class ExploreProductionTest {
             assertBuildLocked(s)
             repeat(3) { s.semantic(FamilyAction.Select) }
             assertBuildLocked(s)
-            s.tick(WeatherRules.CAUSE_MS - 1); assertBuildLocked(s); s.tick(1)
+            s.tick(ice.timing.causeMs - 1); assertBuildLocked(s); s.tick(1)
         }
         assertEquals(Cause.DONE, s.value.cause)
     }
@@ -174,14 +175,14 @@ class ExploreProductionTest {
         val s = askDone()
         s.semantic(FamilyAction.Repeat)
         assertEquals(Cause.SUN, s.value.cause); assertBuildLocked(s)
-        s.tick(WeatherRules.CAUSE_MS * 4); assertTrue(s.value.canBuild)
+        s.tick(ice.timing.causeMs * 4); assertTrue(s.value.canBuild)
     }
 
     // 13
     @Test fun buildOffersExactlyTwoShelters() {
         val s = askDone().apply { activate("build") }
         assertEquals(listOf("shelter:CANOPY", "shelter:LEAVES"), s.controls().filter { it.startsWith("shelter:") })
-        assertEquals(listOf("Навес", "Зонтик из листьев"), Shelter.entries.map { it.label })
+        assertEquals(listOf("Навес", "Зонтик из листьев"), ice.shelters.map { it.label })
     }
 
     // 14
@@ -191,14 +192,14 @@ class ExploreProductionTest {
         assertEquals(0f, s.value.buildFraction)
         val visit = ExploreVisit(); visit.begin(1)
         assertTrue(visit.observe(s.value, 10).isEmpty())
-        s.activate("check"); s.tick(WeatherRules.BUILD_MS)
+        s.activate("check"); s.tick(ice.timing.buildMs)
         assertEquals("Под укрытием лёд тает медленнее.", s.value.prompt())
     }
 
     // 15
     @Test fun placedShelterSurvivesPauseAndRecreation() {
         val s = askDone().apply { activate("build"); activate("shelter:LEAVES"); tick(900); pause() }
-        val restored = WeatherExploreState(s.checkpoint()); restored.resume(); restored.tick(900)
+        val restored = exploreState(s.checkpoint()); restored.resume(); restored.tick(900)
         assertEquals(Shelter.LEAVES, restored.value.shelter)
         assertTrue(restored.value.canCheck); assertEquals("check", restored.value.focus)
     }
@@ -219,11 +220,11 @@ class ExploreProductionTest {
 
     // 17
     @Test fun pauseAndResumeNeverOpenNextEarly() {
-        val s = ask().apply { tick(WeatherRules.CAUSE_MS * 2); pause(); tick(60000) }
+        val s = ask().apply { tick(ice.timing.causeMs * 2); pause(); tick(60000) }
         assertEquals(Cause.ICE, s.value.cause); assertFalse(s.activate()); assertBuildLocked(s)
-        val restored = WeatherExploreState(s.checkpoint().copy(focus = "build", paused = false))
+        val restored = exploreState(s.checkpoint().copy(focus = "build", paused = false))
         assertBuildLocked(restored)
-        restored.tick(WeatherRules.CAUSE_MS * 2); assertTrue(restored.value.canBuild)
+        restored.tick(ice.timing.causeMs * 2); assertTrue(restored.value.canBuild)
     }
 
     // 18
@@ -253,7 +254,7 @@ class ExploreProductionTest {
         assertTrue((0 until scenes.length()).any { scenes.getJSONObject(it).optJSONObject("challenge")?.optString("id") == ExploreRoutes.EXPERIMENT_ID })
         assertTrue(File(main, "assets/catalog/journal/unlocks.json").readText().contains("\"exp-${ExploreRoutes.EXPERIMENT_ID}\""))
         val activity = source("explore/ExploreActivity.kt")
-        for (hook in listOf("journey.onContentOpened(id)", "journey.onExperimentObserved(ExploreRoutes.EXPERIMENT_ID", "journey.onContentCompleted(id)", "PlatformServices.activityHistory(this).record(")) {
+        for (hook in listOf("journey.onContentOpened(id)", "journey.onExperimentObserved(experimentId", "journey.onContentCompleted(id)", "PlatformServices.activityHistory(this).record(")) {
             assertEquals(hook, 1, activity.split(hook).size - 1)
         }
     }
@@ -277,7 +278,7 @@ class ExploreProductionTest {
 
     // 20
     @Test fun productionFlowNeverInitializesAi() {
-        val s = askDone(); s.activate("build"); s.activate("shelter:CANOPY"); s.tick(WeatherRules.PLACE_MS); s.activate("check"); s.tick(WeatherRules.BUILD_MS)
+        val s = askDone(); s.activate("build"); s.activate("shelter:CANOPY"); s.tick(ice.timing.placeMs); s.activate("check"); s.tick(ice.timing.buildMs)
         assertNull(VoiceRuntime.peek())
         for (forbidden in listOf("VoiceRuntime.get(", "newPipeline(", ".prewarm(", "startListening(", "acquireLease(", "AudioRecord(", "SpeechRecognizer", "GroundedQwenMatcher", ".gguf", ".onnx", "NarrationCoordinator(")) {
             assertFalse(forbidden, exploreSources.contains(forbidden))
@@ -306,7 +307,7 @@ class ExploreProductionTest {
     @Test fun catalogLaunchReturnsToItsCallerFromWeatherIntro() {
         val activity = source("explore/ExploreActivity.kt")
         assertTrue(activity.contains("old.screen == WeatherScreen.INTRO && startsInWeather"))
-        val start = WeatherExploreState(WeatherSnapshot(screen = WeatherScreen.INTRO, focus = "start"))
+        val start = exploreState(WeatherSnapshot(screen = WeatherScreen.INTRO, focus = "start", experiment = ice))
         assertEquals("start", start.value.focus)
         assertEquals(WeatherScreen.PREDICTION, start.apply { activate() }.value.screen)
     }

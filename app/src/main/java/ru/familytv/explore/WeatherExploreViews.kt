@@ -117,9 +117,9 @@ internal class WeatherWorldView(context: Context, private val state: WeatherExpl
                 round(c, x - 70, 722f, 140f, 51f, 25f, WEATHER_CYAN)
                 text(c, "OK  Сюда", x, 756f, 25f, NAVY, true, true)
             }
-            pill(c, if (place == IcePlace.SUN) "На солнце" else "В тень", x, 675f, 28f, CREAM, tint(NAVY, 225), 280f)
+            pill(c, s.experiment.place(place).label, x, 675f, 28f, CREAM, tint(NAVY, 225), 280f)
         }
-        val f = if (s.screen == WeatherScreen.PLACING_ICE) (s.elapsedMs / WeatherRules.PLACE_MS.toFloat()).coerceIn(0f, 1f) else 0f
+        val f = if (s.screen == WeatherScreen.PLACING_ICE) (s.elapsedMs / s.experiment.timing.placeMs.toFloat()).coerceIn(0f, 1f) else 0f
         val eased = f * f * (3 - 2 * f)
         val target = if (s.hypothesis == IcePlace.SHADE) 1260f else 650f
         val x = 960 + (target - 960) * eased
@@ -134,7 +134,7 @@ internal class WeatherWorldView(context: Context, private val state: WeatherExpl
         s.samples.forEach { sample ->
             val x = if (sample.place == IcePlace.SUN) 580f else 1355f
             ice(c, x, 787f, 255f, sample.ice, sample.water)
-            pill(c, if (sample.place == IcePlace.SUN) "На солнце" else "В тени", x, 853f, 28f, CREAM, tint(NAVY, 225), 260f)
+            pill(c, s.experiment.place(sample.place).caption, x, 853f, 28f, CREAM, tint(NAVY, 225), 260f)
         }
         if (s.screen == WeatherScreen.ASK) explanation(c, s)
     }
@@ -156,7 +156,7 @@ internal class WeatherWorldView(context: Context, private val state: WeatherExpl
         c.withTranslation(y = -35f) {
             val focused = s.focus == EXPLANATION_FOCUS
             round(c, 603f, 205f, 745f, 125f, 50f, tint(NAVY, 228), if (focused) WEATHER_CYAN else tint(WEATHER_CYAN, 80), if (focused) 3f else 1f)
-            val labels = listOf("Солнце", "Тепло", "Лёд", "Вода")
+            val labels = s.experiment.chain
             for (i in 0..3) {
                 val x = 704f + i * 179
                 val current = cause.ordinal == i
@@ -183,8 +183,8 @@ internal class WeatherWorldView(context: Context, private val state: WeatherExpl
             // Equal starting cubes, one covered and one exposed, make the new consequence visible.
             ice(c, iceX, iceY, 200f, 1f - .16f * fraction, .18f * fraction)
             ice(c, 1420f, 767f, 200f, 1f - .78f * fraction, .9f * fraction)
-            pill(c, "Под укрытием", iceX, 812f, 25f, CREAM, tint(NAVY, 225), 280f)
-            pill(c, "На солнце", 1420f, 821f, 25f, CREAM, tint(NAVY, 225), 240f)
+            pill(c, s.experiment.lines.coveredCaption, iceX, 812f, 25f, CREAM, tint(NAVY, 225), 280f)
+            pill(c, s.experiment.lines.sunCaption, 1420f, 821f, 25f, CREAM, tint(NAVY, 225), 240f)
         }
         if (choosing) {
             for (cover in Shelter.entries) {
@@ -196,11 +196,11 @@ internal class WeatherWorldView(context: Context, private val state: WeatherExpl
                     ellipse(c, x - 210, y - 15, x + 210, y + 52, tint(WEATHER_CYAN, 18), WEATHER_CYAN, 4f)
                 }
                 shelter(c, cover, x, y, (if (cover == Shelter.LEAVES) .80f else 1f) * if (focused) 1.045f else 1f)
-                pill(c, cover.label, x, y + 55, 26f, CREAM, tint(NAVY, 230), 350f)
+                pill(c, s.experiment.shelter(cover).label, x, y + 55, 26f, CREAM, tint(NAVY, 230), 350f)
                 if (focused) text(c, "OK  Поставить", x, y + 143, 26f, WEATHER_CYAN, true, true)
             }
         } else s.shelter?.let { cover ->
-            val f = if (s.screen == WeatherScreen.BUILD_PLACED) (s.elapsedMs / WeatherRules.PLACE_MS.toFloat()).coerceIn(0f, 1f) else 1f
+            val f = if (s.screen == WeatherScreen.BUILD_PLACED) (s.elapsedMs / s.experiment.timing.placeMs.toFloat()).coerceIn(0f, 1f) else 1f
             val ease = f * f * (3 - 2 * f)
             val fromX = if (cover == Shelter.CANOPY) 560f else 1515f
             val fromY = if (cover == Shelter.CANOPY) 650f else 815f

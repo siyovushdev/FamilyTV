@@ -3,15 +3,18 @@ package ru.familytv.explore
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.RectF
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
@@ -34,7 +37,8 @@ import ru.familytv.voice.VoiceRuntime
 open class ExploreActivity : ComponentActivity() {
     /** Debug harness subclasses disable every History / Journey / trial write. */
     protected open val recordsActivity = true
-    private var state = WeatherExploreState()
+    private var blocked = false
+    private lateinit var state: WeatherExploreState
     private var visit = ExploreVisit()
     private var startsInWeather = false
     private var pendingOpen: ExploreDestination? = null
@@ -74,9 +78,32 @@ open class ExploreActivity : ComponentActivity() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         val start = intent?.getStringExtra(ExploreRoutes.EXTRA_START)?.let { extra -> ExploreDestination.entries.find { it.name.lowercase() == extra } }
         startsInWeather = start == ExploreDestination.WEATHER
+        val contentId = intent?.getStringExtra(ExploreRoutes.EXTRA_CONTENT_ID)?.trim()?.takeIf { it.isNotEmpty() }
+            ?: ExploreRoutes.CONTENT_ID
+        val loaded = WeatherCatalog.load(PlatformServices.contentRepository(this), contentId)
+        if (loaded !is WeatherLoad.Ready) {
+            blocked = true
+            val reason = (loaded as WeatherLoad.Rejected).reason
+            Log.i("FamilyExplore", "rejected content=$contentId reason=$reason")
+            setContentView(TextView(this).apply {
+                text = "Это занятие не открылось."
+                textSize = 28f
+                setTextColor(Color.WHITE)
+                setBackgroundColor(Color.BLACK)
+                gravity = Gravity.CENTER
+            })
+            onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() { finish() }
+            })
+            return
+        }
+        val experiment = loaded.definition
         if (savedInstanceState == null) {
-            if (startsInWeather) state = WeatherExploreState(WeatherSnapshot(screen = WeatherScreen.INTRO, focus = "start"))
-            else if (start != null) pendingOpen = start
+            if (startsInWeather) state = WeatherExploreState(WeatherSnapshot(screen = WeatherScreen.INTRO, focus = "start", experiment = experiment))
+            else {
+                if (start != null) pendingOpen = start
+                state = WeatherExploreState(WeatherSnapshot(experiment = experiment))
+            }
         } else savedInstanceState.let { bundle ->
             fun <T : Enum<T>> read(key: String, values: List<T>, fallback: T): T = values.find { it.name == bundle.getString(key) } ?: fallback
             state = WeatherExploreState(WeatherSnapshot(
@@ -88,6 +115,7 @@ open class ExploreActivity : ComponentActivity() {
                 placeFocus = read("placeFocus", IcePlace.entries, IcePlace.SUN),
                 shelterFocus = read("shelterFocus", Shelter.entries, Shelter.CANOPY),
                 paused = bundle.getBoolean("paused"), unavailable = bundle.getBoolean("unavailable"),
+                experiment = experiment,
             ))
             visit = ExploreVisit(bundle.getLong("visitStarted"), bundle.getStringArrayList("visitObserved").orEmpty(), bundle.getBoolean("visitCompleted"))
             ambientMs = bundle.getLong("ambient")
@@ -107,7 +135,7 @@ open class ExploreActivity : ComponentActivity() {
             render()
             // Shared offline narration only; this never acquires a microphone or model lease.
             narration = PlatformServices.narrationCoordinator(this@ExploreActivity)
-            log("ready")
+            log("ready content=${state.value.experiment.contentId}")
             // A Home voice route selects the location exactly like the D-pad would.
             pendingOpen?.let { pendingOpen = null; handle(FamilyAction.OpenWorld(it.route)) }
         }
@@ -142,9 +170,9 @@ open class ExploreActivity : ComponentActivity() {
             if (r != null) {
                 val description = when {
                     key.startsWith("destination:") -> ExploreDestination.valueOf(key.substringAfter(':')).let { "${it.label}. ${if (it.available) "Исследовать" else "Скоро, пока недоступно"}" }
-                    key.startsWith("place:") -> if (key.endsWith("SUN")) "Положить лёд на солнце. Предположение" else "Положить лёд в тень. Предположение"
-                    key == EXPLANATION_FOCUS -> "Луми объясняет: солнце, тепло, лёд, вода"
-                    else -> "Поставить: ${Shelter.valueOf(key.substringAfter(':')).label}"
+                    key.startsWith("place:") -> state.value.experiment.place(IcePlace.valueOf(key.substringAfter(':'))).description
+                    key == EXPLANATION_FOCUS -> state.value.experiment.lines.explanation
+                    else -> state.value.experiment.shelter(Shelter.valueOf(key.substringAfter(':'))).description
                 }
                 add(key, WeatherWorldTarget(this, description), r)
             }
@@ -221,11 +249,12 @@ open class ExploreActivity : ComponentActivity() {
     private fun endVisit(reason: String) {
         if (!recordsActivity) return
         val completed = visit.completed
-        if (visit.finish()) log("visit_finished content=${ExploreRoutes.CONTENT_ID} reason=$reason completed=$completed")
+        if (visit.finish()) log("visit_finished content=${state.value.experiment.contentId} reason=$reason completed=$completed")
     }
     private fun record(records: List<ExploreRecord>) {
         if (!recordsActivity || records.isEmpty()) return
-        val id = ExploreRoutes.CONTENT_ID
+        val id = state.value.experiment.contentId
+        val experimentId = state.value.experiment.experimentId
         val journey = PlatformServices.journeyCoordinator(this)
         val trial = PlatformServices.trialEvents(this)
         for (r in records) when (r) {
@@ -236,9 +265,9 @@ open class ExploreActivity : ComponentActivity() {
                 log("visit_started content=$id journey=opened")
             }
             is ExploreRecord.Observed -> {
-                journey.onExperimentObserved(ExploreRoutes.EXPERIMENT_ID, id, listOf(r.variant), r.outcome, r.outcome)
-                trial.record(TrialEventStore.EXPERIMENT_VARIANT_TESTED, id, mapOf("experimentId" to ExploreRoutes.EXPERIMENT_ID))
-                log("experiment_observed content=$id experiment=${ExploreRoutes.EXPERIMENT_ID} variant=${r.variant}")
+                journey.onExperimentObserved(experimentId, id, listOf(r.variant), r.outcome, r.outcome)
+                trial.record(TrialEventStore.EXPERIMENT_VARIANT_TESTED, id, mapOf("experimentId" to experimentId))
+                log("experiment_observed content=$id experiment=$experimentId variant=${r.variant}")
             }
             is ExploreRecord.Completed -> {
                 // Same completion writes AdventureActivity made when weather-lab reached its end.
@@ -256,7 +285,8 @@ open class ExploreActivity : ComponentActivity() {
         }
     }
     private fun speak() {
-        narration?.present(PresentationMessage(state.value.prompt()))
+        val result = narration?.present(PresentationMessage(state.value.prompt(), narrationRef = state.value.experiment.narrationRef))
+        if (result != null) log("narration=${result.path}")
     }
     private fun routeKey(event: KeyEvent): Boolean {
         val direction = when (event.keyCode) {
@@ -275,19 +305,25 @@ open class ExploreActivity : ComponentActivity() {
         return true
     }
     private fun log(event: String) {
+        if (blocked) return
         val s = state.value
         Log.i(if (recordsActivity) "FamilyExplore" else "StitchWeather", "$event screen=${s.screen} elapsed=${s.elapsedMs} hypothesis=${s.hypothesis} cause=${s.cause} beat=${s.beat} shelter=${s.shelter} canCheck=${s.canCheck} canBuild=${s.canBuild} focus=${s.focus} paused=${s.paused} mood=${s.mood} controls=${state.controls().joinToString(",")} visit=${visit.active} completed=${visit.completed} AI=${if (VoiceRuntime.peek() == null) 0 else 1}")
     }
     override fun onResume() {
-        super.onResume(); resumed = true; state.resume(); dispatcher.attach(actionHandler)
+        super.onResume()
+        if (blocked) return
+        resumed = true; state.resume(); dispatcher.attach(actionHandler)
         lastTick = SystemClock.uptimeMillis(); clock.removeCallbacks(ticker); clock.post(ticker)
         if (art.isNotEmpty()) { controls[state.value.focus]?.requestFocus(); log("resume") }
     }
     override fun onPause() {
-        resumed = false; clock.removeCallbacks(ticker); state.pause(); narration?.stop(); dispatcher.detach(actionHandler); log("pause")
+        if (!blocked) {
+            resumed = false; clock.removeCallbacks(ticker); state.pause(); narration?.stop(); dispatcher.detach(actionHandler); log("pause")
+        }
         super.onPause()
     }
     override fun onSaveInstanceState(outState: Bundle) {
+        if (blocked) { super.onSaveInstanceState(outState); return }
         val s = state.checkpoint()
         outState.putString("screen", s.screen.name); outState.putLong("elapsed", s.elapsedMs)
         outState.putString("hypothesis", s.hypothesis?.name); outState.putString("shelter", s.shelter?.name)
